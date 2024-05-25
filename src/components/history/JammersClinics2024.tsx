@@ -1,5 +1,4 @@
-// import { icon } from '../../utils/Icons';
-import hittingIcon from '../../customIcons/hittingIcon.svg';
+import { icon } from '../../utils/Icons';
 import { textColor } from '../../utils/Styles';
 
 const JammersClinics2024 = () => {
@@ -23,20 +22,16 @@ const JammersClinics2024 = () => {
     ];
 
     return (
-        <>
+        <div className="mt-6 space-y-10">
             <p>
                 During the off-season, Jammers Volleyball Club hosts multiple specialized volleyball
                 clinics for athletes wanting to improve their skill set during the off-season.
             </p>
-            <ul className={`mt-8 ml-8 space-y-8 font-semibold ${textColor.paragraph}`}>
-                {skills.map(skill => (
-                    <li className="flex gap-x-3">
-                        {/* <icon.cloudArrowUp
-                            className="mt-1 h-5 w-5 flex-none text-indigo-600"
-                            aria-hidden="true"
-                        /> */}
-
-                        <img src={hittingIcon} alt="" className="w-12" />
+            <p>I partiicpated in the following clinics:</p>
+            <ul className={`ml-10 space-y-8 font-semibold ${textColor.paragraph}`}>
+                {skills.map((skill, idx) => (
+                    <li key={`${skill.title}-${idx}`} className="flex gap-x-3">
+                        <icon.sparkles className="w-10" />
                         <div className="flex flex-col">
                             <p>{skill.title}</p>
                             <p className="mt-0.5 text-base text-gray-500">{skill.date}</p>
@@ -44,7 +39,7 @@ const JammersClinics2024 = () => {
                     </li>
                 ))}
             </ul>
-        </>
+        </div>
     );
 };
 

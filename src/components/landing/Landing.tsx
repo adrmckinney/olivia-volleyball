@@ -1,12 +1,20 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
+import useFetchCSVData from '../../api/FetchCSVData';
 import { NavigationContext } from '../../context/NavigationProvider';
-import SettingOne from './../../images/MostImprovedPortrait.jpeg';
+import { parseCsvSheetData } from '../../helpers/csvHelpers/parseCsvSheetData';
+import SpiralDesign from './../../images/SpiralPlayersDesign.png';
 import BackgroundAccentColor from './BackgroundAccentColor';
 import BackgroundGrid from './BackgroundGrid';
 import SnapshotStats from './SnapshotStats';
 
 const Landing = () => {
     const { landingRef } = useContext(NavigationContext);
+    const { fetchAndParseCsvData } = useFetchCSVData();
+    const csvUrl: string = process.env.REACT_APP_WINTER_BUMP_2024_URL || '';
+
+    useEffect(() => {
+        fetchAndParseCsvData(csvUrl, parseCsvSheetData);
+    }, []);
 
     return (
         <div ref={landingRef} id="landing" className="relative isolate overflow-hidden">
@@ -22,15 +30,8 @@ const Landing = () => {
                 </div>
                 <div className="mx-auto mt-16 flex max-w-2xl sm:mt-24 lg:ml-10 lg:mr-0 lg:mt-0 lg:max-w-none lg:flex-none xl:ml-32">
                     <div className="max-w-3xl flex-none sm:max-w-5xl lg:max-w-none">
-                        {/* <img
-                            src="https://tailwindui.com/img/component-images/dark-project-app-screenshot.png"
-                            alt="App screenshot"
-                            width={2432}
-                            height={1442}
-                            className="w-[76rem] rounded-md bg-white/5 shadow-2xl ring-1 ring-white/10"
-                        /> */}
                         <img
-                            src={SettingOne}
+                            src={SpiralDesign}
                             alt="Intense Face"
                             className="w-[40rem] rounded-md bg-white/5 shadow-2xl ring-1 ring-white/10"
                         />

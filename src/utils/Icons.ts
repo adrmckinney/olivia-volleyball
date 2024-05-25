@@ -13,6 +13,7 @@ import {
     Bars3Icon,
     BoltIcon,
     CalendarDaysIcon,
+    SparklesIcon,
     UsersIcon,
     XMarkIcon,
 } from '@heroicons/react/24/outline';
@@ -32,6 +33,7 @@ type Icon = {
     x: typeof XMarkIcon;
     tag: typeof TagIcon;
     userCircle: typeof UserCircleIcon;
+    sparkles: typeof SparklesIcon;
 };
 
 export const icon: Icon = {
@@ -49,4 +51,5 @@ export const icon: Icon = {
     x: XMarkIcon,
     tag: TagIcon,
     userCircle: UserCircleIcon,
+    sparkles: SparklesIcon,
 };
