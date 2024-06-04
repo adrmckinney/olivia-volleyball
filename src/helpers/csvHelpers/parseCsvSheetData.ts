@@ -1,3 +1,18 @@
+import {
+    Attacks,
+    Blocks,
+    Details,
+    Digs,
+    Match,
+    PlayingTime,
+    SeasonData,
+    ServeReceive,
+    Serves,
+    Setting,
+    SubHeaders,
+    VenueDetails,
+} from '../../types/VenueMatchTypes';
+
 const initialMatchValues: Match = {
     date: '',
     opponent: '',
@@ -54,26 +69,38 @@ const initialMatchValues: Match = {
     },
 };
 
-const initialDetails: Details = {
+const initialVenueDetails: VenueDetails = {
     venue: '',
     city: '',
     state: '',
     startDate: '',
     endDate: '',
-    tournamentWins: 0,
-    tournamentLoses: 0,
-    tournamentWinLossPercentage: '',
-    tournamentPlayPercentage: '',
-    avgTournamentSettingPercentage: '',
-    avgTournamentSettingErrors: '',
-    totalTournamentSettingErrors: 0,
-    avgTournamentAssistPercentage: '',
-    avgTournamentServePercentage: '',
-    avgTournamentServeErrors: '',
-    totalTournamentServeErrors: 0,
-    avgTournamentAcePercentage: '',
-    avgTournamentAttackPercentage: '',
-    avgTournamentKillPercentage: '',
+};
+
+const initialDetails: Details = {
+    venueDetails: initialVenueDetails,
+    venueTournamentDetails: {
+        tournamentWins: 0,
+        tournamentLoses: 0,
+        tournamentWinLossPercentage: '',
+        tournamentPlayPercentage: '',
+    },
+    venueServeStats: {
+        avgTournamentServePercentage: '',
+        avgTournamentServeErrors: '',
+        totalTournamentServeErrors: 0,
+        avgTournamentAcePercentage: '',
+    },
+    venueSettingStats: {
+        avgTournamentSettingPercentage: '',
+        avgTournamentSettingErrors: '',
+        totalTournamentSettingErrors: 0,
+        avgTournamentAssistPercentage: '',
+    },
+    venueAttackStats: {
+        avgTournamentAttackPercentage: '',
+        avgTournamentKillPercentage: '',
+    },
 };
 
 const initialJammersDataValues: SeasonData[] = [
@@ -83,99 +110,67 @@ const initialJammersDataValues: SeasonData[] = [
     },
 ];
 
-type DetailsSubHeaders =
-    | 'Venue'
-    | 'City'
-    | 'State'
-    | 'Start Date'
-    | 'End Date'
-    | 'Tournament Wins'
-    | 'Tournament Loses'
-    | 'Tournament Win/Loss %'
-    | 'Tournament Play %'
-    | 'AVG Tournament Setting %'
-    | 'AVG Tournament Setting Errors'
-    | 'Total Tournament Setting Errors'
-    | 'AVG Tournament Assist %'
-    | 'AVG Tournament Serve %'
-    | 'AVG Tournament Serve Errors'
-    | 'Total Tournament Serve Errors'
-    | 'AVG Tournament Ace %'
-    | 'AVG Tournament Attack %'
-    | 'AVG Tournament Kill %';
-
-type MatchSubHeaders = 'Date' | 'Opponent';
-type PlayingTimeSubHeaders = 'Playing Time (mins)' | 'Match Duration (mins)' | '% Played';
-type ServeSubHeaders =
-    | 'Serve Ace'
-    | 'Serve Zero'
-    | 'Serve Error'
-    | 'Serve Total'
-    | 'Serve Ace %'
-    | 'Serve %';
-type AttacksSubHeaders =
-    | 'Attack Kill'
-    | 'Attack Zero'
-    | 'Attack Error'
-    | 'Attack Total'
-    | 'Attack Kill %'
-    | 'Attack %';
-type ServeReceiveSubHeaders = 'SR 3' | 'SR 2' | 'SR 1' | 'SR 0' | 'SR Total' | 'SR %';
-type BlocksSubHeaders = 'Block Solo' | 'Block Assist' | 'Block Error' | 'Block Total';
-type SettingSubHeaders =
-    | 'Setting Assist'
-    | 'Setting Zero'
-    | 'Setting Error'
-    | 'Setting Total'
-    | 'Setting Assist %'
-    | 'Setting %';
-
-type DigsSubHeaders = 'Dig 3' | 'Dig 2' | 'Dig 1' | 'Dig 0' | 'Digs Total' | 'Passing %';
-
-type SubHeaders =
-    | DetailsSubHeaders
-    | MatchSubHeaders
-    | PlayingTimeSubHeaders
-    | ServeSubHeaders
-    | AttacksSubHeaders
-    | ServeReceiveSubHeaders
-    | BlocksSubHeaders
-    | SettingSubHeaders
-    | DigsSubHeaders
-    | 'NEW_MATCH';
-
 export const parseCsvSheetData = (csvText: string): SeasonData[] => {
     const rows: string[] = csvText.split(/\r?\n/); // Split CSV text into rows, handling '\r' characters
     const filteredRows = rows.filter(row => row.split(',')[0].length);
-
-    console.log('filteredRows', filteredRows);
-
     const venueIndicies = findTargetIndices(filteredRows, 'Venue');
-    console.log('venueIndicies', venueIndicies);
+    const venueGroups = createArraysForGroups(filteredRows, venueIndicies);
 
-    const indices: number[] = findTargetIndicesOld(filteredRows, 'NEW_MATCH,');
-    console.log('indices for matches', indices);
+    const completeData: SeasonData[] = venueGroups.map((groupOfRows, idx) => {
+        const matchIndices: number[] = findTargetIndices(groupOfRows, 'Date');
+        const venueDetails = parseVenueData(groupOfRows, matchIndices[0]);
+        const matchStringData: string[][] = createArraysForGroups(groupOfRows, matchIndices);
+        const venueData: Match[] = prepareVenueData(matchStringData);
+        return { ...venueDetails, matches: venueData };
+    });
 
-    const indicesTest: number[] = findTargetIndices(filteredRows, 'Date');
-    console.log('indicesTest for matches', indicesTest);
+    return completeData;
+};
 
-    // Create an array of arrays holding each match data
-    const matchStringData: string[][] = createArraysForGroups(filteredRows, indices); // need to get the right array of arrays without subtracting the one from the indicies because no longer using artificial breaker 'NEW_MATCH
+const prepareVenueData = (targetStringData: string[][]) => {
+    const matchesDataObjects: Match[] = [];
 
-    const matchDetails = parseMatchDetails(rows, indices[0]);
+    for (const matchArray of targetStringData) {
+        const matchCopy = { ...initialMatchValues };
+        const playingTimeCopy = { ...initialMatchValues.playingTime };
+        const serveCopy = { ...initialMatchValues.serves };
+        const attackCopy = { ...initialMatchValues.attacks };
+        const serveReceiveCopy = { ...initialMatchValues.serveReceive };
+        const blocksCopy = { ...initialMatchValues.blocks };
+        const settingCopy = { ...initialMatchValues.setting };
+        const digsCopy = { ...initialMatchValues.digs };
 
-    const matchesDataObjects: Match[] = parseMatchesData(matchStringData);
+        const matchesData = parseMatchesData(matchArray, matchCopy);
+        const playinTimeData = parsePlayingTimeData(matchArray, playingTimeCopy);
+        const serveData = parseServeData(matchArray, serveCopy);
+        const attackData = parseAttackData(matchArray, attackCopy);
+        const serveReceiveData = parseServeReceiveData(matchArray, serveReceiveCopy);
+        const blocksData = parseBlocksData(matchArray, blocksCopy);
+        const settingData = parseSettingData(matchArray, settingCopy);
+        const digsData = parseDigsData(matchArray, digsCopy);
 
-    return [{ ...matchDetails, matches: matchesDataObjects }];
+        const combinedData: Match = {
+            ...matchesData,
+            playingTime: playinTimeData,
+            serves: serveData,
+            attacks: attackData,
+            serveReceive: serveReceiveData,
+            blocks: blocksData,
+            setting: settingData,
+            digs: digsData,
+        };
+
+        matchesDataObjects.push(combinedData);
+    }
+
+    return matchesDataObjects;
 };
 
 const createArraysForGroups = (rows: string[], targetIndices: number[]): string[][] => {
     const matchStringData: string[][] = [];
     targetIndices.forEach((index, loopIdx) => {
-        const startIdx = index + 1;
-        const endIdx = !(targetIndices[loopIdx + 1] - 1)
-            ? rows.length - 1
-            : targetIndices[loopIdx + 1] - 1;
+        const startIdx = index;
+        const endIdx = getEndIndex(rows, targetIndices, loopIdx);
 
         let rowData: string[] = [];
         for (let i = startIdx; i <= endIdx; i++) {
@@ -188,13 +183,17 @@ const createArraysForGroups = (rows: string[], targetIndices: number[]): string[
     return matchStringData;
 };
 
+const getEndIndex = (rows: string[], targetIndices: number[], loopIndex: number) => {
+    return !(targetIndices[loopIndex + 1] - 1) ? rows.length - 1 : targetIndices[loopIndex + 1] - 1;
+};
+
 const findTargetIndices = (rows: string[], targetIndexKey: string): number[] => {
     const targetIndices: number[] = [];
     const rowKeys = rows.map(row => row.split(',')[0]);
     // console.log('rowKeys', rowKeys);
 
     let idx = rowKeys.indexOf(targetIndexKey);
-    if (targetIndexKey === 'Venue') console.log('venue idx', idx);
+    // if (targetIndexKey === 'Venue') console.log('venue idx', idx);
 
     while (idx !== -1) {
         targetIndices.push(idx);
@@ -204,22 +203,13 @@ const findTargetIndices = (rows: string[], targetIndexKey: string): number[] => 
     return targetIndices;
 };
 
-const findTargetIndicesOld = (rows: string[], targetIndexKey: string): number[] => {
-    const targetIndices: number[] = [];
+const parseVenueData = (rows: string[], lastDetailIndex: number): Details => {
+    const venueDetailsCopy = { ...initialDetails.venueDetails };
+    const venueTournamentCopy = { ...initialDetails.venueTournamentDetails };
+    const venueSettingCopy = { ...initialDetails.venueSettingStats };
+    const venueServeCopy = { ...initialDetails.venueServeStats };
+    const venueAttackCopy = { ...initialDetails.venueAttackStats };
 
-    let idx = rows.indexOf(targetIndexKey);
-    if (targetIndexKey === 'Venue') console.log('venue idx', idx);
-
-    while (idx !== -1) {
-        targetIndices.push(idx);
-        idx = rows.indexOf(targetIndexKey, idx + 1);
-    }
-
-    return targetIndices;
-};
-
-const parseMatchDetails = (rows: string[], lastDetailIndex: number) => {
-    const data = initialDetails;
     for (let i = 0; i < lastDetailIndex; i++) {
         const row = rows[i].split(',');
 
@@ -232,296 +222,271 @@ const parseMatchDetails = (rows: string[], lastDetailIndex: number) => {
 
         switch (key) {
             case 'Venue':
-                data.venue = value;
+                venueDetailsCopy.venue = value;
                 break;
             case 'City':
-                data.city = value;
+                venueDetailsCopy.city = value;
                 break;
             case 'State':
-                data.state = value;
+                venueDetailsCopy.state = value;
                 break;
             case 'Start Date':
-                data.startDate = value;
+                venueDetailsCopy.startDate = value;
                 break;
             case 'End Date':
-                data.endDate = value;
+                venueDetailsCopy.endDate = value;
                 break;
             case 'Tournament Wins':
-                data.tournamentWins = parseInt(value, 10);
+                venueTournamentCopy.tournamentWins = parseInt(value, 10);
                 break;
             case 'Tournament Loses':
-                data.tournamentLoses = parseInt(value, 10);
+                venueTournamentCopy.tournamentLoses = parseInt(value, 10);
                 break;
             case 'Tournament Win/Loss %':
-                data.tournamentWinLossPercentage = value;
+                venueTournamentCopy.tournamentWinLossPercentage = value;
                 break;
             case 'Tournament Play %':
-                data.tournamentPlayPercentage = value;
+                venueTournamentCopy.tournamentPlayPercentage = value;
                 break;
             case 'AVG Tournament Setting %':
-                data.avgTournamentSettingPercentage = value;
+                venueSettingCopy.avgTournamentSettingPercentage = value;
                 break;
             case 'AVG Tournament Setting Errors':
-                data.avgTournamentSettingErrors = value;
+                venueSettingCopy.avgTournamentSettingErrors = value;
                 break;
             case 'Total Tournament Setting Errors':
-                data.totalTournamentSettingErrors = parseInt(value, 10);
+                venueSettingCopy.totalTournamentSettingErrors = parseInt(value, 10);
                 break;
             case 'AVG Tournament Assist %':
-                data.avgTournamentAssistPercentage = value;
+                venueSettingCopy.avgTournamentAssistPercentage = value;
                 break;
             case 'AVG Tournament Serve %':
-                data.avgTournamentServePercentage = value;
+                venueServeCopy.avgTournamentServePercentage = value;
                 break;
             case 'Total Tournament Serve Errors':
-                data.totalTournamentServeErrors = parseInt(value, 10);
+                venueServeCopy.totalTournamentServeErrors = parseInt(value, 10);
                 break;
             case 'AVG Tournament Serve Errors':
-                data.avgTournamentServeErrors = value;
+                venueServeCopy.avgTournamentServeErrors = value;
                 break;
             case 'AVG Tournament Ace %':
-                data.avgTournamentAcePercentage = value;
+                venueServeCopy.avgTournamentAcePercentage = value;
                 break;
             case 'AVG Tournament Attack %':
-                data.avgTournamentAttackPercentage = value;
+                venueAttackCopy.avgTournamentAttackPercentage = value;
                 break;
             case 'AVG Tournament Kill %':
-                data.avgTournamentKillPercentage = value;
+                venueAttackCopy.avgTournamentKillPercentage = value;
                 break;
             default:
                 break;
         }
     }
 
-    return data;
+    return {
+        venueDetails: venueDetailsCopy,
+        venueTournamentDetails: venueTournamentCopy,
+        venueSettingStats: venueSettingCopy,
+        venueServeStats: venueServeCopy,
+        venueAttackStats: venueAttackCopy,
+    };
 };
 
-const parseMatchesData = (matchStringData: string[][]) => {
-    return matchStringData.map(matchArray => {
-        const matchObj: Match = { ...initialMatchValues };
-
-        matchArray.forEach(item => {
-            const [key, value] = item.split(',');
-
-            switch (key.trim()) {
-                case 'Date':
-                    matchObj.date = value;
-                    break;
-                case 'Opponent':
-                    matchObj.opponent = value;
-                    break;
-                case 'Playing Time (mins)':
-                    const [playingTime, matchDuration] = value.split(':');
-                    matchObj.playingTime.playingTime = playingTime;
-                    matchObj.playingTime.matchDuration = matchDuration;
-                    break;
-                case 'Match Duration (mins)':
-                    matchObj.playingTime.matchDuration = value;
-                    break;
-                case '% Played':
-                    matchObj.playingTime.percentagePlayed = value;
-                    break;
-                case 'Serve Ace':
-                    matchObj.serves.aces = parseInt(value, 10);
-                    break;
-                case 'Serve Zero':
-                    matchObj.serves.zeroServe = parseInt(value, 10);
-                    break;
-                case 'Serve Error':
-                    matchObj.serves.errors = parseInt(value, 10);
-                    break;
-                case 'Serve Total':
-                    matchObj.serves.total = parseInt(value, 10);
-                    break;
-                case 'Serve Ace %':
-                    matchObj.serves.acePercentage = value;
-                    break;
-                case 'Serve %':
-                    matchObj.serves.servePercentage = value;
-                    break;
-                case 'Attack Kill':
-                    matchObj.attacks.kills = parseInt(value, 10);
-                    break;
-                case 'Attack Zero':
-                    matchObj.attacks.zeroAttacks = parseInt(value, 10);
-                    break;
-                case 'Attack Error':
-                    matchObj.attacks.errors = parseInt(value, 10);
-                    break;
-                case 'Attack Total':
-                    matchObj.attacks.total = parseInt(value, 10);
-                    break;
-                case 'Attack Kill %':
-                    matchObj.attacks.killPercentage = value;
-                    break;
-                case 'Attack %':
-                    matchObj.attacks.attackPercentage = value;
-                    break;
-                case 'SR 3':
-                    matchObj.serveReceive.three = parseInt(value, 10);
-                    break;
-                case 'SR 2':
-                    matchObj.serveReceive.two = parseInt(value, 10);
-                    break;
-                case 'SR 1':
-                    matchObj.serveReceive.one = parseInt(value, 10);
-                    break;
-                case 'SR  0':
-                    matchObj.serveReceive.errors = parseInt(value, 10);
-                    break;
-                case 'SR Total':
-                    matchObj.serveReceive.total = parseInt(value, 10);
-                    break;
-                case 'SR %':
-                    matchObj.serveReceive.srPercentage = value;
-                    break;
-                case 'Block Solo':
-                    matchObj.blocks.solo = parseInt(value, 10);
-                    break;
-                case 'Block Assist':
-                    matchObj.blocks.assist = parseInt(value, 10);
-                    break;
-                case 'Block Error':
-                    matchObj.blocks.error = parseInt(value, 10);
-                    break;
-                case 'Block Total':
-                    matchObj.blocks.total = parseInt(value, 10);
-                    break;
-                case 'Setting Assist':
-                    matchObj.setting.assists = parseInt(value, 10);
-                    break;
-                case 'Setting Zero':
-                    matchObj.setting.zeroAssists = parseInt(value, 10);
-                    break;
-                case 'Setting Error':
-                    matchObj.setting.error = parseInt(value, 10);
-                    break;
-                case 'Setting Total':
-                    matchObj.setting.total = parseInt(value, 10);
-                    break;
-                case 'Setting Assist %':
-                    matchObj.setting.assistPercentage = value;
-                    break;
-                case 'Setting %':
-                    matchObj.setting.settingPercentage = value;
-                    break;
-                case 'Dig 3':
-                    matchObj.digs.three = parseInt(value, 10);
-                    break;
-                case 'Dig 2':
-                    matchObj.digs.two = parseInt(value, 10);
-                    break;
-                case 'Dig 1':
-                    matchObj.digs.one = parseInt(value, 10);
-                    break;
-                case 'Dig 0':
-                    matchObj.digs.zero = parseInt(value, 10);
-                    break;
-                case 'Digs Total':
-                    matchObj.digs.digsTotal = parseInt(value, 10);
-                    break;
-                case 'Passing %':
-                    matchObj.digs.passingPercentage = value;
-                    break;
-                default:
-                    break;
-            }
-        });
-        return matchObj;
+const parseServeData = (matchArray: string[], objectCopy: Serves) => {
+    matchArray.forEach(item => {
+        const [key, value] = item.split(',');
+        switch (key.trim()) {
+            case 'Serve Ace':
+                objectCopy.aces = parseInt(value, 10);
+                break;
+            case 'Serve Zero':
+                objectCopy.zeroServe = parseInt(value, 10);
+                break;
+            case 'Serve Error':
+                objectCopy.errors = parseInt(value, 10);
+                break;
+            case 'Serve Total':
+                objectCopy.total = parseInt(value, 10);
+                break;
+            case 'Serve Ace %':
+                objectCopy.acePercentage = value;
+                break;
+            case 'Serve %':
+                objectCopy.servePercentage = value;
+                break;
+        }
     });
+    return objectCopy;
 };
 
-export type SeasonData = {
-    matches: Match[];
-} & Details;
-
-type Details = {
-    venue: string;
-    city: string;
-    state: string;
-    startDate: string;
-    endDate: string;
-    tournamentWins: number;
-    tournamentLoses: number;
-    tournamentWinLossPercentage: string;
-    tournamentPlayPercentage: string;
-    avgTournamentSettingPercentage: string;
-    avgTournamentSettingErrors: string;
-    totalTournamentSettingErrors: number;
-    avgTournamentAssistPercentage: string;
-    avgTournamentServePercentage: string;
-    avgTournamentServeErrors: string;
-    totalTournamentServeErrors: number;
-    avgTournamentAcePercentage: string;
-    avgTournamentAttackPercentage: string;
-    avgTournamentKillPercentage: string;
+const parseAttackData = (matchArray: string[], objectCopy: Attacks) => {
+    matchArray.forEach(item => {
+        const [key, value] = item.split(',');
+        switch (key.trim()) {
+            case 'Attack Kill':
+                objectCopy.kills = parseInt(value, 10);
+                break;
+            case 'Attack Zero':
+                objectCopy.zeroAttacks = parseInt(value, 10);
+                break;
+            case 'Attack Error':
+                objectCopy.errors = parseInt(value, 10);
+                break;
+            case 'Attack Total':
+                objectCopy.total = parseInt(value, 10);
+                break;
+            case 'Attack Kill %':
+                objectCopy.killPercentage = value;
+                break;
+            case 'Attack %':
+                objectCopy.attackPercentage = value;
+                break;
+        }
+    });
+    return objectCopy;
 };
 
-type Match = {
-    date: string;
-    opponent: string;
-    playingTime: PlayingTime;
-    serves: Serves;
-    attacks: Attacks;
-    serveReceive: ServeReceive;
-    blocks: Blocks;
-    setting: Setting;
-    digs: Digs;
+const parseServeReceiveData = (matchArray: string[], objectCopy: ServeReceive) => {
+    matchArray.forEach(item => {
+        const [key, value] = item.split(',');
+        switch (key.trim()) {
+            case 'SR 3':
+                objectCopy.three = parseInt(value, 10);
+                break;
+            case 'SR 2':
+                objectCopy.two = parseInt(value, 10);
+                break;
+            case 'SR 1':
+                objectCopy.one = parseInt(value, 10);
+                break;
+            case 'SR  0':
+                objectCopy.errors = parseInt(value, 10);
+                break;
+            case 'SR Total':
+                objectCopy.total = parseInt(value, 10);
+                break;
+            case 'SR %':
+                objectCopy.srPercentage = value;
+                break;
+        }
+    });
+    return objectCopy;
 };
 
-type PlayingTime = {
-    playingTime: string;
-    matchDuration: string;
-    percentagePlayed: string;
+const parsePlayingTimeData = (matchArray: string[], objectCopy: PlayingTime) => {
+    matchArray.forEach(item => {
+        const [key, value] = item.split(',');
+
+        switch (key.trim()) {
+            case 'Playing Time (mins)':
+                objectCopy.playingTime = value;
+                break;
+            case 'Match Duration (mins)':
+                objectCopy.matchDuration = value;
+                break;
+            case '% Played':
+                objectCopy.percentagePlayed = value;
+                break;
+        }
+    });
+
+    return objectCopy;
 };
 
-type Serves = {
-    aces: number;
-    zeroServe: number;
-    errors: number;
-    total: number;
-    acePercentage: string;
-    servePercentage: string;
-};
-type Attacks = {
-    kills: number;
-    zeroAttacks: number;
-    errors: number;
-    total: number;
-    killPercentage: string;
-    attackPercentage: string;
+const parseBlocksData = (matchArray: string[], objectCopy: Blocks) => {
+    matchArray.forEach(item => {
+        const [key, value] = item.split(',');
+
+        switch (key.trim()) {
+            case 'Block Solo':
+                objectCopy.solo = parseInt(value, 10);
+                break;
+            case 'Block Assist':
+                objectCopy.assist = parseInt(value, 10);
+                break;
+            case 'Block Error':
+                objectCopy.error = parseInt(value, 10);
+                break;
+            case 'Block Total':
+                objectCopy.total = parseInt(value, 10);
+                break;
+        }
+    });
+
+    return objectCopy;
 };
 
-type ServeReceive = {
-    three: number;
-    two: number;
-    one: number;
-    errors: number;
-    total: number;
-    srPercentage: string;
+const parseSettingData = (matchArray: string[], objectCopy: Setting) => {
+    matchArray.forEach(item => {
+        const [key, value] = item.split(',');
+
+        switch (key.trim()) {
+            case 'Setting Assist':
+                objectCopy.assists = parseInt(value, 10);
+                break;
+            case 'Setting Zero':
+                objectCopy.zeroAssists = parseInt(value, 10);
+                break;
+            case 'Setting Error':
+                objectCopy.error = parseInt(value, 10);
+                break;
+            case 'Setting Total':
+                objectCopy.total = parseInt(value, 10);
+                break;
+            case 'Setting Assist %':
+                objectCopy.assistPercentage = value;
+                break;
+            case 'Setting %':
+                objectCopy.settingPercentage = value;
+                break;
+        }
+    });
+
+    return objectCopy;
 };
 
-type Blocks = {
-    solo: number;
-    assist: number;
-    error: number;
-    total: number;
+const parseDigsData = (matchArray: string[], objectCopy: Digs) => {
+    matchArray.forEach(item => {
+        const [key, value] = item.split(',');
+
+        switch (key.trim()) {
+            case 'Dig 3':
+                objectCopy.three = parseInt(value, 10);
+                break;
+            case 'Dig 2':
+                objectCopy.two = parseInt(value, 10);
+                break;
+            case 'Dig 1':
+                objectCopy.one = parseInt(value, 10);
+                break;
+            case 'Dig 0':
+                objectCopy.zero = parseInt(value, 10);
+                break;
+            case 'Digs Total':
+                objectCopy.digsTotal = parseInt(value, 10);
+                break;
+            case 'Passing %':
+                objectCopy.passingPercentage = value;
+                break;
+        }
+    });
+
+    return objectCopy;
 };
 
-type Setting = {
-    assists: number;
-    zeroAssists: number;
-    error: number;
-    total: number;
-    assistPercentage: string;
-    settingPercentage: string;
-};
+const parseMatchesData = (matchArray: string[], objectCopy: any) => {
+    matchArray.forEach(item => {
+        const [key, value] = item.split(',');
 
-type Digs = {
-    three: number;
-    two: number;
-    one: number;
-    zero: number;
-    digsTotal: number;
-    passingPercentage: string;
+        switch (key.trim()) {
+            case 'Date':
+                objectCopy.date = value;
+                break;
+            case 'Opponent':
+                objectCopy.opponent = value;
+                break;
+        }
+    });
+
+    return objectCopy;
 };
