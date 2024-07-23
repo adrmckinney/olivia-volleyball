@@ -6,10 +6,11 @@ import History from './components/history/History';
 import Landing from './components/landing/Landing';
 import Stats from './components/stats/Stats';
 import Vidoes from './components/vidoes/Vidoes';
+import { colors } from './configs/colors';
 
 function App() {
     return (
-        <div className="bg-gray-900">
+        <div className={colors.bgMain}>
             <NavBar />
             <main>
                 <Landing />

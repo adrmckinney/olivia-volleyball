@@ -1,5 +1,6 @@
 import { Disclosure } from '@headlessui/react';
 import { useContext } from 'react';
+import { colors } from '../../configs/colors';
 import { Current, NavigationContext } from '../../context/NavigationProvider';
 import LinkButton from '../../sharedComponents/LinkButton';
 import { icon } from '../../utils/Icons';
@@ -45,7 +46,7 @@ const NavBar = () => {
         <Disclosure
             as="nav"
             className={[
-                hideNavBackground ? 'bg-transparent' : `bg-violet-500 ${opacity}`,
+                hideNavBackground ? 'bg-transparent' : `bg-gray-900 ${opacity}`,
                 'fixed top-0 w-full z-50',
             ].join(' ')}
             style={{ borderRadius: '0 0 100px 100px/50%' }}
@@ -64,12 +65,15 @@ const NavBar = () => {
                                                     title={item.name}
                                                     classNames={
                                                         item.current
-                                                            ? hideNavBackground
-                                                                ? 'text-green-400'
-                                                                : 'text-teal-900 font-bold'
-                                                            : hideNavBackground
-                                                              ? 'text-white'
-                                                              : 'text-gray-900'
+                                                            ? colors.textNavActive
+                                                            : colors.textNavInactive
+                                                        // item.current
+                                                        //     ? hideNavBackground
+                                                        //         ? 'text-green-400'
+                                                        //         : 'text-teal-900 font-bold'
+                                                        //     : hideNavBackground
+                                                        //       ? 'text-white'
+                                                        //       : 'text-gray-900'
                                                     }
                                                     onClick={() => handleNavClick(item.key)}
                                                 />
