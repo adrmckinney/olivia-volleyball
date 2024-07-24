@@ -1,6 +1,7 @@
 import { Disclosure } from '@headlessui/react';
 import { useContext } from 'react';
 import { colors } from '../../configs/colors';
+import { themes } from '../../configs/themes';
 import { Current, NavigationContext } from '../../context/NavigationProvider';
 import LinkButton from '../../sharedComponents/LinkButton';
 import { icon } from '../../utils/Icons';
@@ -46,14 +47,14 @@ const NavBar = () => {
         <Disclosure
             as="nav"
             className={[
-                hideNavBackground ? 'bg-transparent' : `bg-gray-900 ${opacity}`,
+                colors.bgNavBar({ hide: hideNavBackground, opacity }),
                 'fixed top-0 w-full z-50',
             ].join(' ')}
             style={{ borderRadius: '0 0 100px 100px/50%' }}
         >
             {({ open }) => (
                 <>
-                    <div className="mx-auto w-1/2 px-4 sm:px-6 lg:px-8">
+                    <div className="mx-auto w-full sm:w-1/2 px-4 sm:px-6 lg:px-8">
                         <div className="flex h-16 w-full justify-center">
                             <div className="flex w-full justify-center items-center">
                                 <div className="hidden sm:ml-6 sm:flex sm:space-x-8 sm:w-full">
@@ -64,9 +65,9 @@ const NavBar = () => {
                                                     key={item.key}
                                                     title={item.name}
                                                     classNames={
-                                                        item.current
-                                                            ? colors.textNavActive
-                                                            : colors.textNavInactive
+                                                        themes.navLinkButton({
+                                                            isActive: item.current,
+                                                        })
                                                         // item.current
                                                         //     ? hideNavBackground
                                                         //         ? 'text-green-400'
@@ -89,9 +90,14 @@ const NavBar = () => {
                                 </div>
                             </div>
 
-                            <div className="-mr-2 flex items-center sm:hidden">
+                            <div className="-mr-2 flex items-center justify-end w-full sm:hidden">
                                 {/* Mobile menu button */}
-                                <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                                <Disclosure.Button
+                                    className={[
+                                        'relative inline-flex items-center justify-center rounded-md p-2',
+                                        themes.mobileNavMenuButton,
+                                    ].join(' ')}
+                                >
                                     <span className="absolute -inset-0.5" />
                                     <span className="sr-only">Open main menu</span>
                                     {open ? (
@@ -105,14 +111,19 @@ const NavBar = () => {
                     </div>
 
                     <Disclosure.Panel className="sm:hidden">
-                        <div className="space-y-1 pb-3 pt-2">
+                        <div className="bg-gray-100 space-y-1 pb-3 pt-2">
                             {/* Current: "bg-indigo-50 border-indigo-500 text-indigo-700", Default: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700" */}
                             {navigation.map(item => (
                                 <Disclosure.Button
                                     key={item.name}
-                                    as="a"
-                                    href="#"
-                                    className="block border-l-4 border-indigo-500 bg-indigo-50 py-2 pl-3 pr-4 text-base font-medium text-indigo-700"
+                                    className={[
+                                        'block',
+                                        // 'border-l-4 border-indigo-500 bg-indigo-50',
+                                        'py-2 pl-3 pr-4 text-base font-medium',
+                                        themes.mobileNavMenuButton,
+                                        // 'text-indigo-700',
+                                    ].join(' ')}
+                                    onClick={() => handleNavClick(item.key)}
                                 >
                                     {item.name}
                                 </Disclosure.Button>

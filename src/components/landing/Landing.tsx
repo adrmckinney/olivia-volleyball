@@ -1,7 +1,6 @@
 import { useContext, useEffect } from 'react';
 import useFetchCSVData from '../../api/FetchCSVData';
-import { colors } from '../../configs/colors';
-import { fonts } from '../../configs/fonts';
+import { themes } from '../../configs/themes';
 import { NavigationContext } from '../../context/NavigationProvider';
 import { parseCsvSheetData } from '../../helpers/csvHelpers/parseCsvSheetData';
 import portrait from '../../images/portrait.png';
@@ -24,9 +23,7 @@ const Landing = () => {
             <BackgroundAccentColor />
             <div className="mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-40 lg:flex lg:px-8 lg:pt-40">
                 <div className="mx-auto max-w-2xl flex-shrink-0 lg:mx-0 lg:max-w-xl lg:pt-8 space-y-10">
-                    <h1 className={['mt-10', fonts.headerOne, colors.textHeaderOne].join(' ')}>
-                        Olivia McKinney
-                    </h1>
+                    <h1 className={['mt-10', themes.headerOne].join(' ')}>Olivia McKinney</h1>
 
                     <SnapshotStats />
                 </div>

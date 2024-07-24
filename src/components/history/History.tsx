@@ -1,5 +1,7 @@
 import { useContext, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { fontFamilies } from '../../configs/fontFamilies';
+import { themes } from '../../configs/themes';
 import { NavigationContext } from '../../context/NavigationProvider';
 import ConditionalRender from '../../sharedComponents/ConditionalRender';
 import dsaBulldog from './../../images/dsaBulldog.png';
@@ -95,9 +97,7 @@ const History = () => {
             id="history"
             className="mx-auto mt-8 max-w-7xl px-6 sm:mt-16 lg:px-8 justify-center items-center"
         >
-            <h2 className="text-center text-6xl font-semibold leading-8 text-white">
-                Athletic History
-            </h2>
+            <h2 className={['text-center', themes.headerTwo].join(' ')}>Athletic History</h2>
             {/* gap-x-8 */}
             <div className="mx-auto grid max-w-2xl grid-cols-1 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-start lg:gap-y-10 pt-20">
                 {/* Timeline */}
@@ -135,14 +135,22 @@ const History = () => {
                                                             'border-b-4 border-white',
                                                     ].join(' ')}
                                                 >
-                                                    <div className="font-medium text-white">
+                                                    <div
+                                                        className={[
+                                                            fontFamilies.historyBody,
+                                                            'font-bold',
+                                                            'text-white',
+                                                        ].join(' ')}
+                                                    >
                                                         {historyItem.organization.name}
                                                     </div>
-                                                    {/* <div className="font-medium text-white">
-                                                            {historyItem.organization.name}
-                                                        </div> */}
                                                 </div>
-                                                <p className="mt-0.5 text-base text-gray-500">
+                                                <p
+                                                    className={[
+                                                        'mt-0.5 text-base text-gray-500 font-bold',
+                                                        fontFamilies.historyBody,
+                                                    ].join(' ')}
+                                                >
                                                     {historyItem.date}
                                                 </p>
                                             </div>

@@ -1,5 +1,4 @@
-import { colors } from '../../configs/colors';
-import { fonts } from '../../configs/fonts';
+import { themes } from '../../configs/themes';
 
 const stats = [
     { label: 'Position', value: 'Setter' },
@@ -14,12 +13,8 @@ const SnapshotStats = () => {
             <dl className="grid w-full grid-cols-2 items-center justify-between gap-y-10">
                 {stats.map(stat => (
                     <div key={stat.label} className="flex flex-col-reverse gap-y-4">
-                        <dt className={[fonts.descriptionTitle, colors.textGeneric].join(' ')}>
-                            {stat.label}
-                        </dt>
-                        <dd className={[fonts.descriptionData, colors.textGeneric].join(' ')}>
-                            {stat.value}
-                        </dd>
+                        <dt className={[themes.descriptionTitle].join(' ')}>{stat.label}</dt>
+                        <dd className={[themes.descriptionData].join(' ')}>{stat.value}</dd>
                     </div>
                 ))}
             </dl>
