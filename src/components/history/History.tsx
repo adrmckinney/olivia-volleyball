@@ -1,9 +1,9 @@
 import { useContext, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { fontFamilies } from '../../configs/fontFamilies';
-import { themes } from '../../configs/themes';
 import { NavigationContext } from '../../context/NavigationProvider';
 import ConditionalRender from '../../sharedComponents/ConditionalRender';
+import SectionHeader from '../../sharedComponents/SectionHeader';
 import dsaBulldog from './../../images/dsaBulldog.png';
 import jammers from './../../images/jammers.png';
 import triangle from './../../images/trianglevbLogo.png';
@@ -88,141 +88,143 @@ function classNames(...classes: string[]) {
 type SelectedHistory = 'dsa' | 'triangle' | 'riverside2023' | 'jammers2024' | 'jammersClinics2024';
 
 const History = () => {
-    const { historyRef } = useContext(NavigationContext);
+    const { historyRef, hideNavBackground } = useContext(NavigationContext);
     const [selectedHistory, setSelectedHistory] = useState<SelectedHistory>('dsa');
 
     return (
-        <div
-            ref={historyRef}
-            id="history"
-            className="mx-auto mt-8 max-w-7xl px-6 sm:mt-16 lg:px-8 justify-center items-center"
-        >
-            <h2 className={['text-center', themes.headerTwo].join(' ')}>Athletic History</h2>
-            {/* gap-x-8 */}
-            <div className="mx-auto grid max-w-2xl grid-cols-1 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-start lg:gap-y-10 pt-20">
-                {/* Timeline */}
-                <ul className="-mb-8 ml-10 pl-4 lg:sticky lg:col-start-1 lg:row-start-1 lg:overflow-hidden">
-                    {history.map((historyItem, historyItemIdx) => (
-                        <li key={historyItem.id}>
-                            <div className="relative pb-8 space-y-10">
-                                <ConditionalRender
-                                    condition={historyItemIdx !== history.length - 1}
-                                >
-                                    <span
-                                        className="absolute left-8 top-8 -ml-px h-full w-0.5 bg-gray-200"
-                                        aria-hidden="true"
-                                    />
-                                </ConditionalRender>
+        <>
+            <div
+                ref={historyRef}
+                id="history"
+                className="mx-auto mt-8 max-w-7xl px-6 sm:mt-16 lg:px-8 justify-center items-center"
+            >
+                <SectionHeader title="Athletic History" hideNavBackground={hideNavBackground} />
+                {/* gap-x-8 */}
+                <div className="mx-auto grid max-w-2xl grid-cols-1 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-start lg:gap-y-10 pt-20">
+                    {/* Timeline */}
+                    <ul className="-mb-8 ml-10 pl-4 lg:sticky lg:col-start-1 lg:row-start-1 lg:overflow-hidden">
+                        {history.map((historyItem, historyItemIdx) => (
+                            <li key={historyItem.id}>
+                                <div className="relative pb-8 space-y-10">
+                                    <ConditionalRender
+                                        condition={historyItemIdx !== history.length - 1}
+                                    >
+                                        <span
+                                            className="absolute left-8 top-8 -ml-px h-full w-0.5 bg-gray-200"
+                                            aria-hidden="true"
+                                        />
+                                    </ConditionalRender>
 
-                                <div
-                                    className="relative flex items-center space-x-3"
-                                    onClick={() => setSelectedHistory(historyItem.key)}
-                                >
-                                    <>
-                                        <div className="relative">
-                                            <img
-                                                className="flex h-16 w-16 items-center justify-center rounded-full bg-gray-400 ring-8 ring-white"
-                                                src={historyItem.imageUrl}
-                                                alt=""
-                                            />
-                                        </div>
-                                        <div className="min-w-fit flex-1 pl-6 flex-col">
-                                            <div>
-                                                <div
-                                                    className={[
-                                                        'text-lg',
-                                                        selectedHistory === historyItem.key &&
-                                                            'border-b-4 border-white',
-                                                    ].join(' ')}
-                                                >
+                                    <div
+                                        className="relative flex items-center space-x-3"
+                                        onClick={() => setSelectedHistory(historyItem.key)}
+                                    >
+                                        <>
+                                            <div className="relative">
+                                                <img
+                                                    className="flex h-16 w-16 items-center justify-center rounded-full bg-gray-400 ring-8 ring-white"
+                                                    src={historyItem.imageUrl}
+                                                    alt=""
+                                                />
+                                            </div>
+                                            <div className="min-w-fit flex-1 pl-6 flex-col">
+                                                <div>
                                                     <div
                                                         className={[
-                                                            fontFamilies.historyBody,
-                                                            'font-bold',
-                                                            'text-white',
+                                                            'text-lg',
+                                                            selectedHistory === historyItem.key &&
+                                                                'border-b-4 border-white',
                                                         ].join(' ')}
                                                     >
-                                                        {historyItem.organization.name}
+                                                        <div
+                                                            className={[
+                                                                fontFamilies.historyBody,
+                                                                'font-bold',
+                                                                'text-white',
+                                                            ].join(' ')}
+                                                        >
+                                                            {historyItem.organization.name}
+                                                        </div>
                                                     </div>
+                                                    <p
+                                                        className={[
+                                                            'mt-0.5 text-base text-gray-500 font-bold',
+                                                            fontFamilies.historyBody,
+                                                        ].join(' ')}
+                                                    >
+                                                        {historyItem.date}
+                                                    </p>
                                                 </div>
-                                                <p
-                                                    className={[
-                                                        'mt-0.5 text-base text-gray-500 font-bold',
-                                                        fontFamilies.historyBody,
-                                                    ].join(' ')}
-                                                >
-                                                    {historyItem.date}
-                                                </p>
-                                            </div>
-                                            {/* <div className="mt-2 text-sm text-gray-700">
+                                                {/* <div className="mt-2 text-sm text-gray-700">
                                                 <p>{historyItem.comment}</p>
                                             </div> */}
-                                            {/* <div className="h-24 w-96 flex-1 content-center">
+                                                {/* <div className="h-24 w-96 flex-1 content-center">
                                                 <ConditionalRender
                                                     condition={selectedHistory === historyItem.key}
                                                 >
                                                     <LineToBubble />
                                                 </ConditionalRender>
                                             </div> */}
-                                        </div>
-                                    </>
+                                            </div>
+                                        </>
+                                    </div>
                                 </div>
-                            </div>
-                        </li>
-                    ))}
-                </ul>
+                            </li>
+                        ))}
+                    </ul>
 
-                {/* Details */}
-                <div
-                    className={[
-                        'lg:col-span-1 lg:col-start-2 lg:row-start-1 lg:mx-auto lg:grid lg:w-full lg:max-w-7xl lg:grid-cols-1 lg:gap-x-8 lg:px-8',
-                        'border-l-4 border-white',
-                    ].join(' ')}
-                >
-                    <ConditionalRender condition={selectedHistory === 'dsa'}>
-                        <HistoryTransition show={selectedHistory === 'dsa'}>
-                            <HistoryDetails title="Durham School of the Arts" body={<DSA />} />
-                        </HistoryTransition>
-                    </ConditionalRender>
+                    {/* Details */}
+                    <div
+                        className={[
+                            'lg:col-span-1 lg:col-start-2 lg:row-start-1 lg:mx-auto lg:grid lg:w-full lg:max-w-7xl lg:grid-cols-1 lg:gap-x-8 lg:px-8',
+                            'border-l-4 border-white',
+                        ].join(' ')}
+                    >
+                        <ConditionalRender condition={selectedHistory === 'dsa'}>
+                            <HistoryTransition show={selectedHistory === 'dsa'}>
+                                <HistoryDetails title="Durham School of the Arts" body={<DSA />} />
+                            </HistoryTransition>
+                        </ConditionalRender>
 
-                    <ConditionalRender condition={selectedHistory === 'triangle'}>
-                        <HistoryTransition show={selectedHistory === 'triangle'}>
-                            <HistoryDetails
-                                title="Triangle Volleyball Club Clinics"
-                                body={<Triangle />}
-                            />
-                        </HistoryTransition>
-                    </ConditionalRender>
+                        <ConditionalRender condition={selectedHistory === 'triangle'}>
+                            <HistoryTransition show={selectedHistory === 'triangle'}>
+                                <HistoryDetails
+                                    title="Triangle Volleyball Club Clinics"
+                                    body={<Triangle />}
+                                />
+                            </HistoryTransition>
+                        </ConditionalRender>
 
-                    <ConditionalRender condition={selectedHistory === 'riverside2023'}>
-                        <HistoryTransition show={selectedHistory === 'riverside2023'}>
-                            <HistoryDetails
-                                title="Riverside High School"
-                                body={<Riverside2023 />}
-                            />
-                        </HistoryTransition>
-                    </ConditionalRender>
+                        <ConditionalRender condition={selectedHistory === 'riverside2023'}>
+                            <HistoryTransition show={selectedHistory === 'riverside2023'}>
+                                <HistoryDetails
+                                    title="Riverside High School"
+                                    body={<Riverside2023 />}
+                                />
+                            </HistoryTransition>
+                        </ConditionalRender>
 
-                    <ConditionalRender condition={selectedHistory === 'jammers2024'}>
-                        <HistoryTransition show={selectedHistory === 'jammers2024'}>
-                            <HistoryDetails
-                                title="Jammers Club Volleyball"
-                                body={<Jammers2024 />}
-                            />
-                        </HistoryTransition>
-                    </ConditionalRender>
+                        <ConditionalRender condition={selectedHistory === 'jammers2024'}>
+                            <HistoryTransition show={selectedHistory === 'jammers2024'}>
+                                <HistoryDetails
+                                    title="Jammers Club Volleyball"
+                                    body={<Jammers2024 />}
+                                />
+                            </HistoryTransition>
+                        </ConditionalRender>
 
-                    <ConditionalRender condition={selectedHistory === 'jammersClinics2024'}>
-                        <HistoryTransition show={selectedHistory === 'jammersClinics2024'}>
-                            <HistoryDetails
-                                title="Jammers Skills Clinics"
-                                body={<JammersClinics2024 />}
-                            />
-                        </HistoryTransition>
-                    </ConditionalRender>
+                        <ConditionalRender condition={selectedHistory === 'jammersClinics2024'}>
+                            <HistoryTransition show={selectedHistory === 'jammersClinics2024'}>
+                                <HistoryDetails
+                                    title="Jammers Skills Clinics"
+                                    body={<JammersClinics2024 />}
+                                />
+                            </HistoryTransition>
+                        </ConditionalRender>
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 

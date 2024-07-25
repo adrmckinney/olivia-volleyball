@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from 'react';
 import useOnScreen from '../hooks/useOnScreen';
+import useGetWindowWidth from '../sharedComponents/useGetWindowWidth';
 import { ProviderProps } from '../types/ProviderProps';
 
 export type NavigationType = {
@@ -33,7 +34,11 @@ export const NavigationContext = createContext<NavigationType>(defaultValue);
 const NavigationProvider = ({ children }: ProviderProps) => {
     const [current, setCurrent] = useState<Current>('landing');
     const [hideNavBackground, setHideNavBackground] = useState(true);
-    const [opacity, setOpacity] = useState('opacity-0');
+    const [opacity, setOpacity] = useState('lg:opacity-0');
+    const { currentTailwindBreakpoint } = useGetWindowWidth();
+
+    const isSmallerScreen =
+        currentTailwindBreakpoint === 'sm' || currentTailwindBreakpoint === 'md';
 
     const [landingRef, landingIsVisible] = useOnScreen({
         root: null,
@@ -44,25 +49,25 @@ const NavigationProvider = ({ children }: ProviderProps) => {
     const [videosRef, videoIsVisible] = useOnScreen({
         root: null,
         rootMargin: '0px',
-        threshold: 0.1,
+        threshold: isSmallerScreen ? 1.0 : 0.1,
     });
 
     const [historyRef, historyIsVisible] = useOnScreen({
         root: null,
         rootMargin: '0px',
-        threshold: 0.2,
+        threshold: isSmallerScreen ? 1.0 : 0.2,
     });
 
     const [statsRef, statsIsVisible] = useOnScreen({
         root: null,
         rootMargin: '0px',
-        threshold: 0.2,
+        threshold: isSmallerScreen ? 1.0 : 0.2,
     });
 
     const [aboutRef, aboutIsVisible] = useOnScreen({
         root: null,
         rootMargin: '0px',
-        threshold: 0.2,
+        threshold: isSmallerScreen ? 1.0 : 0.2,
     });
 
     const handleNavClick = (targetNav: Current) => {
@@ -114,39 +119,39 @@ const NavigationProvider = ({ children }: ProviderProps) => {
 
     const changeNavOpacity = (yPosition: number) => {
         if (yPosition <= 30) {
-            setOpacity('opacity-0');
+            setOpacity('lg:opacity-0');
         }
 
         if (yPosition >= 31 && yPosition <= 40) {
-            setOpacity('opacity-5');
+            setOpacity('lg:opacity-5');
         }
 
         if (yPosition >= 41 && yPosition <= 50) {
-            setOpacity('opacity-10');
+            setOpacity('lg:opacity-10');
         }
 
         if (yPosition >= 51 && yPosition <= 60) {
-            setOpacity('opacity-15');
+            setOpacity('lg:opacity-15');
         }
 
         if (yPosition >= 61 && yPosition <= 70) {
-            setOpacity('opacity-20');
+            setOpacity('lg:opacity-20');
         }
 
         if (yPosition >= 71 && yPosition <= 80) {
-            setOpacity('opacity-40');
+            setOpacity('lg:opacity-40');
         }
 
         if (yPosition >= 81 && yPosition <= 90) {
-            setOpacity('opacity-55');
+            setOpacity('lg:opacity-55');
         }
 
         if (yPosition >= 91 && yPosition <= 100) {
-            setOpacity('opacity-95');
+            setOpacity('lg:opacity-95');
         }
 
         if (yPosition >= 101) {
-            setOpacity('opacity-100');
+            setOpacity('lg:opacity-100');
         }
     };
 

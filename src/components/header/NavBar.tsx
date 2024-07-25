@@ -1,4 +1,4 @@
-import { Disclosure } from '@headlessui/react';
+import { Popover, PopoverBackdrop, PopoverButton, PopoverPanel } from '@headlessui/react';
 import { useContext } from 'react';
 import { colors } from '../../configs/colors';
 import { themes } from '../../configs/themes';
@@ -44,8 +44,8 @@ const NavBar = () => {
     ];
 
     return (
-        <Disclosure
-            as="nav"
+        <Popover
+            as="header"
             className={[
                 colors.bgNavBar({ hide: hideNavBackground, opacity }),
                 'fixed top-0 w-full z-50',
@@ -57,82 +57,92 @@ const NavBar = () => {
                     <div className="mx-auto w-full sm:w-1/2 px-4 sm:px-6 lg:px-8">
                         <div className="flex h-16 w-full justify-center">
                             <div className="flex w-full justify-center items-center">
-                                <div className="hidden sm:ml-6 sm:flex sm:space-x-8 sm:w-full">
-                                    <div className="hidden sm:ml-6 sm:block sm:w-full">
+                                <div className="hidden lg:ml-6 lg:flex lg:space-x-8 lg:w-full">
+                                    <div className="hidden lg:ml-6 lg:block lg:w-full">
                                         <div className="flex w-full justify-between">
                                             {navigation.map(item => (
                                                 <LinkButton
                                                     key={item.key}
                                                     title={item.name}
-                                                    classNames={
-                                                        themes.navLinkButton({
-                                                            isActive: item.current,
-                                                        })
-                                                        // item.current
-                                                        //     ? hideNavBackground
-                                                        //         ? 'text-green-400'
-                                                        //         : 'text-teal-900 font-bold'
-                                                        //     : hideNavBackground
-                                                        //       ? 'text-white'
-                                                        //       : 'text-gray-900'
-                                                    }
+                                                    classNames={themes.navLinkButton({
+                                                        isActive: item.current,
+                                                    })}
                                                     onClick={() => handleNavClick(item.key)}
                                                 />
                                             ))}
                                         </div>
                                     </div>
-                                    {/* <a
-                                        href="#"
-                                        className="inline-flex items-center border-b-2 border-indigo-500 px-1 pt-1 text-sm font-medium text-gray-900"
-                                    >
-                                        Dashboard
-                                    </a> */}
                                 </div>
                             </div>
 
-                            <div className="-mr-2 flex items-center justify-end w-full sm:hidden">
+                            <div className="absolute right-0 flex-shrink-0 mr-2 mt-2 lg:hidden">
                                 {/* Mobile menu button */}
-                                <Disclosure.Button
+                                <PopoverButton
                                     className={[
-                                        'relative inline-flex items-center justify-center rounded-md p-2',
+                                        'group relative inline-flex items-center justify-center rounded-md p-2',
                                         themes.mobileNavMenuButton,
                                     ].join(' ')}
                                 >
                                     <span className="absolute -inset-0.5" />
                                     <span className="sr-only">Open main menu</span>
-                                    {open ? (
-                                        <icon.x className="block h-6 w-6" aria-hidden="true" />
-                                    ) : (
-                                        <icon.bars className="block h-6 w-6" aria-hidden="true" />
-                                    )}
-                                </Disclosure.Button>
+                                    <icon.x
+                                        className="hidden h-6 w-6 group-data-[close]:block"
+                                        aria-hidden="true"
+                                    />
+                                    <icon.bars
+                                        className="block h-6 w-6 group-data-[open]:hidden"
+                                        aria-hidden="true"
+                                    />
+                                </PopoverButton>
                             </div>
                         </div>
                     </div>
 
-                    <Disclosure.Panel className="sm:hidden">
-                        <div className="bg-gray-100 space-y-1 pb-3 pt-2">
-                            {/* Current: "bg-indigo-50 border-indigo-500 text-indigo-700", Default: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700" */}
-                            {navigation.map(item => (
-                                <Disclosure.Button
-                                    key={item.name}
-                                    className={[
-                                        'block',
-                                        // 'border-l-4 border-indigo-500 bg-indigo-50',
-                                        'py-2 pl-3 pr-4 text-base font-medium',
-                                        themes.mobileNavMenuButton,
-                                        // 'text-indigo-700',
-                                    ].join(' ')}
-                                    onClick={() => handleNavClick(item.key)}
-                                >
-                                    {item.name}
-                                </Disclosure.Button>
-                            ))}
-                        </div>
-                    </Disclosure.Panel>
+                    <div className="lg:hidden">
+                        <PopoverBackdrop
+                            transition
+                            className="fixed inset-0 z-20 bg-black bg-opacity-25 duration-150 data-[closed]:opacity-0 data-[enter]:ease-out data-[leave]:ease-in"
+                        />
+                        <PopoverPanel
+                            focus
+                            transition
+                            className="absolute inset-x-0 top-0 z-30 mx-auto w-full max-w-3xl origin-top transform p-2 transition duration-150 data-[closed]:scale-95 data-[closed]:opacity-0 data-[enter]:ease-out data-[leave]:ease-in sm:hidden"
+                        >
+                            <div className="bg-white space-y-1 pb-3 pt-2">
+                                <div className="text-end">
+                                    <PopoverButton
+                                        className={[
+                                            'relative inline-flex items-center justify-center rounded-md bg-white p-2',
+                                            themes.mobileNavButton,
+                                        ].join(' ')}
+                                    >
+                                        <span className="absolute -inset-0.5" />
+                                        <span className="sr-only">Close menu</span>
+                                        <icon.x className="h-6 w-6" aria-hidden="true" />
+                                    </PopoverButton>
+                                </div>
+                                {navigation.map(item => (
+                                    <PopoverButton
+                                        key={item.name}
+                                        className={[
+                                            'block',
+                                            'py-2 pl-3 pr-4 text-base font-medium',
+                                            // themes.mobileNavMenuButton,
+                                            themes.navLinkButton({
+                                                isActive: item.current,
+                                            }),
+                                        ].join(' ')}
+                                        onClick={() => handleNavClick(item.key)}
+                                    >
+                                        {item.name}
+                                    </PopoverButton>
+                                ))}
+                            </div>
+                        </PopoverPanel>
+                    </div>
                 </>
             )}
-        </Disclosure>
+        </Popover>
     );
 };
 
