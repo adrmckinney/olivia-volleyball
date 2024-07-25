@@ -10,7 +10,7 @@ const SectionHeader = ({ title, hideNavBackground }: Props) => {
         <>
             <h2
                 className={[
-                    'sticky lg:static top-0 lg:top-auto z-10 lg:z-auto py-6 lg:py-0',
+                    'sticky top-0 z-10 py-6 lg:static lg:top-auto lg:z-auto lg:py-0',
                     hideNavBackground ? 'bg-transparent' : 'bg-gray-950 lg:bg-transparent',
                     themes.headerTwo,
                     'text-center',

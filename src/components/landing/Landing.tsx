@@ -33,8 +33,6 @@ const Landing = () => {
                         alt="portrait"
                         className={[
                             'w-[40rem] rounded-md',
-                            // 'bg-white/20',
-                            // 'bg-white/5',
                             'bg-transparent',
                             'shadow-2xl',
                             'ring-0',
