@@ -18,7 +18,7 @@ const Riverside2023 = () => {
                 />
             </div>
             <div className="flex justify-between">
-                <p className="mt-8">Player of the Year</p>
+                <p className="mt-8">Most Improved</p>
                 <img
                     src={MostImproved}
                     alt="Most improved player portrait"

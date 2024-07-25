@@ -9,6 +9,7 @@ type Props = {
 const HistoryTransition = ({ children, show }: Props) => {
     return (
         <Transition
+            as="div"
             appear
             show={show}
             enter="transition ease-in duration-1000"

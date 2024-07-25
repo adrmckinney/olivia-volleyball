@@ -12,7 +12,7 @@ const SnapshotStats = () => {
         <div className="lg:flex lg:flex-auto w-full">
             <dl className="grid w-full grid-cols-2 items-center justify-between gap-y-10">
                 {stats.map(stat => (
-                    <div key={stat.label} className="flex flex-col-reverse gap-y-4">
+                    <div key={stat.label} className="flex flex-col-reverse gap-y-1 lg:gap-y-4">
                         <dt className={[themes.descriptionTitle].join(' ')}>{stat.label}</dt>
                         <dd className={[themes.descriptionData].join(' ')}>{stat.value}</dd>
                     </div>

@@ -1,6 +1,6 @@
 import { useContext } from 'react';
-import { themes } from '../../configs/themes';
 import { NavigationContext } from '../../context/NavigationProvider';
+import SectionHeader from '../../sharedComponents/SectionHeader';
 import flavArt from './../../images/youTubeThumbnails/flavArt.png';
 import philWiggins from './../../images/youTubeThumbnails/philWiggins.png';
 import podcast from './../../images/youTubeThumbnails/podcast.png';
@@ -19,7 +19,7 @@ export type VideoData = {
 };
 
 const Vidoes = () => {
-    const { videosRef } = useContext(NavigationContext);
+    const { videosRef, hideNavBackground } = useContext(NavigationContext);
 
     const videoData: VideoData[] = [
         {
@@ -73,8 +73,12 @@ const Vidoes = () => {
     ];
 
     return (
-        <div ref={videosRef} id="videos" className="mx-auto mt-8 max-w-7xl px-6 sm:mt-16 lg:px-8">
-            <h2 className={[themes.headerTwo, 'text-center'].join(' ')}>Videos</h2>
+        <div
+            ref={videosRef}
+            id="videos"
+            className={['mx-auto mt-8 max-w-7xl px-6 sm:mt-16 lg:px-8'].join(' ')}
+        >
+            <SectionHeader title="Vidoes" hideNavBackground={hideNavBackground} />
             {/* <div className="mx-auto mt-10 grid max-w-lg grid-cols-4 items-center gap-x-8 gap-y-10 sm:max-w-xl sm:grid-cols-6 sm:gap-x-10 lg:mx-0 lg:max-w-none lg:grid-cols-5"> */}
             <ul className="grid grid-cols-1 gap-10 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 justify-items-center pt-20 px-4">
                 <VideoCard videoData={videoData} />
