@@ -13,6 +13,7 @@ export const themes = {
     },
     historyTitle: `${fontFamilies.historyTitle} ${fonts.historyTitle} ${colors.textHistoryTitle}`,
     historyBody: `${fontFamilies.historyBody} ${fonts.historyBody} ${colors.textHistoryBody}`,
+    mobileHistoryBody: `${fontFamilies.historyBody} ${fonts.mobileHistoryBody} ${colors.textHistoryBody}`,
     mobileNavMenuButton: `${colors.mobileNavMenuButton}`,
     mobileNavButton: ({ isActive }: { isActive: boolean }) => {
         return `${fontFamilies.navLinkButtons} ${fonts.mobileNavText} ${isActive ? colors.mobileNavButtonActive : colors.mobileNavButtonInactive}`;

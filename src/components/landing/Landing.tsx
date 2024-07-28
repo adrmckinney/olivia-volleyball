@@ -4,6 +4,7 @@ import { themes } from '../../configs/themes';
 import { NavigationContext } from '../../context/NavigationProvider';
 import { parseCsvSheetData } from '../../helpers/csvHelpers/parseCsvSheetData';
 import portrait from '../../images/portrait.png';
+import useLogWindowBreakpoint from '../../sharedComponents/useLogWindowBreakpoint';
 import BackgroundAccentColor from './BackgroundAccentColor';
 import BackgroundGrid from './BackgroundGrid';
 import SnapshotStats from './SnapshotStats';
@@ -12,7 +13,7 @@ const Landing = () => {
     const { landingRef } = useContext(NavigationContext);
     const { fetchAndParseCsvData } = useFetchCSVData();
     const csvUrl: string = process.env.REACT_APP_JAMMERS_2024_URL || '';
-
+    useLogWindowBreakpoint();
     useEffect(() => {
         fetchAndParseCsvData(csvUrl, parseCsvSheetData);
     }, []);

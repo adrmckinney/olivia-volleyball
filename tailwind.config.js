@@ -12,6 +12,9 @@ module.exports = {
                 lato: ['Lato', 'sans-serif'],
                 montserrat: ['Montserrat', 'sans-serif'],
             },
+            screens: {
+                '3xl': '1600px',
+            },
         },
     },
     plugins: [],

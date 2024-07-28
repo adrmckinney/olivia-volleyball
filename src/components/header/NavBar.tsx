@@ -17,7 +17,7 @@ const NavBar = () => {
 
     const navigation: Navigation[] = [
         {
-            name: 'Landing',
+            name: 'Home',
             key: 'landing',
             current: current === 'landing',
         },
@@ -37,7 +37,7 @@ const NavBar = () => {
             current: current === 'stats',
         },
         {
-            name: 'About Olivia',
+            name: 'About',
             key: 'about',
             current: current === 'about',
         },
@@ -47,26 +47,32 @@ const NavBar = () => {
         <Popover
             as="header"
             className={[
-                colors.bgNavBar({ hide: hideNavBackground, opacity }),
+                colors.bgNavBar({ hide: hideNavBackground }),
+                // colors.bgNavBar({ hide: hideNavBackground, opacity }),
                 'fixed top-0 w-full z-50',
             ].join(' ')}
             style={{ borderRadius: '0 0 100px 100px/50%' }}
         >
             {({ open }) => (
                 <>
-                    <div className="mx-auto w-full sm:w-1/2 px-4 sm:px-6 lg:px-8">
-                        <div className="flex h-16 w-full justify-center">
+                    <div className="mx-auto w-full lg:w-3/4 2xl:w-2/3 3xl:w-1/2 px-4 sm:px-6 lg:pl-0 lg:pr-0">
+                        <div className={['flex w-full h-16 justify-center'].join(' ')}>
                             <div className="flex w-full justify-center items-center">
-                                <div className="hidden lg:ml-6 lg:flex lg:space-x-8 lg:w-full">
-                                    <div className="hidden lg:ml-6 lg:block lg:w-full">
+                                <div className="hidden lg:ml-0 lg:flex lg:space-x-8 lg:w-full">
+                                    <div className="hidden lg:ml-0 lg:block lg:w-full">
                                         <div className="flex w-full justify-between">
                                             {navigation.map(item => (
                                                 <LinkButton
                                                     key={item.key}
                                                     title={item.name}
-                                                    classNames={themes.navLinkButton({
-                                                        isActive: item.current,
-                                                    })}
+                                                    classNames={[
+                                                        themes.navLinkButton({
+                                                            isActive: item.current,
+                                                        }),
+                                                        item.current
+                                                            ? 'text-white bg-purple-300 bg-opacity-30 rounded-[999px] px-6 py-1 animate-grow-once'
+                                                            : '',
+                                                    ].join(' ')}
                                                     onClick={() => handleNavClick(item.key)}
                                                 />
                                             ))}
@@ -101,19 +107,26 @@ const NavBar = () => {
                     <div className="lg:hidden">
                         <PopoverBackdrop
                             transition
-                            className="fixed inset-0 z-20 bg-black bg-opacity-25 duration-150 data-[closed]:opacity-0 data-[enter]:ease-out data-[leave]:ease-in"
+                            className="fixed inset-0 z-20 bg-black bg-opacity-60 duration-150 data-[closed]:opacity-0 data-[enter]:ease-out data-[leave]:ease-in"
                         />
                         <PopoverPanel
                             focus
                             transition
                             className="absolute inset-x-0 top-0 z-30 mx-auto w-full max-w-3xl origin-top transform p-2 transition duration-150 data-[closed]:scale-95 data-[closed]:opacity-0 data-[enter]:ease-out data-[leave]:ease-in sm:hidden"
                         >
-                            <div className="bg-white space-y-1 pb-3 pt-2">
+                            <div
+                                className={[
+                                    'space-y-1 pb-3 pt-2 pr-2 rounded-md border-2',
+                                    colors.bgMobileNavMenuPopover,
+                                    colors.borderPurple,
+                                ].join(' ')}
+                            >
                                 <div className="text-end">
                                     <PopoverButton
                                         className={[
-                                            'relative inline-flex items-center justify-center rounded-md bg-white p-2',
-                                            themes.mobileNavButton,
+                                            'relative inline-flex items-center justify-center rounded-md p-2',
+                                            colors.bgMobileNavMenuPopover,
+                                            colors.textGeneric,
                                         ].join(' ')}
                                     >
                                         <span className="absolute -inset-0.5" />

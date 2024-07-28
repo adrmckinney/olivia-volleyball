@@ -43,13 +43,13 @@ const NavigationProvider = ({ children }: ProviderProps) => {
     const [landingRef, landingIsVisible] = useOnScreen({
         root: null,
         rootMargin: '0px',
-        threshold: 0.5,
+        threshold: isSmallerScreen ? 0 : 0.5,
     });
 
     const [videosRef, videoIsVisible] = useOnScreen({
         root: null,
         rootMargin: '0px',
-        threshold: isSmallerScreen ? 1.0 : 0.1,
+        threshold: isSmallerScreen ? 0.4 : 1,
     });
 
     const [historyRef, historyIsVisible] = useOnScreen({
@@ -71,7 +71,6 @@ const NavigationProvider = ({ children }: ProviderProps) => {
     });
 
     const handleNavClick = (targetNav: Current) => {
-        setCurrent(targetNav);
         switch (targetNav) {
             case 'landing':
                 landingRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -95,7 +94,6 @@ const NavigationProvider = ({ children }: ProviderProps) => {
         if (landingIsVisible) {
             setCurrent('landing');
         }
-
         if (videoIsVisible) {
             if (current === 'videos') return;
             setCurrent('videos');

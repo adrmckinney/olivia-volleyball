@@ -3,18 +3,24 @@ const activeText = 'text-purple-300';
 
 export const colors = {
     bgMain: 'bg-gray-950',
+    borderPurple: 'border-purple-300',
     textNavInactive: primaryText,
     textNavActive: activeText,
     textHeaderOne: primaryText,
     textHeaderTwo: primaryText,
     textHeaderThree: primaryText,
     textGeneric: primaryText,
-    bgNavBar: ({ hide, opacity }: { hide: boolean; opacity: string }) => {
-        return [hide ? 'bg-transparent' : `lg:bg-gray-900 ${opacity}`].join(' ');
+    bgNavBar: ({ hide }: { hide: boolean }) => {
+        return [hide ? 'bg-transparent' : `lg:bg-gray-950/90 `].join(' ');
     },
+    // bgNavBar: ({ hide, opacity }: { hide: boolean; opacity: string }) => {
+    //     return [hide ? 'bg-transparent' : `lg:bg-gray-950/90 ${opacity}`].join(' ');
+    // },
     textHistoryTitle: primaryText,
     textHistoryBody: primaryText,
     mobileNavMenuButton: 'text-gray-400 hover:text-gray-500 hover:bg-gray-100',
     mobileNavButtonActive: ['bg-gray-500', activeText].join(' '),
     mobileNavButtonInactive: ['bg-gray-500', primaryText].join(' '),
+    subText: 'text-gray-500',
+    bgMobileNavMenuPopover: 'bg-gray-700',
 };

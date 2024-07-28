@@ -16,4 +16,5 @@ export const fontFamilies = {
     navLinkButtons: primaryBodyFont,
     historyTitle: primaryHeaderFont,
     historyBody: primaryBodyFont,
+    body: primaryBodyFont,
 };

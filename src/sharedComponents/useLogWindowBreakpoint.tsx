@@ -5,13 +5,17 @@ const breakpoints = {
     md: 768,
     lg: 1024,
     xl: 1280,
+    '2xl': 1536,
+    '3xl': 1600,
 };
 
 const getCurrentBreakpoint = (width: number) => {
     if (width < breakpoints.md) return 'sm';
     if (width < breakpoints.lg) return 'md';
     if (width < breakpoints.xl) return 'lg';
-    if (width > breakpoints.xl) return 'xl';
+    if (width < breakpoints['2xl']) return 'xl';
+    if (width < breakpoints['3xl']) return '2xl';
+    if (width > breakpoints['3xl']) return '3xl';
 };
 
 /**

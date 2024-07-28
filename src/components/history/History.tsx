@@ -1,6 +1,5 @@
-import { useContext, useState } from 'react';
+import { ReactNode, useContext, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { fontFamilies } from '../../configs/fontFamilies';
 import { NavigationContext } from '../../context/NavigationProvider';
 import ConditionalRender from '../../sharedComponents/ConditionalRender';
 import SectionHeader from '../../sharedComponents/SectionHeader';
@@ -12,10 +11,12 @@ import HistoryDetails from './HistoryDetails';
 import HistoryTransition from './HistoryTransition';
 import Jammers2024 from './Jammers2024';
 import JammersClinics2024 from './JammersClinics2024';
+import LargerScreenHistorySelector from './LargerScreenHistorySelector';
 import Riverside2023 from './Riverside2023';
+import SmallerScreenHistorySelector from './SmallerScreenHistorySelector';
 import Triangle from './Traingle';
 
-type Primary = {
+export type HistoryDataType = {
     id: string;
     type: string;
     organization: {
@@ -29,7 +30,7 @@ type Primary = {
     key: SelectedHistory;
 };
 
-const history: Primary[] = [
+const history: HistoryDataType[] = [
     {
         id: uuidv4(),
         type: 'primary',
@@ -81,102 +82,77 @@ const history: Primary[] = [
     },
 ];
 
-function classNames(...classes: string[]) {
-    return classes.filter(Boolean).join(' ');
-}
-
-type SelectedHistory = 'dsa' | 'triangle' | 'riverside2023' | 'jammers2024' | 'jammersClinics2024';
+export type SelectedHistory =
+    | 'dsa'
+    | 'triangle'
+    | 'riverside2023'
+    | 'jammers2024'
+    | 'jammersClinics2024';
 
 const History = () => {
     const { historyRef, hideNavBackground } = useContext(NavigationContext);
     const [selectedHistory, setSelectedHistory] = useState<SelectedHistory>('dsa');
+    const handleSelection = (selection: SelectedHistory) => {
+        setSelectedHistory(selection);
+    };
+
+    const renderHistoryContentForSmallerScreens = (key: SelectedHistory): ReactNode => {
+        switch (key) {
+            case 'dsa':
+                return <DSA />;
+            case 'triangle':
+                return <Triangle />;
+            case 'riverside2023':
+                return <Riverside2023 />;
+            case 'jammers2024':
+                return <Jammers2024 />;
+            case 'jammersClinics2024':
+                return <JammersClinics2024 />;
+        }
+    };
 
     return (
         <>
             <div
                 ref={historyRef}
                 id="history"
-                className="mx-auto mt-8 max-w-7xl px-6 sm:mt-16 lg:px-8 justify-center items-center"
+                className="mx-auto mt-8 max-w-7xl px-6 sm:mt-16 lg:scroll-m-20 lg:px-8 justify-center items-center"
             >
                 <SectionHeader title="Athletic History" hideNavBackground={hideNavBackground} />
                 {/* gap-x-8 */}
-                <div className="mx-auto grid max-w-2xl grid-cols-1 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-start lg:gap-y-10 pt-20">
+                <div className="mx-auto grid max-w-2xl grid-cols-1 gap-y-16 pt-2 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-start lg:gap-y-10 lg:pt-20">
                     {/* Timeline */}
-                    <ul className="-mb-8 ml-10 pl-4 lg:sticky lg:col-start-1 lg:row-start-1 lg:overflow-hidden">
-                        {history.map((historyItem, historyItemIdx) => (
-                            <li key={historyItem.id}>
-                                <div className="relative pb-8 space-y-10">
-                                    <ConditionalRender
-                                        condition={historyItemIdx !== history.length - 1}
-                                    >
-                                        <span
-                                            className="absolute left-8 top-8 -ml-px h-full w-0.5 bg-gray-200"
-                                            aria-hidden="true"
-                                        />
-                                    </ConditionalRender>
-
-                                    <div
-                                        className="relative flex items-center space-x-3"
-                                        onClick={() => setSelectedHistory(historyItem.key)}
-                                    >
-                                        <>
-                                            <div className="relative">
-                                                <img
-                                                    className="flex h-16 w-16 items-center justify-center rounded-full bg-gray-400 ring-8 ring-white"
-                                                    src={historyItem.imageUrl}
-                                                    alt=""
-                                                />
-                                            </div>
-                                            <div className="min-w-fit flex-1 pl-6 flex-col">
-                                                <div>
-                                                    <div
-                                                        className={[
-                                                            'text-lg',
-                                                            selectedHistory === historyItem.key &&
-                                                                'border-b-4 border-white',
-                                                        ].join(' ')}
-                                                    >
-                                                        <div
-                                                            className={[
-                                                                fontFamilies.historyBody,
-                                                                'font-bold',
-                                                                'text-white',
-                                                            ].join(' ')}
-                                                        >
-                                                            {historyItem.organization.name}
-                                                        </div>
-                                                    </div>
-                                                    <p
-                                                        className={[
-                                                            'mt-0.5 text-base text-gray-500 font-bold',
-                                                            fontFamilies.historyBody,
-                                                        ].join(' ')}
-                                                    >
-                                                        {historyItem.date}
-                                                    </p>
-                                                </div>
-                                                {/* <div className="mt-2 text-sm text-gray-700">
-                                                <p>{historyItem.comment}</p>
-                                            </div> */}
-                                                {/* <div className="h-24 w-96 flex-1 content-center">
-                                                <ConditionalRender
-                                                    condition={selectedHistory === historyItem.key}
-                                                >
-                                                    <LineToBubble />
-                                                </ConditionalRender>
-                                            </div> */}
-                                            </div>
-                                        </>
-                                    </div>
+                    <ul className="-mb-8 lg:ml-10 lg:pl-4 lg:sticky lg:col-start-1 lg:row-start-1 lg:overflow-hidden">
+                        {history.map(historyItem => (
+                            <div key={historyItem.key}>
+                                {/* Larger Screen Selectors */}
+                                <div className="hidden lg:block">
+                                    <LargerScreenHistorySelector
+                                        historyItem={historyItem}
+                                        handleSelection={handleSelection}
+                                        isSelected={selectedHistory === historyItem.key}
+                                    />
                                 </div>
-                            </li>
+
+                                {/* Smaller Screen Selectors */}
+                                <div className="pt-2 lg:hidden">
+                                    <SmallerScreenHistorySelector
+                                        historyItem={historyItem}
+                                        handleSelection={handleSelection}
+                                        isSelected={selectedHistory === historyItem.key}
+                                        historyContent={renderHistoryContentForSmallerScreens(
+                                            historyItem.key
+                                        )}
+                                    />
+                                </div>
+                            </div>
                         ))}
                     </ul>
 
-                    {/* Details */}
+                    {/* Details Larger Screen */}
                     <div
                         className={[
-                            'lg:col-span-1 lg:col-start-2 lg:row-start-1 lg:mx-auto lg:grid lg:w-full lg:max-w-7xl lg:grid-cols-1 lg:gap-x-8 lg:px-8',
+                            'hidden lg:col-span-1 lg:col-start-2 lg:row-start-1 lg:mx-auto lg:grid lg:w-full lg:max-w-7xl lg:grid-cols-1 lg:gap-x-8 lg:px-8',
                             'border-l-4 border-white',
                         ].join(' ')}
                     >

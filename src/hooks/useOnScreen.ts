@@ -16,6 +16,7 @@ const useOnScreen = (observerOptions: Options): IntersectionReturn => {
 
     const callbackFunction = (entries: IntersectionObserverEntry[]) => {
         const [entry] = entries;
+
         setIsVisible(entry.isIntersecting);
     };
 
