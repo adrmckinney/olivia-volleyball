@@ -16,7 +16,7 @@ const HistoryImageWithCaption = ({ src, caption }: Props) => {
                     ' '
                 )}
             />
-            <p className={[fonts.caption, colors.textGeneric, 'text-center'].join(' ')}>
+            <p className={[fonts.captionXs, colors.textGeneric, 'text-center'].join(' ')}>
                 {caption}
             </p>
         </div>

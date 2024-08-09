@@ -6,14 +6,20 @@ type Props = {
     historyItem: HistoryDataType;
     handleSelection: (selectedHistory: SelectedHistory) => void;
     isSelected: boolean;
+    isLastItem: boolean;
 };
 
-const LargerScreenHistorySelector = ({ historyItem, handleSelection, isSelected }: Props) => {
+const LargerScreenHistorySelector = ({
+    historyItem,
+    handleSelection,
+    isSelected,
+    isLastItem,
+}: Props) => {
     return (
         <>
             <li key={historyItem.id}>
                 <div className="relative pb-8 space-y-10">
-                    <ConditionalRender condition={isSelected}>
+                    <ConditionalRender condition={!isLastItem}>
                         <span
                             className="absolute left-8 top-8 -ml-px h-full w-0.5 bg-gray-200"
                             aria-hidden="true"

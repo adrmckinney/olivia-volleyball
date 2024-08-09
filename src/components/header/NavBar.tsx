@@ -1,6 +1,7 @@
 import { Popover, PopoverBackdrop, PopoverButton, PopoverPanel } from '@headlessui/react';
 import { useContext } from 'react';
 import { colors } from '../../configs/colors';
+import { fontFamilies } from '../../configs/fontFamilies';
 import { themes } from '../../configs/themes';
 import { Current, NavigationContext } from '../../context/NavigationProvider';
 import LinkButton from '../../sharedComponents/LinkButton';
@@ -85,20 +86,18 @@ const NavBar = () => {
                                 {/* Mobile menu button */}
                                 <PopoverButton
                                     className={[
-                                        'group relative inline-flex items-center justify-center rounded-md p-2',
+                                        'group relative inline-flex items-center justify-center rounded-md p-2 outline-0',
                                         themes.mobileNavMenuButton,
                                     ].join(' ')}
                                 >
                                     <span className="absolute -inset-0.5" />
                                     <span className="sr-only">Open main menu</span>
-                                    <icon.x
-                                        className="hidden h-6 w-6 group-data-[close]:block"
-                                        aria-hidden="true"
-                                    />
-                                    <icon.bars
-                                        className="block h-6 w-6 group-data-[open]:hidden"
-                                        aria-hidden="true"
-                                    />
+                                    <div className="flex">
+                                        <icon.bars
+                                            className="block h-6 w-6 group-data-[open]:hidden"
+                                            aria-hidden="true"
+                                        />
+                                    </div>
                                 </PopoverButton>
                             </div>
                         </div>
@@ -112,19 +111,26 @@ const NavBar = () => {
                         <PopoverPanel
                             focus
                             transition
-                            className="absolute inset-x-0 top-0 z-30 mx-auto w-full max-w-3xl origin-top transform p-2 transition duration-150 data-[closed]:scale-95 data-[closed]:opacity-0 data-[enter]:ease-out data-[leave]:ease-in sm:hidden"
+                            className="absolute inset-x-0 top-0 z-30 mx-auto w-full max-w-3xl origin-top transform p-2 transition duration-150 data-[closed]:scale-95 data-[closed]:opacity-0 data-[enter]:ease-out data-[leave]:ease-in lg:hidden"
                         >
                             <div
                                 className={[
-                                    'space-y-1 pb-3 pt-2 pr-2 rounded-md border-2',
+                                    'space-y-1 pb-3 pl-6 pt-2 pr-2 rounded-3xl',
                                     colors.bgMobileNavMenuPopover,
-                                    colors.borderPurple,
                                 ].join(' ')}
                             >
-                                <div className="text-end">
+                                <div className="flex justify-between">
+                                    <p
+                                        className={[
+                                            fontFamilies.headerOne,
+                                            'text-base text-gray-400 pt-2',
+                                        ].join(' ')}
+                                    >
+                                        Navigation
+                                    </p>
                                     <PopoverButton
                                         className={[
-                                            'relative inline-flex items-center justify-center rounded-md p-2',
+                                            'relative inline-flex items-center justify-center rounded-md p-2 outline-0',
                                             colors.bgMobileNavMenuPopover,
                                             colors.textGeneric,
                                         ].join(' ')}
@@ -134,21 +140,29 @@ const NavBar = () => {
                                         <icon.x className="h-6 w-6" aria-hidden="true" />
                                     </PopoverButton>
                                 </div>
-                                {navigation.map(item => (
-                                    <PopoverButton
-                                        key={item.name}
-                                        className={[
-                                            'block',
-                                            'py-2 pl-3 pr-4 text-base font-medium',
-                                            // themes.mobileNavMenuButton,
-                                            themes.navLinkButton({
-                                                isActive: item.current,
-                                            }),
-                                        ].join(' ')}
-                                        onClick={() => handleNavClick(item.key)}
-                                    >
-                                        {item.name}
-                                    </PopoverButton>
+                                {navigation.map((item, idx, array) => (
+                                    <div key={item.name} className="py-2 pr-4">
+                                        <PopoverButton
+                                            className={[
+                                                'block',
+                                                'text-base font-medium',
+                                                themes.mobileNavMenuButton,
+                                                themes.navLinkButton({
+                                                    isActive: item.current,
+                                                }),
+                                            ].join(' ')}
+                                            onClick={() => handleNavClick(item.key)}
+                                        >
+                                            {item.name}
+                                        </PopoverButton>
+                                        <div
+                                            className={[
+                                                idx === array.length - 1
+                                                    ? ''
+                                                    : 'border-[1px] border-gray-600 w-full',
+                                            ].join(' ')}
+                                        />
+                                    </div>
                                 ))}
                             </div>
                         </PopoverPanel>

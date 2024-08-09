@@ -18,7 +18,7 @@ export const colors = {
     // },
     textHistoryTitle: primaryText,
     textHistoryBody: primaryText,
-    mobileNavMenuButton: 'text-gray-400 hover:text-gray-500 hover:bg-gray-100',
+    mobileNavMenuButton: `${primaryText} hover:text-gray-500`,
     mobileNavButtonActive: ['bg-gray-500', activeText].join(' '),
     mobileNavButtonInactive: ['bg-gray-500', primaryText].join(' '),
     subText: 'text-gray-500',

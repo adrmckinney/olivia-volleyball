@@ -123,7 +123,7 @@ const History = () => {
                 <div className="mx-auto grid max-w-2xl grid-cols-1 gap-y-16 pt-2 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-start lg:gap-y-10 lg:pt-20">
                     {/* Timeline */}
                     <ul className="-mb-8 lg:ml-10 lg:pl-4 lg:sticky lg:col-start-1 lg:row-start-1 lg:overflow-hidden">
-                        {history.map(historyItem => (
+                        {history.map((historyItem, idx, array) => (
                             <div key={historyItem.key}>
                                 {/* Larger Screen Selectors */}
                                 <div className="hidden lg:block">
@@ -131,6 +131,7 @@ const History = () => {
                                         historyItem={historyItem}
                                         handleSelection={handleSelection}
                                         isSelected={selectedHistory === historyItem.key}
+                                        isLastItem={idx === array.length - 1}
                                     />
                                 </div>
 
