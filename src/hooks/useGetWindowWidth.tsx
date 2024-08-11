@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-const breakpoints = {
+export const breakpoints = {
     sm: 640,
     md: 768,
     lg: 1024,
@@ -9,30 +9,33 @@ const breakpoints = {
     '3xl': 1600,
 };
 
-const getCurrentBreakpoint = (width: number) => {
+export const getCurrentBreakpoint = (width: number): TailwindBreakpoints => {
     if (width < breakpoints.md) return 'sm';
     if (width < breakpoints.lg) return 'md';
     if (width < breakpoints.xl) return 'lg';
     if (width < breakpoints['2xl']) return 'xl';
     if (width < breakpoints['3xl']) return '2xl';
     if (width > breakpoints['3xl']) return '3xl';
+    return 'md'; // in case of undefined which should never happen
+};
+
+export type TailwindBreakpoints = 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | (string & {});
+
+type Response = {
+    currentTailwindBreakpoint: string | undefined;
+    currentWindowWidth: number;
 };
 
 /**
- * Use Log Window Breakpoint
+ * use Get Window Width
  *
- * This custom hook is for development/debugging purposes. Calling this
- * hook in a file will console log the current breakpoint as a string.
- * Adjusting the width of the screen will trigger new
- * currentBreakpoints to be logged.
- *
- * @returns currentBreakpoint as string. Ex 'sm', 'md' etc.
+ * @returns object with currentBreakpoint as string. Ex 'sm', 'md' etc and currentWindowWidth.
  */
-const useLogWindowBreakpoint = (): string | undefined => {
-    const [currentTailwindBreakpoint, setCurrentTailwindBreakpoint] = useState(
+const useGetWindowWidth = (): Response => {
+    const [currentTailwindBreakpoint, setCurrentTailwindBreakpoint] = useState<TailwindBreakpoints>(
         getCurrentBreakpoint(window.innerWidth)
     );
-    const [currentWindowLength, setCurrentWindowWidth] = useState(window.innerWidth);
+    const [currentWindowWidth, setCurrentWindowWidth] = useState(window.innerWidth);
 
     useEffect(() => {
         const handleResize = () => {
@@ -45,10 +48,7 @@ const useLogWindowBreakpoint = (): string | undefined => {
         };
     }, []);
 
-    console.log(
-        `currentWindowLength: ${currentWindowLength} | currentTailwindBreakpoint: ${currentTailwindBreakpoint}`
-    );
-    return currentTailwindBreakpoint;
+    return { currentTailwindBreakpoint, currentWindowWidth };
 };
 
-export default useLogWindowBreakpoint;
+export default useGetWindowWidth;

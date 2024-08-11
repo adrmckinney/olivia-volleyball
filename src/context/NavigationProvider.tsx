@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from 'react';
+import useGetWindowWidth from '../hooks/useGetWindowWidth';
 import useOnScreen from '../hooks/useOnScreen';
-import useGetWindowWidth from '../sharedComponents/useGetWindowWidth';
 import { ProviderProps } from '../types/ProviderProps';
 
 export type NavigationType = {

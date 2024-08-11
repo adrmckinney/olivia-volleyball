@@ -1,23 +1,5 @@
 import { useEffect, useState } from 'react';
-
-const breakpoints = {
-    sm: 640,
-    md: 768,
-    lg: 1024,
-    xl: 1280,
-};
-
-const getCurrentBreakpoint = (width: number) => {
-    if (width < breakpoints.md) return 'sm';
-    if (width < breakpoints.lg) return 'md';
-    if (width < breakpoints.xl) return 'lg';
-    if (width > breakpoints.xl) return 'xl';
-};
-
-type Response = {
-    currentTailwindBreakpoint: string | undefined;
-    currentWindowWidth: number;
-};
+import { getCurrentBreakpoint } from './useGetWindowWidth';
 
 /**
  * Use Log Window Breakpoint
@@ -29,11 +11,11 @@ type Response = {
  *
  * @returns currentBreakpoint as string. Ex 'sm', 'md' etc.
  */
-const useGetWindowWidth = (): Response => {
+const useLogWindowBreakpoint = (): string | undefined => {
     const [currentTailwindBreakpoint, setCurrentTailwindBreakpoint] = useState(
         getCurrentBreakpoint(window.innerWidth)
     );
-    const [currentWindowWidth, setCurrentWindowWidth] = useState(window.innerWidth);
+    const [currentWindowLength, setCurrentWindowWidth] = useState(window.innerWidth);
 
     useEffect(() => {
         const handleResize = () => {
@@ -46,7 +28,10 @@ const useGetWindowWidth = (): Response => {
         };
     }, []);
 
-    return { currentTailwindBreakpoint, currentWindowWidth };
+    console.log(
+        `currentWindowLength: ${currentWindowLength} | currentTailwindBreakpoint: ${currentTailwindBreakpoint}`
+    );
+    return currentTailwindBreakpoint;
 };
 
-export default useGetWindowWidth;
+export default useLogWindowBreakpoint;

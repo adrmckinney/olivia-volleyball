@@ -1,5 +1,6 @@
 import {
     ArrowPathIcon,
+    ChevronLeftIcon,
     ChevronRightIcon,
     CloudArrowUpIcon,
     Cog6ToothIcon,
@@ -18,9 +19,10 @@ import {
     XMarkIcon,
 } from '@heroicons/react/24/outline';
 
-type Icon = {
+export type Icon = {
     arrowPath: typeof ArrowPathIcon;
     chevronRight: typeof ChevronRightIcon;
+    chevronLeft: typeof ChevronLeftIcon;
     cloudArrowUp: typeof CloudArrowUpIcon;
     cog: typeof Cog6ToothIcon;
     fingerPrint: typeof FingerPrintIcon;
@@ -39,6 +41,7 @@ type Icon = {
 export const icon: Icon = {
     arrowPath: ArrowPathIcon,
     chevronRight: ChevronRightIcon,
+    chevronLeft: ChevronLeftIcon,
     cloudArrowUp: CloudArrowUpIcon,
     cog: Cog6ToothIcon,
     fingerPrint: FingerPrintIcon,

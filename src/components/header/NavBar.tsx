@@ -4,7 +4,7 @@ import { colors } from '../../configs/colors';
 import { fontFamilies } from '../../configs/fontFamilies';
 import { themes } from '../../configs/themes';
 import { Current, NavigationContext } from '../../context/NavigationProvider';
-import LinkButton from '../../sharedComponents/LinkButton';
+import LinkButton from '../../sharedComponents/Buttons/LinkButton';
 import { icon } from '../../utils/Icons';
 
 type Navigation = {
