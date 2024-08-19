@@ -165,6 +165,7 @@ const NavigationProvider = ({ children }: ProviderProps) => {
     useEffect(() => {
         window.addEventListener('scroll', handleScroll);
         handleChangeNav();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [landingIsVisible, videoIsVisible, historyIsVisible, statsIsVisible, aboutIsVisible]);
 
     return (

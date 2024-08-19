@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 const useFetchCSVData = () => {
     const [csvData, setCsvData] = useState<Record<string, any>[]>([]);
+    /* eslint-disable @typescript-eslint/no-unused-vars */
     const [parsedData, setParsedData] = useState([]);
 
     const fetchAndParseCsvData = async (

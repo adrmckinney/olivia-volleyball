@@ -14,6 +14,7 @@ type Navigation = {
 };
 
 const NavBar = () => {
+    /* eslint-disable @typescript-eslint/no-unused-vars */
     const { current, handleNavClick, hideNavBackground, opacity } = useContext(NavigationContext);
 
     const navigation: Navigation[] = [

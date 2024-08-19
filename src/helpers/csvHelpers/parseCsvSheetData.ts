@@ -103,6 +103,7 @@ const initialDetails: Details = {
     },
 };
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
 const initialJammersDataValues: SeasonData[] = [
     {
         ...initialDetails,

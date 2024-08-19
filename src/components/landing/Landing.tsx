@@ -16,6 +16,7 @@ const Landing = () => {
     useLogWindowBreakpoint();
     useEffect(() => {
         fetchAndParseCsvData(csvUrl, parseCsvSheetData);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
