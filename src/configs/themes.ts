@@ -18,4 +18,5 @@ export const themes = {
     mobileNavButton: ({ isActive }: { isActive: boolean }) => {
         return `${fontFamilies.navLinkButtons} ${fonts.mobileNavText} ${isActive ? colors.mobileNavButtonActive : colors.mobileNavButtonInactive}`;
     },
+    videoThumbnailTitle: `${fontFamilies.headerOne} ${fonts.videoThumbnailTitle} ${colors.textGeneric}`,
 };

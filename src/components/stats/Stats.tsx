@@ -1,41 +1,57 @@
 import { useContext } from 'react';
 import { NavigationContext } from '../../context/NavigationProvider';
+import useLogWindowBreakpoint from '../../hooks/useLogWindowBreakpoint';
+import SectionHeader from '../../sharedComponents/SectionHeader';
 
 const stats = [
-    { id: 1, name: 'Developers on the platform', value: '8,000+' },
-    { id: 2, name: 'Daily requests', value: '900m+' },
-    { id: 3, name: 'Uptime guarantee', value: '99.9%' },
-    { id: 4, name: 'Projects deployed', value: '12m' },
+    { id: 0, name: 'Height', value: `5' 6"` },
+    { id: 1, name: 'Standing Reach', value: '7\'2"' },
+    { id: 2, name: 'Jump Approach', value: '8\'6"' },
+    { id: 3, name: 'Block Approach', value: '8\'1"' },
 ];
 
+const getLargeScreenNumberOfColumns = () => {
+    if (stats.length === 3) return 'lg:grid-cols-3';
+    if (stats.length === 4) return 'lg:grid-cols-4';
+};
+
+const getMediumScreenNumberOfColumns = () => {
+    if (stats.length === 3) return 'md:grid-cols-3';
+    if (stats.length === 4) return 'md:grid-cols-2';
+};
+
 const Stats = () => {
-    const { statsRef } = useContext(NavigationContext);
+    const { statsRef, hideNavBackground } = useContext(NavigationContext);
+    useLogWindowBreakpoint();
 
     return (
-        <div ref={statsRef} id="stats" className="mx-auto mt-32 max-w-7xl px-6 sm:mt-56 lg:px-8">
-            <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-xl">
-                <h2 className="text-base font-semibold leading-8 text-indigo-400">STATS</h2>
-                <p className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">
-                    Trusted by thousands of developers&nbsp;worldwide
-                </p>
-                <p className="mt-6 text-lg leading-8 text-gray-300">
-                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores impedit
-                    perferendis suscipit eaque, iste dolor cupiditate blanditiis ratione.
-                </p>
+        <div
+            ref={statsRef}
+            id="stats"
+            className="max-w-[1200px] ml-auto mr-auto mt-16 3xl:max-w-[1600px]"
+        >
+            <SectionHeader title="Stats" hideNavBackground={hideNavBackground} />
+            <div className="flex justify-center">
+                <dl
+                    className={[
+                        'mx-auto mt-16 grid max-w-2xl grid-cols-2 gap-x-8 sm:gap-x-24 md:gap-x-44 lg:gap-x-36 gap-y-10 text-white sm:mt-20 sm:grid-cols-2 sm:gap-y-16 lg:mx-0 lg:max-w-none',
+                        getLargeScreenNumberOfColumns(),
+                        getMediumScreenNumberOfColumns(),
+                    ].join(' ')}
+                >
+                    {stats.map(stat => (
+                        <div
+                            key={stat.id}
+                            className="flex flex-col gap-y-3 border-l border-white/10 pl-6"
+                        >
+                            <dt className="text-sm leading-6">{stat.name}</dt>
+                            <dd className="order-first text-3xl font-semibold tracking-tight">
+                                {stat.value}
+                            </dd>
+                        </div>
+                    ))}
+                </dl>
             </div>
-            <dl className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-10 text-white sm:mt-20 sm:grid-cols-2 sm:gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-4">
-                {stats.map(stat => (
-                    <div
-                        key={stat.id}
-                        className="flex flex-col gap-y-3 border-l border-white/10 pl-6"
-                    >
-                        <dt className="text-sm leading-6">{stat.name}</dt>
-                        <dd className="order-first text-3xl font-semibold tracking-tight">
-                            {stat.value}
-                        </dd>
-                    </div>
-                ))}
-            </dl>
         </div>
     );
 };

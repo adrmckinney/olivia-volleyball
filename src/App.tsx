@@ -15,11 +15,11 @@ function App() {
             <main>
                 <Landing />
 
+                <Stats />
+
                 <Vidoes />
 
                 <History />
-
-                <Stats />
 
                 <About />
 

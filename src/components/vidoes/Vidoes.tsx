@@ -73,8 +73,13 @@ const Vidoes = () => {
             case '2xl':
             case 'xl':
                 return 3;
-            default:
+            case 'lg':
+            case 'md':
                 return 2;
+            case 'sm':
+                return 1;
+            default:
+                return 1;
         }
     };
 
@@ -85,7 +90,12 @@ const Vidoes = () => {
             className="max-w-[1200px] ml-auto mr-auto mt-16 3xl:max-w-[1600px]"
         >
             <SectionHeader title="Vidoes" hideNavBackground={hideNavBackground} />
-            <Carousel show={handleVisibleVideos()} infiniteLoop={true}>
+            <Carousel
+                show={handleVisibleVideos()}
+                infiniteLoop={true}
+                showCue={currentTailwindBreakpoint === 'sm'}
+                showScrollArrows={currentTailwindBreakpoint !== 'sm'}
+            >
                 {videoData.map((video, idx) => (
                     <div key={`${video.key}-${idx}`} className="px-3 xl:px-4">
                         <ConditionalRender
@@ -102,7 +112,9 @@ const Vidoes = () => {
                                     className="flex justify-center items-center aspect-video bg-gradient-to-r from-purple-600 to-gray-300 rounded-md"
                                     onClick={() => setPlayVideoIdx(idx)}
                                 >
-                                    <p className={[themes.historyTitle].join(' ')}>{video.title}</p>
+                                    <p className={[themes.videoThumbnailTitle].join(' ')}>
+                                        {video.title}
+                                    </p>
                                 </div>
                             }
                         >
@@ -116,11 +128,13 @@ const Vidoes = () => {
                             />
                         </ConditionalRender>
                         <p
-                            className={['text-center', colors.textGeneric, fonts.captionMd].join(
-                                ' '
-                            )}
+                            className={[
+                                'text-center pt-2',
+                                colors.textGeneric,
+                                fonts.captionMd,
+                            ].join(' ')}
                         >
-                            {`${video.title} ${idx}`}
+                            {`${video.title}`}
                         </p>
                     </div>
                 ))}

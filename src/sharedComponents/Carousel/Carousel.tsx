@@ -1,3 +1,4 @@
+// https://github.com/rakumairu/simple-react-carousel/tree/part-4
 import { ReactNode, useEffect, useState } from 'react';
 import useThrottle from '../../hooks/throttle';
 import { icon } from '../../utils/Icons';
@@ -9,9 +10,17 @@ type Props = {
     children: ReactNode[];
     show: number;
     infiniteLoop?: boolean;
+    showCue?: boolean;
+    showScrollArrows?: boolean;
 };
 
-const Carousel = ({ children, show, infiniteLoop = false }: Props) => {
+const Carousel = ({
+    children,
+    show,
+    infiniteLoop = false,
+    showCue = false,
+    showScrollArrows = true,
+}: Props) => {
     const [currentIndex, setCurrentIndex] = useState(infiniteLoop ? show : 0);
     const [length, setLength] = useState(children.length);
 
@@ -23,6 +32,8 @@ const Carousel = ({ children, show, infiniteLoop = false }: Props) => {
     useEffect(() => {
         setLength(children.length);
         setIsRepeating(infiniteLoop && children.length > show);
+        // setVisibleIndexes(getVisibleIndexes(currentIndex, show, length));
+        // setVisibleIndexes(Array.from({ length: show }, (_, i) => i));
     }, [children, infiniteLoop, show]);
 
     const next = () => {
@@ -81,8 +92,8 @@ const Carousel = ({ children, show, infiniteLoop = false }: Props) => {
 
     const renderExtraPrev = () => {
         let output = [];
-        for (let index = 0; index < show; index++) {
-            output.push(children[length - 1 - index]);
+        for (let i = 0; i < show; i++) {
+            output.push(children[length - 1 - i]);
         }
         output.reverse();
         return output;
@@ -90,8 +101,8 @@ const Carousel = ({ children, show, infiniteLoop = false }: Props) => {
 
     const renderExtraNext = () => {
         let output = [];
-        for (let index = 0; index < show; index++) {
-            output.push(children[index]);
+        for (let i = 0; i < show; i++) {
+            output.push(children[i]);
         }
         return output;
     };
@@ -101,10 +112,20 @@ const Carousel = ({ children, show, infiniteLoop = false }: Props) => {
     const throttledPrev = useThrottle(prev, 400);
     const throttledNext = useThrottle(next, 400);
 
+    const getCueColor = (index: number) => {
+        const indexToColor = currentIndex - show + show + show - 1;
+
+        const baseIndex = currentIndex - show < 0 ? indexToColor : currentIndex - show;
+        const algorithm = infiniteLoop ? baseIndex === index : currentIndex === index;
+        return algorithm ? 'bg-purple-500' : 'bg-gray-500';
+    };
+
     return (
         <div className="flex flex-col w-full">
             <div className="flex w-full relative">
-                <ConditionalRender condition={isRepeating || currentIndex > 0}>
+                <ConditionalRender
+                    condition={(isRepeating || currentIndex > 0) && showScrollArrows}
+                >
                     <IconButton
                         onClick={throttledPrev}
                         classNames="left-arrow"
@@ -131,7 +152,9 @@ const Carousel = ({ children, show, infiniteLoop = false }: Props) => {
                         {length > show && isRepeating && renderExtraNext()}
                     </div>
                 </div>
-                <ConditionalRender condition={isRepeating || currentIndex < length - show}>
+                <ConditionalRender
+                    condition={(isRepeating || currentIndex < length - show) && showScrollArrows}
+                >
                     <IconButton
                         onClick={throttledNext}
                         classNames="right-arrow"
@@ -141,6 +164,18 @@ const Carousel = ({ children, show, infiniteLoop = false }: Props) => {
                     </IconButton>
                 </ConditionalRender>
             </div>
+            <ConditionalRender condition={showCue}>
+                <div className="flex justify-center items-center space-x-4 pt-8">
+                    {[...Array(length)].map((_, index) => {
+                        return (
+                            <div
+                                key={index}
+                                className={['h-4 w-4 rounded-full', getCueColor(index)].join(' ')}
+                            />
+                        );
+                    })}
+                </div>
+            </ConditionalRender>
         </div>
     );
 };

@@ -14,14 +14,18 @@ type Navigation = {
 };
 
 const NavBar = () => {
-    /* eslint-disable @typescript-eslint/no-unused-vars */
-    const { current, handleNavClick, hideNavBackground, opacity } = useContext(NavigationContext);
+    const { current, handleNavClick, hideNavBackground } = useContext(NavigationContext);
 
     const navigation: Navigation[] = [
         {
             name: 'Home',
             key: 'landing',
             current: current === 'landing',
+        },
+        {
+            name: 'Stats',
+            key: 'stats',
+            current: current === 'stats',
         },
         {
             name: 'Videos',
@@ -32,11 +36,6 @@ const NavBar = () => {
             name: 'Athletic History',
             key: 'history',
             current: current === 'history',
-        },
-        {
-            name: 'Stats',
-            key: 'stats',
-            current: current === 'stats',
         },
         {
             name: 'About',
@@ -72,8 +71,9 @@ const NavBar = () => {
                                                             isActive: item.current,
                                                         }),
                                                         item.current
-                                                            ? 'text-white bg-purple-300 bg-opacity-30 rounded-[999px] px-6 py-1 animate-grow-once'
-                                                            : '',
+                                                            ? 'text-white bg-purple-400 bg-opacity-30 rounded-[9999px] px-6 py-1'
+                                                            : // animate-grow-once
+                                                              '',
                                                     ].join(' ')}
                                                     onClick={() => handleNavClick(item.key)}
                                                 />

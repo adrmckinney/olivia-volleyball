@@ -32,7 +32,7 @@ const SmallerScreenHistorySelector = ({
                             className={[
                                 fontFamilies.body,
                                 colors.textGeneric,
-                                'text-sm font-semibold tracking-normal',
+                                'text-base font-semibold tracking-normal',
                             ].join(' ')}
                         >
                             {historyItem.organization.name}
@@ -55,7 +55,7 @@ const SmallerScreenHistorySelector = ({
                         fontFamilies.body,
                         colors.textGeneric,
                         colors.borderPurple,
-                        'text-sm',
+                        'text-base',
                         'border-x-2 rounded-md -mx-3 p-2',
                     ].join(' ')}
                 >

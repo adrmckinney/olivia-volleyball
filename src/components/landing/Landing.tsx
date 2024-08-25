@@ -3,7 +3,6 @@ import useFetchCSVData from '../../api/FetchCSVData';
 import { themes } from '../../configs/themes';
 import { NavigationContext } from '../../context/NavigationProvider';
 import { parseCsvSheetData } from '../../helpers/csvHelpers/parseCsvSheetData';
-import useLogWindowBreakpoint from '../../hooks/useLogWindowBreakpoint';
 import portrait from '../../images/portrait.png';
 import BackgroundAccentColor from './BackgroundAccentColor';
 import BackgroundGrid from './BackgroundGrid';
@@ -13,7 +12,7 @@ const Landing = () => {
     const { landingRef } = useContext(NavigationContext);
     const { fetchAndParseCsvData } = useFetchCSVData();
     const csvUrl: string = process.env.REACT_APP_JAMMERS_2024_URL || '';
-    useLogWindowBreakpoint();
+
     useEffect(() => {
         fetchAndParseCsvData(csvUrl, parseCsvSheetData);
         // eslint-disable-next-line react-hooks/exhaustive-deps

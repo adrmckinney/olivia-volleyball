@@ -5,6 +5,9 @@ const stats = [
     { label: 'Height', value: `5' 6"` },
     { label: 'GPA', value: '3.4' },
     { label: 'Class', value: '2026' },
+    // { label: 'Standing Reach', value: '7\'2"' },
+    // { label: 'Jump Approach', value: '8\'6"' },
+    // { label: 'Block Approach', value: '8\'1"' },
 ];
 
 const SnapshotStats = () => {

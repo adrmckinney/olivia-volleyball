@@ -22,7 +22,7 @@ export const getCurrentBreakpoint = (width: number): TailwindBreakpoints => {
 export type TailwindBreakpoints = 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | (string & {});
 
 type Response = {
-    currentTailwindBreakpoint: string | undefined;
+    currentTailwindBreakpoint: TailwindBreakpoints;
     currentWindowWidth: number;
 };
 
