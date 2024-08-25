@@ -1,5 +1,5 @@
 // https://github.com/rakumairu/simple-react-carousel/tree/part-4
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 import useThrottle from '../../hooks/throttle';
 import { icon } from '../../utils/Icons';
 import IconButton from '../Buttons/IconButton';
@@ -21,6 +21,7 @@ const Carousel = ({
     showCue = false,
     showScrollArrows = true,
 }: Props) => {
+    const carouselRef = useRef<HTMLDivElement>(null);
     const [currentIndex, setCurrentIndex] = useState(infiniteLoop ? show : 0);
     const [length, setLength] = useState(children.length);
 
@@ -35,6 +36,25 @@ const Carousel = ({
         // setVisibleIndexes(getVisibleIndexes(currentIndex, show, length));
         // setVisibleIndexes(Array.from({ length: show }, (_, i) => i));
     }, [children, infiniteLoop, show]);
+
+    useEffect(() => {
+        const disableScroll = (e: TouchEvent) => {
+            e.preventDefault();
+        };
+
+        const ref = carouselRef.current;
+
+        if (ref) {
+            ref.addEventListener('touchmove', disableScroll, { passive: false });
+        }
+
+        // Cleanup function to remove the event listener on unmount
+        return () => {
+            if (ref) {
+                ref.removeEventListener('touchmove', disableScroll);
+            }
+        };
+    }, []);
 
     const next = () => {
         if (isRepeating || currentIndex < length - show) {
@@ -134,7 +154,7 @@ const Carousel = ({
     };
 
     return (
-        <div className="flex flex-col w-full">
+        <div ref={carouselRef} className="flex flex-col w-full">
             <div className="flex w-full relative">
                 <ConditionalRender
                     condition={(isRepeating || currentIndex > 0) && showScrollArrows}
