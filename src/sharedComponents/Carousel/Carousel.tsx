@@ -63,13 +63,26 @@ const Carousel = ({
         const currentTouch = e.touches[0].clientX;
         const diff = touchDown - currentTouch;
 
-        if (diff > 5) {
-            next();
+        // Prevent vertical scrolling if the user is swiping horizontally
+        if (Math.abs(diff) > 5) {
+            e.preventDefault();
+
+            if (diff > 5) {
+                next();
+            }
+
+            if (diff < -5) {
+                prev();
+            }
         }
 
-        if (diff < -5) {
-            prev();
-        }
+        // if (diff > 5) {
+        //     next();
+        // }
+
+        // if (diff < -5) {
+        //     prev();
+        // }
 
         setTouchPosition(null);
     };
