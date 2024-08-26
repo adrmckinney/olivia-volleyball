@@ -9,6 +9,7 @@ type Props = {
     type?: HTMLInputTypeAttribute;
     isTextArea?: boolean;
     textAreaRows?: number;
+    autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
 };
 
 const TextField = ({
@@ -19,6 +20,7 @@ const TextField = ({
     type = 'text',
     isTextArea = false,
     textAreaRows = 4,
+    autoCapitalize = 'sentences',
 }: Props) => {
     const className =
         'block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-purple-300 sm:text-sm sm:leading-6';
@@ -62,6 +64,7 @@ const TextField = ({
                             className={className}
                             value={value}
                             onChange={handleChange}
+                            autoCapitalize={autoCapitalize}
                         />
                     </div>
                 </div>

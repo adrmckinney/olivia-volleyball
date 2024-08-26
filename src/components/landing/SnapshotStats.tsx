@@ -3,7 +3,7 @@ import { themes } from '../../configs/themes';
 const stats = [
     { label: 'Position', value: 'Setter' },
     { label: 'Height', value: `5' 6"` },
-    { label: 'GPA', value: '3.4' },
+    { label: 'GPA', value: '3.2' },
     { label: 'Class', value: '2026' },
     { label: 'Standing Reach', value: '7\'2"' },
     { label: 'Jump Approach', value: '8\'6"' },

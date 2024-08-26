@@ -79,6 +79,9 @@ const NavigationProvider = ({ children }: ProviderProps) => {
         threshold: isSmallerScreen ? 1.0 : 0.2,
     });
 
+    // Because contact is such a small vertical space and is at the bottom
+    // we have to use an onScroll listener to determine when it is in view
+    // aka, at the bottom of the screen.
     const [contactRef, contactIsVisible] = useOnScreen({
         root: null,
         rootMargin: '0px',
@@ -132,10 +135,24 @@ const NavigationProvider = ({ children }: ProviderProps) => {
             setCurrent('about');
         }
 
-        if (contactIsVisible) {
-            if (current === 'contact') return;
-            setCurrent('contact');
-        }
+        // if (contactIsVisible) {
+        //     if (current === 'contact') return;
+        //     setCurrent('contact');
+        // }
+
+        window.onscroll = function (ev) {
+            console.log('window.innerHeight + window.scrollY', window.innerHeight + window.scrollY);
+            if (window.innerHeight + window.scrollY >= document.body.scrollHeight) {
+                // you're at the bottom of the page
+                setCurrent('contact');
+            } else if (
+                // Set current to the previous around the time the header would be in view
+                window.innerHeight + window.scrollY >= document.body.scrollHeight - 310 &&
+                window.innerHeight + window.scrollY <= document.body.scrollHeight - 290
+            ) {
+                setCurrent('history');
+            }
+        };
     };
 
     const changeNavOpacity = (yPosition: number) => {

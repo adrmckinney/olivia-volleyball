@@ -2,6 +2,7 @@ import { ChangeEvent, useContext, useState } from 'react';
 import { colors } from '../../configs/colors';
 import { NavigationContext } from '../../context/NavigationProvider';
 // import portrait2024BallTossCut from '../../images/portrait2024BallTossCut.png';
+import { themes } from '../../configs/themes';
 import portrait2024BallToss from '../../images/portrait2024BallToss.jpeg';
 import TextField from '../../sharedComponents/Inputs/TextField';
 import SectionHeader from '../../sharedComponents/SectionHeader';
@@ -128,6 +129,7 @@ const Contact = () => {
                                     'w-[40rem] rounded-md',
                                     'bg-transparent',
                                     'shadow-2xl',
+                                    'shadow-purple-300',
                                     'ring-0',
                                     'ring-white/10',
                                 ].join(' ')}
@@ -202,6 +204,11 @@ const Contact = () => {
                     ].join(' ')}
                 >
                     <div className="mx-auto max-w-xl lg:mr-0 lg:max-w-lg">
+                        <p className={[themes.historyBody, 'pb-10'].join(' ')}>
+                            I am a Junior at Riverside High School, Durham, NC. I am active in the
+                            school's chorus. If you would like to reach out to me, please submit the
+                            following form and I will get back to you.
+                        </p>
                         <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
                             {formFields.map(field => (
                                 <TextField
@@ -212,13 +219,14 @@ const Contact = () => {
                                     type={field.name === 'email' ? 'email' : 'text'}
                                     value={input[field.name]}
                                     isTextArea={field.name === 'message'}
+                                    autoCapitalize={field.name === 'email' ? 'none' : 'sentences'}
                                 />
                             ))}
                         </div>
                         <div className="mt-8 flex justify-end">
                             <button
                                 type="button"
-                                className="rounded-md bg-purple-700 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-purple-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                                className="rounded-md bg-purple-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-purple-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
                             >
                                 Send message
                             </button>
