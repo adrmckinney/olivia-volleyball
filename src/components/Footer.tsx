@@ -96,7 +96,7 @@ const Footer = () => {
             </h2>
             <div className="mx-auto max-w-7xl px-6 pb-8 pt-4 lg:px-8">
                 <div className="border-t border-white/10 pt-8 md:flex md:items-center md:justify-between">
-                    <div className="flex space-x-6 md:order-2">
+                    {/* <div className="flex space-x-6 md:order-2">
                         {footerNavigation.social.map(item => (
                             <a
                                 key={item.name}
@@ -110,7 +110,7 @@ const Footer = () => {
                     </div>
                     <p className="mt-8 text-xs leading-5 text-gray-400 md:order-1 md:mt-0">
                         &copy; 2020 Your Company, Inc. All rights reserved.
-                    </p>
+                    </p> */}
                 </div>
             </div>
         </footer>

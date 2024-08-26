@@ -116,7 +116,7 @@ const History = () => {
             <div
                 ref={historyRef}
                 id="history"
-                className="mx-auto mt-8 max-w-7xl px-6 sm:mt-16 lg:scroll-m-20 lg:px-8 justify-center items-center"
+                className="mx-auto mt-8 max-w-7xl px-6 sm:mt-16 lg:scroll-m-20 lg:px-8 justify-center items-center pb-10 md:pb-0"
             >
                 <SectionHeader title="Athletic History" hideNavBackground={hideNavBackground} />
 

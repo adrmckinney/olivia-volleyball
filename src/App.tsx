@@ -1,5 +1,4 @@
-import About from './components/about/About';
-import CallToAction from './components/cta/CallToAction';
+import Contact from './components/contact/Contact';
 import Footer from './components/Footer';
 import NavBar from './components/header/NavBar';
 import History from './components/history/History';
@@ -20,9 +19,11 @@ function App() {
 
                 <History />
 
-                <About />
+                {/* <About /> */}
 
-                <CallToAction />
+                <Contact />
+
+                {/* <CallToAction /> */}
             </main>
 
             <Footer />

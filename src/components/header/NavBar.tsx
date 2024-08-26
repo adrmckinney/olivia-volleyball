@@ -37,10 +37,15 @@ const NavBar = () => {
             key: 'history',
             current: current === 'history',
         },
+        // {
+        //     name: 'About',
+        //     key: 'about',
+        //     current: current === 'about',
+        // },
         {
-            name: 'About',
-            key: 'about',
-            current: current === 'about',
+            name: 'Contact',
+            key: 'contact',
+            current: current === 'contact',
         },
     ];
 

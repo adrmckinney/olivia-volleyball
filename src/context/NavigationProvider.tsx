@@ -13,9 +13,17 @@ export type NavigationType = {
     historyRef: any | null;
     statsRef: any | null;
     aboutRef: any | null;
+    contactRef: any | null;
 };
 
-export type Current = 'landing' | 'videos' | 'history' | 'stats' | 'about' | (string & {});
+export type Current =
+    | 'landing'
+    | 'videos'
+    | 'history'
+    | 'stats'
+    | 'about'
+    | 'contact'
+    | (string & {});
 
 const defaultValue: NavigationType = {
     current: 'landing',
@@ -27,6 +35,7 @@ const defaultValue: NavigationType = {
     historyRef: null,
     statsRef: null,
     aboutRef: null,
+    contactRef: null,
 };
 
 export const NavigationContext = createContext<NavigationType>(defaultValue);
@@ -70,6 +79,12 @@ const NavigationProvider = ({ children }: ProviderProps) => {
         threshold: isSmallerScreen ? 1.0 : 0.2,
     });
 
+    const [contactRef, contactIsVisible] = useOnScreen({
+        root: null,
+        rootMargin: '0px',
+        threshold: isSmallerScreen ? 1.0 : 0.1,
+    });
+
     const handleNavClick = (targetNav: Current) => {
         switch (targetNav) {
             case 'landing':
@@ -86,6 +101,9 @@ const NavigationProvider = ({ children }: ProviderProps) => {
                 break;
             case 'about':
                 aboutRef.current.scrollIntoView({ behavior: 'smooth' });
+                break;
+            case 'contact':
+                contactRef.current.scrollIntoView({ behavior: 'smooth' });
                 break;
         }
     };
@@ -112,6 +130,11 @@ const NavigationProvider = ({ children }: ProviderProps) => {
         if (aboutIsVisible) {
             if (current === 'about') return;
             setCurrent('about');
+        }
+
+        if (contactIsVisible) {
+            if (current === 'contact') return;
+            setCurrent('contact');
         }
     };
 
@@ -180,6 +203,7 @@ const NavigationProvider = ({ children }: ProviderProps) => {
                 historyRef,
                 statsRef,
                 aboutRef,
+                contactRef,
             }}
         >
             {children}
