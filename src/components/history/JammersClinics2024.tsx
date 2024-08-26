@@ -27,7 +27,7 @@ const JammersClinics2024 = () => {
                 During the off-season, Jammers Volleyball Club hosts multiple specialized volleyball
                 clinics for athletes wanting to improve their skill set during the off-season.
             </p>
-            <p>I partiicpated in the following clinics:</p>
+            <p>Olivia partiicpated in the following clinics:</p>
             <ul className={`ml-10 space-y-8 font-semibold ${textColor.paragraph}`}>
                 {skills.map((skill, idx) => (
                     <li key={`${skill.title}-${idx}`} className="flex gap-x-3">

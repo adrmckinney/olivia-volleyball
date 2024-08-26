@@ -4,7 +4,7 @@ import useLogWindowBreakpoint from '../../hooks/useLogWindowBreakpoint';
 import SectionHeader from '../../sharedComponents/SectionHeader';
 
 const stats = [
-    { id: 0, name: 'Height', value: `5' 6"` },
+    // { id: 0, name: 'Height', value: `5' 6"` },
     { id: 1, name: 'Standing Reach', value: '7\'2"' },
     { id: 2, name: 'Jump Approach', value: '8\'6"' },
     { id: 3, name: 'Block Approach', value: '8\'1"' },

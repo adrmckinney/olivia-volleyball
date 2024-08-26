@@ -33,10 +33,9 @@ const Carousel = ({
     useEffect(() => {
         setLength(children.length);
         setIsRepeating(infiniteLoop && children.length > show);
-        // setVisibleIndexes(getVisibleIndexes(currentIndex, show, length));
-        // setVisibleIndexes(Array.from({ length: show }, (_, i) => i));
     }, [children, infiniteLoop, show]);
 
+    // Sadly, need a second useEffect to disable vertical scroll on touch event for small screen view
     useEffect(() => {
         const disableScroll = (e: TouchEvent) => {
             e.preventDefault();
@@ -83,26 +82,13 @@ const Carousel = ({
         const currentTouch = e.touches[0].clientX;
         const diff = touchDown - currentTouch;
 
-        // Prevent vertical scrolling if the user is swiping horizontally
-        if (Math.abs(diff) > 5) {
-            e.preventDefault();
-
-            if (diff > 5) {
-                next();
-            }
-
-            if (diff < -5) {
-                prev();
-            }
+        if (diff > 5) {
+            next();
         }
 
-        // if (diff > 5) {
-        //     next();
-        // }
-
-        // if (diff < -5) {
-        //     prev();
-        // }
+        if (diff < -5) {
+            prev();
+        }
 
         setTouchPosition(null);
     };
@@ -146,7 +132,7 @@ const Carousel = ({
     const throttledNext = useThrottle(next, 400);
 
     const getCueColor = (index: number) => {
-        const indexToColor = currentIndex - show + show + show - 1;
+        const indexToColor = currentIndex - show + show;
 
         const baseIndex = currentIndex - show < 0 ? indexToColor : currentIndex - show;
         const algorithm = infiniteLoop ? baseIndex === index : currentIndex === index;
@@ -173,7 +159,7 @@ const Carousel = ({
                     onTouchMove={handleTouchMove}
                 >
                     <div
-                        className={`carousel-content show-${show}`} // Have to leave the css file for this because it has the convenient command to attach styles to the immediate child, that I do not have access to in this component.
+                        className={`carousel-content show-${show}`} // Have to leave the css file for this because it has the convenient command to attach styles to the immediate child, which I do not have access to in this component.
                         style={{
                             transform: `translateX(-${currentIndex * (100 / show)}%)`,
                             transition: !transitionEnabled ? 'none' : undefined,

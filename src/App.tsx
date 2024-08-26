@@ -4,7 +4,6 @@ import Footer from './components/Footer';
 import NavBar from './components/header/NavBar';
 import History from './components/history/History';
 import Landing from './components/landing/Landing';
-import Stats from './components/stats/Stats';
 import Vidoes from './components/vidoes/Vidoes';
 import { colors } from './configs/colors';
 
@@ -15,7 +14,7 @@ function App() {
             <main>
                 <Landing />
 
-                <Stats />
+                {/* <Stats /> */}
 
                 <Vidoes />
 

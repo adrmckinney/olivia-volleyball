@@ -22,11 +22,11 @@ const NavBar = () => {
             key: 'landing',
             current: current === 'landing',
         },
-        {
-            name: 'Stats',
-            key: 'stats',
-            current: current === 'stats',
-        },
+        // {
+        //     name: 'Stats',
+        //     key: 'stats',
+        //     current: current === 'stats',
+        // },
         {
             name: 'Videos',
             key: 'videos',

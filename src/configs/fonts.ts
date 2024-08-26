@@ -8,7 +8,7 @@ export const fonts = {
     historyBody: 'text-xl leading-7 font-normal',
     navLink: 'text-lg font-semiBold',
     mobileNavText: 'text-lg font-semibold',
-    captionXs: 'text-xs font-normal tracking-tight',
+    captionXs: 'text-sm font-normal tracking-tight',
     captionSm: 'text-sm font-normal tracking-tight',
     captionMd: 'text-base font-normal tracking-tight',
     mobileHistoryBody: 'text-sm font-normal tracking-normal',

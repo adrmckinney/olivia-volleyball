@@ -2,13 +2,14 @@ const DSA = () => {
     return (
         <>
             <p>
-                Olivia decided to try out for the volleyball team with it being her first ever time
-                playing the sport. At first she did not make the team but reached out to the coaches
-                to ask what she needs to improve on for next year. The coaches responded with
-                feedback as-well-as an offer for a spot on the team. Olivia did not have a lot of
-                playing time in her position was as a back row player. In the last few weeks of the
-                season coach decided to put Olivia as a setter, and that is when she started to find
-                more joy in the sport.
+                Olivia decided to try out for her high school volleyball team as a Freshman despite
+                it being her first time playing the sport. Initially, she did not make the team, but
+                she took the initiative to reach out to the coaches, asking for feedback on what she
+                could improve for the following year. The coaches responded with constructive advice
+                and, to her surprise, offered her a spot on the team. Though she initially had
+                limited playing time as a back-row player, in the final weeks of the season, the
+                coach moved Olivia to the setter position. It was in this role that she began to
+                truly enjoy the sport.
             </p>
         </>
     );
