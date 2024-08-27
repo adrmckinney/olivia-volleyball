@@ -85,7 +85,7 @@ const NavigationProvider = ({ children }: ProviderProps) => {
     const [contactRef, contactIsVisible] = useOnScreen({
         root: null,
         rootMargin: '0px',
-        threshold: isSmallerScreen ? 1.0 : 0.1,
+        threshold: isSmallerScreen ? 1.0 : 0.2,
     });
 
     const handleNavClick = (targetNav: Current) => {
@@ -140,19 +140,25 @@ const NavigationProvider = ({ children }: ProviderProps) => {
         //     setCurrent('contact');
         // }
 
-        window.onscroll = function (ev) {
-            console.log('window.innerHeight + window.scrollY', window.innerHeight + window.scrollY);
-            if (window.innerHeight + window.scrollY >= document.body.scrollHeight) {
-                // you're at the bottom of the page
+        if (isSmallerScreen) {
+            if (contactIsVisible) {
+                if (current === 'contact') return;
                 setCurrent('contact');
-            } else if (
-                // Set current to the previous around the time the header would be in view
-                window.innerHeight + window.scrollY >= document.body.scrollHeight - 310 &&
-                window.innerHeight + window.scrollY <= document.body.scrollHeight - 290
-            ) {
-                setCurrent('history');
             }
-        };
+        } else {
+            window.onscroll = function (ev) {
+                if (window.innerHeight + window.scrollY >= document.body.scrollHeight) {
+                    // you're at the bottom of the page
+                    setCurrent('contact');
+                } else if (
+                    // Set current to the previous around the time the header would be in view
+                    window.innerHeight + window.scrollY >= document.body.scrollHeight - 310 &&
+                    window.innerHeight + window.scrollY <= document.body.scrollHeight - 290
+                ) {
+                    setCurrent('history');
+                }
+            };
+        }
     };
 
     const changeNavOpacity = (yPosition: number) => {
@@ -206,7 +212,14 @@ const NavigationProvider = ({ children }: ProviderProps) => {
         window.addEventListener('scroll', handleScroll);
         handleChangeNav();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [landingIsVisible, videoIsVisible, historyIsVisible, statsIsVisible, aboutIsVisible]);
+    }, [
+        landingIsVisible,
+        videoIsVisible,
+        historyIsVisible,
+        statsIsVisible,
+        aboutIsVisible,
+        contactIsVisible,
+    ]);
 
     return (
         <NavigationContext.Provider

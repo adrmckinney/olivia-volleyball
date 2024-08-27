@@ -59,7 +59,11 @@ const Contact = () => {
 
     const paddingBottom = 'lg:py-10';
     return (
-        <div ref={contactRef} className={['relative isolate', colors.bgMain].join(' ')}>
+        <div
+            ref={contactRef}
+            id="contacts"
+            className={['relative isolate', colors.bgMain, 'pt-10'].join(' ')}
+        >
             <SectionHeader
                 title="Talk to Liv"
                 hideNavBackground={hideNavBackground}
@@ -69,7 +73,6 @@ const Contact = () => {
                 <div
                     className={[
                         'relative px-6 pb-20 pt-24 sm:pt-32 lg:static lg:px-8  order-last',
-                        // 'lg:py-48',
                         paddingBottom,
                     ].join(' ')}
                 >
@@ -196,13 +199,7 @@ const Contact = () => {
                             </dl> */}
                     </div>
                 </div>
-                <form
-                    className={[
-                        'px-6 pb-0 pt-4 sm:pb-32 lg:px-8',
-                        //   'lg:py-48',
-                        paddingBottom,
-                    ].join(' ')}
-                >
+                <form className={['px-6 pb-0 pt-4 sm:pb-32 lg:px-8', paddingBottom].join(' ')}>
                     <div className="mx-auto max-w-xl lg:mr-0 lg:max-w-lg">
                         <p className={[themes.historyBody, 'pb-10'].join(' ')}>
                             I am a Junior at Riverside High School, Durham, NC. I am active in the

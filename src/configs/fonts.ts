@@ -5,7 +5,7 @@ export const fonts = {
     descriptionTitle: 'text-base leading-7',
     descriptionData: 'text-3xl lg:text-5xl font-semibold tracking-tight',
     historyTitle: 'text-4xl leading-7',
-    historyBody: 'text-xl leading-7 font-normal',
+    historyBody: 'text-xl leading-relaxed font-normal',
     navLink: 'text-lg font-semiBold',
     mobileNavText: 'text-lg font-semibold',
     captionXs: 'text-sm font-normal tracking-tight',

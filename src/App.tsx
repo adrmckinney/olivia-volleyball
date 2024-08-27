@@ -3,6 +3,7 @@ import Footer from './components/Footer';
 import NavBar from './components/header/NavBar';
 import History from './components/history/History';
 import Landing from './components/landing/Landing';
+import SingleTestimonial from './components/testimonials/SingleTestimonial';
 import Vidoes from './components/vidoes/Vidoes';
 import { colors } from './configs/colors';
 
@@ -20,6 +21,8 @@ function App() {
                 <History />
 
                 {/* <About /> */}
+
+                <SingleTestimonial />
 
                 <Contact />
 

@@ -3,10 +3,17 @@ const Jammers2024 = () => {
         <>
             <p>
                 Olivia tried out for the Jammers Volleyball Club and was selected in the first round
-                for their top team as the main setter. Demonstrating strong leadership skills, she
-                served as the team's captain throughout the season. Recognizing her exceptional
-                performance and dedication, the club honored Olivia as the Most Valuable Player for
-                both her team.
+                for their 15U top team as the main setter.
+            </p>
+            &nbsp;
+            <p>
+                Demonstrating strong leadership skills, she served as the team's captain throughout
+                the season.
+            </p>
+            &nbsp;
+            <p>
+                Recognizing her exceptional performance and dedication, the club honored Olivia as
+                the Most Valuable Player for both her team.
             </p>
         </>
     );

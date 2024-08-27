@@ -6,7 +6,7 @@ import HistoryImageWithCaption from './HistoryImageWithCaption';
 const Riverside2023 = () => {
     return (
         <div className="space-y-8 pb-4">
-            <p className={[themes.mobileHistoryBody].join(' ')}>
+            <p className={[themes.mobileHistoryBody, themes.historyBody].join(' ')}>
                 During her sophomore year at Riverside high school, Olivia played backrow setter for
                 JV. Near the end of the season, Olivia was moved up to play varsity for a match.
             </p>
