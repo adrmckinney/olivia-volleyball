@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 const footerNavigation = {
     solutions: [
         { name: 'Hosting', href: '#' },
