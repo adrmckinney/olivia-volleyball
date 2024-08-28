@@ -1,9 +1,13 @@
-import { ChangeEvent, useContext, useState } from 'react';
+import emailjs from '@emailjs/browser';
+import { ChangeEvent, FormEvent, useContext, useState } from 'react';
 import { colors } from '../../configs/colors';
 import { NavigationContext } from '../../context/NavigationProvider';
 // import portrait2024BallTossCut from '../../images/portrait2024BallTossCut.png';
+import { emailJsConfigs } from '../../configs/emailJs';
+import { fontFamilies } from '../../configs/fontFamilies';
 import { themes } from '../../configs/themes';
 import portrait2024BallToss from '../../images/portrait2024BallToss.jpeg';
+import ConditionalRender from '../../sharedComponents/ConditionalRender';
 import TextField from '../../sharedComponents/Inputs/TextField';
 import SectionHeader from '../../sharedComponents/SectionHeader';
 
@@ -27,9 +31,18 @@ const initialValues: Input = {
     message: '',
 };
 
+type ContactMessageStatus = {
+    status: 'ok' | 'error' | '';
+    message: string;
+};
+
 const Contact = () => {
     const { contactRef, hideNavBackground } = useContext(NavigationContext);
     const [input, setInput] = useState(initialValues);
+    const [messageSentStatus, setMessageSentStatus] = useState<ContactMessageStatus>({
+        status: '',
+        message: '',
+    });
 
     const formFields: FormField[] = [
         {
@@ -55,6 +68,29 @@ const Contact = () => {
 
         const newInput = { ...input, [name]: value };
         setInput(newInput);
+    };
+
+    const handleSubmit = (e: FormEvent) => {
+        e.preventDefault();
+
+        emailjs
+            .send(
+                emailJsConfigs.services.vb,
+                emailJsConfigs.templates.contactPlayer,
+                input as unknown as Record<string, unknown>,
+                process.env.REACT_APP_EMAIL_JS_PUBLIC_KEY
+            )
+            .then(
+                () => {
+                    setMessageSentStatus({ status: 'ok', message: 'Message sent' });
+                },
+                (error: unknown) => {
+                    setMessageSentStatus({
+                        status: 'error',
+                        message: `Message failed to send: ${error}`,
+                    });
+                }
+            );
     };
 
     const paddingBottom = 'lg:py-10';
@@ -199,7 +235,10 @@ const Contact = () => {
                             </dl> */}
                     </div>
                 </div>
-                <form className={['px-6 pb-0 pt-4 sm:pb-32 lg:px-8', paddingBottom].join(' ')}>
+                <form
+                    onSubmit={handleSubmit}
+                    className={['px-6 pb-0 pt-4 sm:pb-32 lg:px-8', paddingBottom].join(' ')}
+                >
                     <div className="mx-auto max-w-xl lg:mr-0 lg:max-w-lg">
                         <p className={[themes.historyBody, 'pb-10'].join(' ')}>
                             I am a Junior at Riverside High School, Durham, NC. I am active in the
@@ -220,9 +259,22 @@ const Contact = () => {
                                 />
                             ))}
                         </div>
-                        <div className="mt-8 flex justify-end">
+                        <div className="mt-8 flex justify-end items-center">
+                            <ConditionalRender condition={!!messageSentStatus.status.length}>
+                                <p
+                                    className={[
+                                        'overflow-auto pr-10',
+                                        fontFamilies.body,
+                                        messageSentStatus.status === 'ok'
+                                            ? 'text-green-500 text-base'
+                                            : 'text-red-500 text-sm',
+                                    ].join(' ')}
+                                >
+                                    {messageSentStatus.message}
+                                </p>
+                            </ConditionalRender>
                             <button
-                                type="button"
+                                type="submit"
                                 className="rounded-md bg-purple-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-purple-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
                             >
                                 Send message
