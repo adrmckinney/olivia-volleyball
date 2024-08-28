@@ -87,7 +87,7 @@ const Contact = () => {
                 (error: unknown) => {
                     setMessageSentStatus({
                         status: 'error',
-                        message: `Message failed to send: ${error}`,
+                        message: `Message failed to send: ${JSON.stringify(error)}`,
                     });
                 }
             );
