@@ -19,7 +19,7 @@ const useFetchCSVData = () => {
 
             return response.data;
         } catch (error) {
-            console.error('Error fetching CSV data:', error);
+            console.error('Error fetching CSV data:', JSON.stringify(error));
             return error as Error;
         }
     };

@@ -1,11 +1,12 @@
 import emailjs from '@emailjs/browser';
 import { ChangeEvent, FormEvent, useContext, useState } from 'react';
 import { colors } from '../../configs/colors';
-import { NavigationContext } from '../../context/NavigationProvider';
-// import portrait2024BallTossCut from '../../images/portrait2024BallTossCut.png';
 import { emailJsConfigs } from '../../configs/emailJs';
 import { fontFamilies } from '../../configs/fontFamilies';
 import { themes } from '../../configs/themes';
+import { NavigationContext } from '../../context/NavigationProvider';
+import useForm from '../../hooks/useForm';
+import useMessageFormValidation from '../../hooks/useMessageFormValidation';
 import portrait2024BallToss from '../../images/portrait2024BallToss.jpeg';
 import ConditionalRender from '../../sharedComponents/ConditionalRender';
 import TextField from '../../sharedComponents/Inputs/TextField';
@@ -17,17 +18,22 @@ type FormField = {
     label: string;
 };
 
-interface Input {
+export type MessageInput = {
     firstName: string;
     lastName: string;
     email: string;
     message: string;
-}
+};
 
-const initialValues: Input = {
+const initialValues: MessageInput = {
     firstName: '',
     lastName: '',
     email: '',
+    message: '',
+};
+
+const initialMessageStatusValues: ContactMessageStatus = {
+    status: '',
     message: '',
 };
 
@@ -38,11 +44,20 @@ type ContactMessageStatus = {
 
 const Contact = () => {
     const { contactRef, hideNavBackground } = useContext(NavigationContext);
-    const [input, setInput] = useState(initialValues);
-    const [messageSentStatus, setMessageSentStatus] = useState<ContactMessageStatus>({
-        status: '',
-        message: '',
-    });
+    const {
+        input,
+        touched,
+        setInput,
+        handleChange,
+        handleOnBlur,
+        checkAndTriggerValidation,
+        resetTouchedFields,
+    } = useForm(initialValues);
+    const { validations } = useMessageFormValidation(input, touched);
+
+    const [messageSentStatus, setMessageSentStatus] = useState<ContactMessageStatus>(
+        initialMessageStatusValues
+    );
 
     const formFields: FormField[] = [
         {
@@ -63,11 +78,14 @@ const Contact = () => {
         },
     ];
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
+    const handleFormChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        if (messageSentStatus.status === 'ok') {
+            setMessageSentStatus(initialMessageStatusValues);
+        }
 
-        const newInput = { ...input, [name]: value };
-        setInput(newInput);
+        handleChange(e);
+
+        checkAndTriggerValidation(validations);
     };
 
     const handleSubmit = (e: FormEvent) => {
@@ -83,6 +101,8 @@ const Contact = () => {
             .then(
                 () => {
                     setMessageSentStatus({ status: 'ok', message: 'Message sent' });
+                    setInput(initialValues);
+                    resetTouchedFields(formFields);
                 },
                 (error: unknown) => {
                     setMessageSentStatus({
@@ -91,6 +111,11 @@ const Contact = () => {
                     });
                 }
             );
+    };
+
+    const checkIfFormValid = () => {
+        const formInvalid = Object.values(validations).some(validation => !validation.valid);
+        return formInvalid;
     };
 
     const paddingBottom = 'lg:py-10';
@@ -251,11 +276,13 @@ const Contact = () => {
                                     key={field.name}
                                     name={field.name}
                                     label={field.label}
-                                    handleChange={handleChange}
+                                    handleChange={handleFormChange}
                                     type={field.name === 'email' ? 'email' : 'text'}
                                     value={input[field.name]}
                                     isTextArea={field.name === 'message'}
                                     autoCapitalize={field.name === 'email' ? 'none' : 'sentences'}
+                                    handleOnBlur={handleOnBlur}
+                                    validation={validations[field.name]}
                                 />
                             ))}
                         </div>
@@ -266,7 +293,7 @@ const Contact = () => {
                                         'overflow-auto pr-10',
                                         fontFamilies.body,
                                         messageSentStatus.status === 'ok'
-                                            ? 'text-green-500 text-base'
+                                            ? 'text-green-700 text-base'
                                             : 'text-red-500 text-sm',
                                     ].join(' ')}
                                 >
@@ -275,7 +302,13 @@ const Contact = () => {
                             </ConditionalRender>
                             <button
                                 type="submit"
-                                className="rounded-md bg-purple-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-purple-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                                className={[
+                                    'rounded-md  px-3.5 py-2.5 text-center text-sm font-semibold  shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ',
+                                    checkIfFormValid()
+                                        ? 'bg-gray-500 text-gray-900 cursor-not-allowed'
+                                        : 'bg-purple-600 hover:bg-purple-700 text-white focus-visible:outline-purple-500',
+                                ].join(' ')}
+                                disabled={checkIfFormValid()}
                             >
                                 Send message
                             </button>
