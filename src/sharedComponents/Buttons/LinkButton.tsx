@@ -5,7 +5,7 @@ interface Props {
     onClick?: (e: React.FormEvent<HTMLFormElement> | any) => void;
     classNames?: string;
     styles?: React.CSSProperties;
-    showBackgroundColor?: boolean;
+    showBackgroundColor?: boolean; // showBackgrounColor assumes you are passing in a bg-color in classNames
 }
 
 const LinkButton = ({

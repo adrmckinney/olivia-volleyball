@@ -81,11 +81,6 @@ const NavBar = () => {
                                                             : '',
                                                     ].join(' ')}
                                                     showBackgroundColor={item.current}
-                                                    // styles={
-                                                    //     item.current
-                                                    //         ? { backgroundColor: '#c084fc' }
-                                                    //         : { backgroundColor: 'transparent' }
-                                                    // }
                                                     onClick={() => handleNavClick(item.key)}
                                                 />
                                             ))}
