@@ -75,10 +75,10 @@ const NavBar = () => {
                                                         themes.navLinkButton({
                                                             isActive: item.current,
                                                         }),
+                                                        'px-6 py-1',
                                                         item.current
-                                                            ? 'text-white bg-purple-400 bg-opacity-30 rounded-[9999px] px-6 py-1'
-                                                            : // animate-grow-once
-                                                              '',
+                                                            ? 'text-white bg-purple-400 bg-opacity-30 rounded-[999px]'
+                                                            : '',
                                                     ].join(' ')}
                                                     onClick={() => handleNavClick(item.key)}
                                                 />

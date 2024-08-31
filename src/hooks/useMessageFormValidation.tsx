@@ -67,7 +67,6 @@ const useMessageFormValidation = (
             }));
         }
         if (touched?.message) {
-            console.log('message touched');
             setMessageError(state => ({
                 ...state,
                 valid: !!message?.length,
