@@ -11,6 +11,7 @@ const useFetchCSVData = () => {
         parser: (csvString: string) => Record<string, any>[]
     ): Promise<string | Error> => {
         try {
+            console.log('csvUrl', csvUrl);
             const response = await axios.get(csvUrl);
             setCsvData(response.data);
 
