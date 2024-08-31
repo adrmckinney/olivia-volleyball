@@ -12,6 +12,10 @@ const useFetchCSVData = () => {
     ): Promise<string | Error> => {
         try {
             console.log('csvUrl', csvUrl);
+            console.log(
+                'process.env.REACT_APP_JAMMERS_2024_URL',
+                process.env.REACT_APP_JAMMERS_2024_URL
+            );
             const response = await axios.get(csvUrl);
             setCsvData(response.data);
 
