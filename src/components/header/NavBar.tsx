@@ -75,11 +75,17 @@ const NavBar = () => {
                                                         themes.navLinkButton({
                                                             isActive: item.current,
                                                         }),
-                                                        'px-6 py-1',
+                                                        'px-6 py-1 rounded-[999px]',
                                                         item.current
-                                                            ? 'text-white bg-purple-400 bg-opacity-30 rounded-lg'
+                                                            ? 'text-white bg-purple-400/30'
                                                             : '',
                                                     ].join(' ')}
+                                                    showBackgroundColor={item.current}
+                                                    // styles={
+                                                    //     item.current
+                                                    //         ? { backgroundColor: '#c084fc' }
+                                                    //         : { backgroundColor: 'transparent' }
+                                                    // }
                                                     onClick={() => handleNavClick(item.key)}
                                                 />
                                             ))}
