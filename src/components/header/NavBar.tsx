@@ -77,7 +77,7 @@ const NavBar = () => {
                                                         }),
                                                         'px-6 py-1',
                                                         item.current
-                                                            ? 'text-white bg-purple-400 bg-opacity-30 rounded-[999px]'
+                                                            ? 'text-white bg-purple-400 bg-opacity-30 rounded-lg'
                                                             : '',
                                                     ].join(' ')}
                                                     onClick={() => handleNavClick(item.key)}
