@@ -25,9 +25,8 @@ const LinkButton = ({
                 'shadow-none',
                 'focus:ring-0',
                 'outline-none',
-                'rounded-none',
                 classNames,
-                showBackgroundColor ? '' : 'bg-transparent',
+                showBackgroundColor ? '' : 'bg-transparent rounded-none',
             ].join(' ')}
             style={styles}
         >
