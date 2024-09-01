@@ -1,8 +1,8 @@
 import { useContext, useEffect } from 'react';
 import useFetchCSVData from '../../api/FetchCSVData';
+import useFetchPuppet from '../../api/useFetchPuppet';
 import { themes } from '../../configs/themes';
 import { NavigationContext } from '../../context/NavigationProvider';
-import { parseCsvSheetData } from '../../helpers/csvHelpers/parseCsvSheetData';
 import useGetWindowWidth from '../../hooks/useGetWindowWidth';
 import portrait2024Cut from '../../images/Portrait2024Cut.png';
 import ConditionalRender from '../../sharedComponents/ConditionalRender';
@@ -15,9 +15,11 @@ const Landing = () => {
     const { fetchAndParseCsvData } = useFetchCSVData();
     const csvUrl: string = process.env.REACT_APP_JAMMERS_2024_URL || '';
     const { currentTailwindBreakpoint } = useGetWindowWidth();
+    const { getQuotes } = useFetchPuppet();
 
     useEffect(() => {
-        fetchAndParseCsvData(csvUrl, parseCsvSheetData);
+        // fetchAndParseCsvData(csvUrl, parseCsvSheetData);
+        // getQuotes();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
