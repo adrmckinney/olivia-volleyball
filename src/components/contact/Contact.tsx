@@ -1,5 +1,6 @@
 import emailjs from '@emailjs/browser';
 import { ChangeEvent, FormEvent, useContext, useState } from 'react';
+import portrait2024BallToss from '../../assets/images/portrait2024BallToss.jpeg';
 import { colors } from '../../configs/colors';
 import { emailJsConfigs } from '../../configs/emailJs';
 import { fontFamilies } from '../../configs/fontFamilies';
@@ -7,7 +8,6 @@ import { themes } from '../../configs/themes';
 import { NavigationContext } from '../../context/NavigationProvider';
 import useForm from '../../hooks/useForm';
 import useMessageFormValidation from '../../hooks/useMessageFormValidation';
-import portrait2024BallToss from '../../images/portrait2024BallToss.jpeg';
 import ConditionalRender from '../../sharedComponents/ConditionalRender';
 import TextField from '../../sharedComponents/Inputs/TextField';
 import SectionHeader from '../../sharedComponents/SectionHeader';
@@ -96,7 +96,7 @@ const Contact = () => {
                 emailJsConfigs.services.vb,
                 emailJsConfigs.templates.contactPlayer,
                 input as unknown as Record<string, unknown>,
-                process.env.REACT_APP_EMAIL_JS_PUBLIC_KEY
+                import.meta.env.VITE_EMAIL_JS_PUBLIC_KEY
             )
             .then(
                 () => {

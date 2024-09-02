@@ -4,7 +4,7 @@ import NavBar from './components/header/NavBar';
 import History from './components/history/History';
 import Landing from './components/landing/Landing';
 import SingleTestimonial from './components/testimonials/SingleTestimonial';
-import Vidoes from './components/vidoes/Vidoes';
+import Videos from './components/videos/Videos';
 import { colors } from './configs/colors';
 
 function App() {
@@ -16,7 +16,7 @@ function App() {
 
                 {/* <Stats /> */}
 
-                <Vidoes />
+                <Videos />
 
                 <History />
 
