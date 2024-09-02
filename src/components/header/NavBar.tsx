@@ -146,7 +146,6 @@ const NavBar = () => {
                                                     colors.bgMobileNavMenuPopover,
                                                     colors.textGeneric,
                                                 ].join(' ')}
-                                                onClick={() => console.log('x btn clicked')}
                                             >
                                                 <span className="absolute -inset-0.5" />
                                                 <span className="sr-only">Close menu</span>
