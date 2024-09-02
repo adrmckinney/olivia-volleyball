@@ -1,4 +1,8 @@
 import { useContext, useState } from 'react';
+import podcast from '../../assets/images/youTubeThumbnails/podcast.png';
+import reflections from '../../assets/images/youTubeThumbnails/reflections.png';
+import seeingOurselves from '../../assets/images/youTubeThumbnails/seeingOurselves.png';
+import senegal from '../../assets/images/youTubeThumbnails/senegal.png';
 import { colors } from '../../configs/colors';
 import { fonts } from '../../configs/fonts';
 import { themes } from '../../configs/themes';
@@ -7,10 +11,6 @@ import useGetWindowWidth from '../../hooks/useGetWindowWidth';
 import Carousel from '../../sharedComponents/Carousel/Carousel';
 import ConditionalRender from '../../sharedComponents/ConditionalRender';
 import SectionHeader from '../../sharedComponents/SectionHeader';
-import podcast from './../../images/youTubeThumbnails/podcast.png';
-import reflections from './../../images/youTubeThumbnails/reflections.png';
-import seeingOurselves from './../../images/youTubeThumbnails/seeingOurselves.png';
-import senegal from './../../images/youTubeThumbnails/senegal.png';
 
 export type VideoData = {
     title: string;
@@ -24,7 +24,7 @@ type VideoKeys = 'setting_outside' | 'setting_right_side' | 'setting_middle' | '
 
 export type Direction = 'previous' | 'next';
 
-const Vidoes = () => {
+const Videos = () => {
     const { videosRef, hideNavBackground } = useContext(NavigationContext);
     const [playVideoIdx, setPlayVideoIdx] = useState<number | null>(null);
     const { currentTailwindBreakpoint } = useGetWindowWidth();
@@ -89,7 +89,7 @@ const Vidoes = () => {
             id="videos"
             className="max-w-[1200px] ml-auto mr-auto mt-16 3xl:max-w-[1600px]"
         >
-            <SectionHeader title="Vidoes" hideNavBackground={hideNavBackground} />
+            <SectionHeader title="Videos" hideNavBackground={hideNavBackground} />
             <Carousel
                 show={handleVisibleVideos()}
                 infiniteLoop={true}
@@ -143,4 +143,4 @@ const Vidoes = () => {
     );
 };
 
-export default Vidoes;
+export default Videos;

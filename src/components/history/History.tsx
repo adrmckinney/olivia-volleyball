@@ -1,11 +1,11 @@
 import { ReactNode, useContext, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import dsaBulldog from '../../assets/images/dsaBulldog.png';
+import jammers from '../../assets/images/jammers.png';
+import triangle from '../../assets/images/trianglevbLogo.png';
 import { NavigationContext } from '../../context/NavigationProvider';
 import ConditionalRender from '../../sharedComponents/ConditionalRender';
 import SectionHeader from '../../sharedComponents/SectionHeader';
-import dsaBulldog from './../../images/dsaBulldog.png';
-import jammers from './../../images/jammers.png';
-import triangle from './../../images/trianglevbLogo.png';
 import DSA from './DSA';
 import HistoryDetails from './HistoryDetails';
 import HistoryTransition from './HistoryTransition';

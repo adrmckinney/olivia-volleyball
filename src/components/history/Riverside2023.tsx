@@ -1,6 +1,6 @@
+import mostImprovedPlayer from '../../assets/images/mostImprovedPlayer.jpeg';
+import playerOfTheMatch2023 from '../../assets/images/playerOfTheMatch2023.jpeg';
 import { themes } from '../../configs/themes';
-import mostImprovedPlayer from './../../images/mostImprovedPlayer.jpeg';
-import playerOfTheMatch2023 from './../../images/playerOfTheMatch2023.jpeg';
 import HistoryImageWithCaption from './HistoryImageWithCaption';
 
 const Riverside2023 = () => {
