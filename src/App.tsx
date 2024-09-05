@@ -3,6 +3,7 @@ import Footer from './components/Footer';
 import NavBar from './components/header/NavBar';
 import History from './components/history/History';
 import Landing from './components/landing/Landing';
+import RiversSchedule2024 from './components/schedules/RiversSchedule2024';
 import SingleTestimonial from './components/testimonials/SingleTestimonial';
 import Videos from './components/videos/Videos';
 import { colors } from './configs/colors';
@@ -15,6 +16,8 @@ function App() {
                 <Landing />
 
                 {/* <Stats /> */}
+
+                <RiversSchedule2024 />
 
                 <Videos />
 
