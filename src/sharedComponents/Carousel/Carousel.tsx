@@ -26,7 +26,6 @@ const Carousel = ({
     const carouselRef = useRef<HTMLDivElement>(null);
     const [currentIndex, setCurrentIndex] = useState(infiniteLoop ? show : 0);
     const [length, setLength] = useState(children.length);
-    console.log('currentIndex', currentIndex);
     const [isRepeating, setIsRepeating] = useState(infiniteLoop && children.length > show);
     const [transitionEnabled, setTransitionEnabled] = useState(true);
 
@@ -138,11 +137,11 @@ const Carousel = ({
 
         const baseIndex = currentIndex - show < 0 ? indexToColor : currentIndex - show;
         const algorithm = infiniteLoop ? baseIndex === index : currentIndex === index;
-        return algorithm ? 'bg-purple-500' : 'bg-gray-500';
+
+        return algorithm ? 'bg-purple-500' : `bg-gray-500`;
     };
 
     const scrollToCue = (index: number) => {
-        console.log('index', index);
         // Prevents the carousel from doing anything if we are already on that cue
         if (currentIndex === index + 1) return;
 
