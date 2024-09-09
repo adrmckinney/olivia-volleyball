@@ -2,20 +2,19 @@ import axios from 'axios';
 import { useState } from 'react';
 
 const useFetchCSVData = () => {
-    const [csvData, setCsvData] = useState<Record<string, any>[]>([]);
+    const [csvData, setCsvData] = useState<Record<string, unknown>[]>([]);
     /* eslint-disable @typescript-eslint/no-unused-vars */
     const [parsedData, setParsedData] = useState([]);
 
     const fetchAndParseCsvData = async (
         csvUrl: string,
-        parser: (csvString: string) => Record<string, any>[]
+        parser: (csvString: string) => Record<string, unknown>[]
     ): Promise<string | Error> => {
         try {
             const response = await axios.get(csvUrl);
             setCsvData(response.data);
-
+            /* eslint-disable @typescript-eslint/no-unused-vars */
             const parsed = parser(response.data);
-            console.log('parsed', parsed);
 
             return response.data;
         } catch (error) {
