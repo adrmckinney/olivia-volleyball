@@ -1,10 +1,4 @@
 import { useContext, useState } from 'react';
-import podcast from '../../assets/images/youTubeThumbnails/podcast.png';
-import reflections from '../../assets/images/youTubeThumbnails/reflections.png';
-import seeingOurselves from '../../assets/images/youTubeThumbnails/seeingOurselves.png';
-import senegal from '../../assets/images/youTubeThumbnails/senegal.png';
-import { colors } from '../../configs/colors';
-import { fonts } from '../../configs/fonts';
 import { themes } from '../../configs/themes';
 import { NavigationContext } from '../../context/NavigationProvider';
 import useGetWindowWidth from '../../hooks/useGetWindowWidth';
@@ -15,12 +9,16 @@ import SectionHeader from '../../sharedComponents/SectionHeader';
 export type VideoData = {
     title: string;
     key: VideoKeys;
-    videoUrl: string;
-    thumbnail: string;
-    customThumbnail: string;
+    videoId: string;
 };
 
-type VideoKeys = 'setting_outside' | 'setting_right_side' | 'setting_middle' | 'digs' | 'dumps';
+type VideoKeys =
+    | 'setting_outside'
+    | 'setting_right_side'
+    | 'setting_middle'
+    | 'back_row'
+    | 'digs'
+    | 'dumps';
 
 export type Direction = 'previous' | 'next';
 
@@ -33,37 +31,22 @@ const Videos = () => {
         {
             title: 'Outside Sets',
             key: 'setting_outside',
-            videoUrl: 'https://www.youtube.com/embed/hy1eClkGDp0?autoplay=1&mute=0',
-            thumbnail: 'http://i.ytimg.com/vi/hy1eClkGDp0/maxresdefault.jpg',
-            customThumbnail: reflections,
+            videoId: '2q17lN0YfZ0',
         },
         {
             title: 'Right side sets',
             key: 'setting_right_side',
-            videoUrl: 'https://www.youtube.com/embed/5sM2DhPpoBA?autoplay=1&mute=0',
-            thumbnail: 'http://i.ytimg.com/vi/5sM2DhPpoBA/hqdefault.jpg',
-            customThumbnail: seeingOurselves,
+            videoId: 'ghEx3aSvp04',
         },
         {
             title: 'Middle sets',
             key: 'setting_middle',
-            videoUrl: 'https://www.youtube.com/embed/aZmX-PY763g?autoplay=1&mute=0',
-            thumbnail: 'http://i.ytimg.com/vi/aZmX-PY763g/maxresdefault.jpg',
-            customThumbnail: senegal,
+            videoId: 'Dgr9mZCS9pU',
         },
         {
-            title: 'Digs',
-            key: 'digs',
-            videoUrl: 'https://www.youtube.com/embed/O1KDlzim_OE?autoplay=1&mute=0',
-            thumbnail: 'http://i.ytimg.com/vi/O1KDlzim_OE/maxresdefault.jpg',
-            customThumbnail: podcast,
-        },
-        {
-            title: 'Dumps',
-            key: 'setting_outside',
-            videoUrl: 'https://www.youtube.com/embed/hy1eClkGDp0?autoplay=1&mute=0',
-            thumbnail: 'http://i.ytimg.com/vi/hy1eClkGDp0/maxresdefault.jpg',
-            customThumbnail: reflections,
+            title: 'Back row sets',
+            key: 'back_row',
+            videoId: '9p_thUdDQQI',
         },
     ];
 
@@ -87,7 +70,10 @@ const Videos = () => {
         <div
             ref={videosRef}
             id="videos"
-            className="max-w-[1200px] ml-auto mr-auto mt-16 3xl:max-w-[1600px]"
+            className={[
+                'max-w-[1200px] ml-auto mr-auto 3xl:max-w-[1600px]',
+                'mt-16 lg:mt-4 lg:scroll-m-0',
+            ].join(' ')}
         >
             <SectionHeader title="Videos" hideNavBackground={hideNavBackground} />
             <Carousel
@@ -102,14 +88,8 @@ const Videos = () => {
                             condition={playVideoIdx === idx}
                             isNullRender
                             falseRender={
-                                // <img
-                                //     src={video.customThumbnail}
-                                //     alt={video.title}
-                                //     className="shadow-2xl rounded-md object-cover object-center"
-                                //     onClick={() => setPlayVideoIdx(idx)}
-                                // />
                                 <div
-                                    className="flex justify-center items-center aspect-video bg-gradient-to-r from-purple-600 to-gray-300 rounded-md"
+                                    className="flex justify-center items-center aspect-video bg-gray-300 rounded-md"
                                     onClick={() => setPlayVideoIdx(idx)}
                                 >
                                     <p className={[themes.videoThumbnailTitle].join(' ')}>
@@ -119,23 +99,16 @@ const Videos = () => {
                             }
                         >
                             <iframe
-                                id="ytplayer"
+                                id={`ytplayer-${video.key}`}
                                 title={video.title}
-                                src={video.videoUrl}
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;"
+                                width="560"
+                                height="315"
+                                src={`https://www.youtube.com/embed/${video.videoId}?autoplay=0&mute=0`}
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; web-share;"
                                 allowFullScreen
                                 className="shadow-2xl rounded-md object-cover object-left border-none w-full h-full"
                             />
                         </ConditionalRender>
-                        <p
-                            className={[
-                                'text-center pt-2',
-                                colors.textGeneric,
-                                fonts.captionMd,
-                            ].join(' ')}
-                        >
-                            {`${video.title}`}
-                        </p>
                     </div>
                 ))}
             </Carousel>
