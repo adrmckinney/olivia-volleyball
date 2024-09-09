@@ -12,6 +12,7 @@ type Props = {
     infiniteLoop?: boolean;
     showCue?: boolean;
     showScrollArrows?: boolean;
+    clickableCue?: boolean;
 };
 
 const Carousel = ({
@@ -20,11 +21,12 @@ const Carousel = ({
     infiniteLoop = false,
     showCue = false,
     showScrollArrows = true,
+    clickableCue = true,
 }: Props) => {
     const carouselRef = useRef<HTMLDivElement>(null);
     const [currentIndex, setCurrentIndex] = useState(infiniteLoop ? show : 0);
     const [length, setLength] = useState(children.length);
-
+    console.log('currentIndex', currentIndex);
     const [isRepeating, setIsRepeating] = useState(infiniteLoop && children.length > show);
     const [transitionEnabled, setTransitionEnabled] = useState(true);
 
@@ -110,7 +112,7 @@ const Carousel = ({
     };
 
     const renderExtraPrev = () => {
-        let output = [];
+        const output = [];
         for (let i = 0; i < show; i++) {
             output.push(children[length - 1 - i]);
         }
@@ -119,7 +121,7 @@ const Carousel = ({
     };
 
     const renderExtraNext = () => {
-        let output = [];
+        const output = [];
         for (let i = 0; i < show; i++) {
             output.push(children[i]);
         }
@@ -137,6 +139,19 @@ const Carousel = ({
         const baseIndex = currentIndex - show < 0 ? indexToColor : currentIndex - show;
         const algorithm = infiniteLoop ? baseIndex === index : currentIndex === index;
         return algorithm ? 'bg-purple-500' : 'bg-gray-500';
+    };
+
+    const scrollToCue = (index: number) => {
+        console.log('index', index);
+        // Prevents the carousel from doing anything if we are already on that cue
+        if (currentIndex === index + 1) return;
+
+        // Update the currentIndex to the cue's index
+        setCurrentIndex(index + 1);
+
+        // If you want to disable transition while moving to the cue index (optional)
+        // setTransitionEnabled(false);
+        setTimeout(() => setTransitionEnabled(true), 100);
     };
 
     return (
@@ -184,12 +199,14 @@ const Carousel = ({
                 </ConditionalRender>
             </div>
             <ConditionalRender condition={showCue}>
-                <div className="flex justify-center items-center space-x-4 pt-8">
+                <div className="flex justify-center items-center space-x-6 pt-8">
                     {[...Array(length)].map((_, index) => {
                         return (
                             <div
                                 key={index}
                                 className={['h-4 w-4 rounded-full', getCueColor(index)].join(' ')}
+                                onClick={() => (clickableCue ? scrollToCue(index) : {})}
+                                style={{ cursor: clickableCue ? 'pointer' : 'default' }}
                             />
                         );
                     })}
