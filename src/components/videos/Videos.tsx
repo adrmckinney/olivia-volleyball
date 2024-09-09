@@ -109,15 +109,6 @@ const Videos = () => {
                                 className="shadow-2xl rounded-md object-cover object-left border-none w-full h-full"
                             />
                         </ConditionalRender>
-                        {/* <p
-                            className={[
-                                'text-center pt-2',
-                                colors.textGeneric,
-                                fonts.captionMd,
-                            ].join(' ')}
-                        >
-                            {`${video.title}`}
-                        </p> */}
                     </div>
                 ))}
             </Carousel>
