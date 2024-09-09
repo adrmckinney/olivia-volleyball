@@ -1,12 +1,11 @@
 import mostImprovedPlayer from '../../assets/images/mostImprovedPlayer.jpeg';
 import playerOfTheMatch2023 from '../../assets/images/playerOfTheMatch2023.jpeg';
-import { themes } from '../../configs/themes';
 import HistoryImageWithCaption from './HistoryImageWithCaption';
 
 const Riverside2023 = () => {
     return (
         <div className="space-y-8 pb-4">
-            <p className={[themes.mobileHistoryBody, themes.historyBody].join(' ')}>
+            <p>
                 During her sophomore year at Riverside high school, Olivia played backrow setter for
                 JV. Near the end of the season, Olivia was moved up to play varsity for a match.
             </p>
