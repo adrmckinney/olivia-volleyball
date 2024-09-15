@@ -7,16 +7,10 @@ import { HistoryDataType, SelectedHistory } from './History';
 type Props = {
     historyItem: HistoryDataType;
     handleSelection: (selectedHistory: SelectedHistory) => void;
-    isSelected: boolean;
     historyContent: ReactNode;
 };
 
-const SmallerScreenHistorySelector = ({
-    historyItem,
-    handleSelection,
-    isSelected,
-    historyContent,
-}: Props) => {
+const SmallerScreenHistorySelector = ({ historyItem, handleSelection, historyContent }: Props) => {
     return (
         <>
             {/* <div
@@ -25,7 +19,6 @@ const SmallerScreenHistorySelector = ({
                 ].join(' ')}
             /> */}
             <ExpandableDisclosure
-                show={isSelected}
                 title={
                     <div className={['flex justify-between items-center w-full'].join(' ')}>
                         <p

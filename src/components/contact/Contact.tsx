@@ -133,7 +133,7 @@ const Contact = () => {
             <div className="mx-auto grid max-w-7xl grid-cols-1 lg:grid-cols-2">
                 <div
                     className={[
-                        'relative px-6 pb-20 pt-24 sm:pt-32 lg:static lg:px-8  order-last',
+                        'relative px-6 pb-20 pt-24 sm:pt-32 lg:static lg:px-8 order-last',
                         paddingBottom,
                     ].join(' ')}
                 >
@@ -199,65 +199,6 @@ const Contact = () => {
                                 ].join(' ')}
                             />
                         </div>
-
-                        {/* <h2 className="text-3xl font-bold tracking-tight text-white">
-                            Talk to Liv
-                        </h2> */}
-                        {/* <p className="mt-6 text-lg leading-8 text-gray-300">
-                            Proin volutpat consequat porttitor cras nullam gravida at. Orci molestie
-                            a eu arcu. Sed ut tincidunt integer elementum id sem. Arcu sed malesuada
-                            et magna.
-                        </p> */}
-                        {/* <dl className="mt-10 space-y-4 text-base leading-7 text-gray-300">
-                                <div className="flex gap-x-4">
-                                    <dt className="flex-none">
-                                        <span className="sr-only">Address</span>
-                                        <BuildingOffice2Icon
-                                            aria-hidden="true"
-                                            className="h-7 w-6 text-gray-400"
-                                        />
-                                    </dt>
-                                    <dd>
-                                        545 Mavis Island
-                                        <br />
-                                        Chicago, IL 99191
-                                    </dd>
-                                </div>
-                                <div className="flex gap-x-4">
-                                    <dt className="flex-none">
-                                        <span className="sr-only">Telephone</span>
-                                        <PhoneIcon
-                                            aria-hidden="true"
-                                            className="h-7 w-6 text-gray-400"
-                                        />
-                                    </dt>
-                                    <dd>
-                                        <a
-                                            href="tel:+1 (555) 234-5678"
-                                            className="hover:text-white"
-                                        >
-                                            +1 (555) 234-5678
-                                        </a>
-                                    </dd>
-                                </div>
-                                <div className="flex gap-x-4">
-                                    <dt className="flex-none">
-                                        <span className="sr-only">Email</span>
-                                        <EnvelopeIcon
-                                            aria-hidden="true"
-                                            className="h-7 w-6 text-gray-400"
-                                        />
-                                    </dt>
-                                    <dd>
-                                        <a
-                                            href="mailto:hello@example.com"
-                                            className="hover:text-white"
-                                        >
-                                            hello@example.com
-                                        </a>
-                                    </dd>
-                                </div>
-                            </dl> */}
                     </div>
                 </div>
                 <form
@@ -266,9 +207,9 @@ const Contact = () => {
                 >
                     <div className="mx-auto max-w-xl lg:mr-0 lg:max-w-lg">
                         <p className={[themes.historyBody, 'pb-10'].join(' ')}>
-                            I am a Junior at Riverside High School, Durham, NC. I am active in the
-                            school's chorus. If you would like to reach out to me, please submit the
-                            following form and I will get back to you.
+                            I am a Junior at Riverside High School, Durham, NC. If you would like to
+                            reach out to me, please submit the following form and I will get back to
+                            you.
                         </p>
                         <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
                             {formFields.map(field => (

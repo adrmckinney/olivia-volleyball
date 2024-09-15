@@ -8,7 +8,7 @@ type Options = {
     threshold: number | number[];
 };
 
-type IntersectionReturn = [React.RefObject<any>, boolean];
+type IntersectionReturn = [React.RefObject<HTMLDivElement>, boolean];
 
 const useOnScreen = (observerOptions: Options): IntersectionReturn => {
     const ref = useRef<HTMLDivElement>(null);

@@ -58,13 +58,13 @@ const NavigationProvider = ({ children }: ProviderProps) => {
     const [videosRef, videoIsVisible] = useOnScreen({
         root: null,
         rootMargin: '0px',
-        threshold: isSmallerScreen ? 0.4 : 1,
+        threshold: isSmallerScreen ? 1.0 : 0.9,
     });
 
     const [historyRef, historyIsVisible] = useOnScreen({
         root: null,
         rootMargin: '0px',
-        threshold: isSmallerScreen ? 1.0 : 0.2,
+        threshold: isSmallerScreen ? 1.0 : 0.6,
     });
 
     const [statsRef, statsIsVisible] = useOnScreen({
@@ -91,22 +91,22 @@ const NavigationProvider = ({ children }: ProviderProps) => {
     const handleNavClick = (targetNav: Current) => {
         switch (targetNav) {
             case 'landing':
-                landingRef.current.scrollIntoView({ behavior: 'smooth' });
+                landingRef.current?.scrollIntoView({ behavior: 'smooth' });
                 break;
             case 'videos':
-                videosRef.current.scrollIntoView({ behavior: 'smooth' });
+                videosRef.current?.scrollIntoView({ behavior: 'smooth' });
                 break;
             case 'history':
-                historyRef.current.scrollIntoView({ behavior: 'smooth' });
+                historyRef.current?.scrollIntoView({ behavior: 'smooth' });
                 break;
             case 'stats':
-                statsRef.current.scrollIntoView({ behavior: 'smooth' });
+                statsRef.current?.scrollIntoView({ behavior: 'smooth' });
                 break;
             case 'about':
-                aboutRef.current.scrollIntoView({ behavior: 'smooth' });
+                aboutRef.current?.scrollIntoView({ behavior: 'smooth' });
                 break;
             case 'contact':
-                contactRef.current.scrollIntoView({ behavior: 'smooth' });
+                contactRef.current?.scrollIntoView({ behavior: 'smooth' });
                 break;
         }
     };

@@ -12,5 +12,5 @@ export const fonts = {
     captionSm: 'text-sm font-normal tracking-tight',
     captionMd: 'text-base font-normal tracking-tight',
     mobileHistoryBody: 'text-sm font-normal tracking-normal',
-    videoThumbnailTitle: 'text-lg md:text-4xl leading-7',
+    videoThumbnailTitle: 'text-3xl md:text-4xl leading-7',
 };

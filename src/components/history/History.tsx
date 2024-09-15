@@ -140,7 +140,6 @@ const History = () => {
                                     <SmallerScreenHistorySelector
                                         historyItem={historyItem}
                                         handleSelection={handleSelection}
-                                        isSelected={selectedHistory === historyItem.key}
                                         historyContent={renderHistoryContentForSmallerScreens(
                                             historyItem.key
                                         )}
