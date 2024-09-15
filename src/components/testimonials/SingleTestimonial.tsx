@@ -26,7 +26,7 @@ const SingleTestimonial = () => {
                                 className="mx-auto h-10 w-10 rounded-full"
                             /> */}
                             <div className="mt-4 flex items-center justify-center space-x-3 text-base">
-                                <div className="font-semibold text-gray-900">Coach Barns</div>
+                                <div className="font-semibold text-gray-900">Coach Barnes</div>
                                 <svg
                                     width={3}
                                     height={3}
@@ -37,7 +37,7 @@ const SingleTestimonial = () => {
                                     <circle r={1} cx={1} cy={1} />
                                 </svg>
                                 <div className="text-gray-600">
-                                    Vice President of Jammers and Head Coach of 15U Red Team
+                                    Senior Director of Jammers and Head Coach of 15U Red Team
                                 </div>
                             </div>
                         </figcaption>

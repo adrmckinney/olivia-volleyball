@@ -34,17 +34,17 @@ const Videos = () => {
             videoId: '2q17lN0YfZ0',
         },
         {
-            title: 'Right side sets',
+            title: 'Right Side Sets',
             key: 'setting_right_side',
             videoId: 'ghEx3aSvp04',
         },
         {
-            title: 'Middle sets',
+            title: 'Middle Sets',
             key: 'setting_middle',
             videoId: 'Dgr9mZCS9pU',
         },
         {
-            title: 'Back row sets',
+            title: 'Back Row Sets',
             key: 'back_row',
             videoId: '9p_thUdDQQI',
         },
