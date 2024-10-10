@@ -31,22 +31,27 @@ const Videos = () => {
         {
             title: 'Outside Sets',
             key: 'setting_outside',
-            videoId: '2q17lN0YfZ0',
+            videoId: 'IrV3fEH1MFk', // Outside Sets 2 2024
         },
         {
             title: 'Right Side Sets',
             key: 'setting_right_side',
-            videoId: 'ghEx3aSvp04',
+            videoId: 'e-iwvGnwrUk', // Right side sets 2 2024
         },
         {
             title: 'Middle Sets',
             key: 'setting_middle',
-            videoId: 'Dgr9mZCS9pU',
+            videoId: 'K51WHnjxF00', // Middle sets 2 2024
         },
         {
             title: 'Back Row Sets',
             key: 'back_row',
-            videoId: '9p_thUdDQQI',
+            videoId: '9p_thUdDQQI', // Back row sets 1 2024
+        },
+        {
+            title: 'Digs',
+            key: 'digs',
+            videoId: 'K1dnTqBJc8I', // Digs 1 2024
         },
     ];
 
