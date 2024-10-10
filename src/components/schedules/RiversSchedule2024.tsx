@@ -1,35 +1,18 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { maxPrepLoginCredentials } from '../../utils/constants';
-
-interface Game {
-    [key: number]: string;
-}
+import useGetMaxPrepSchedule from '../../api/useGetMaxPrepSchedule';
+import PrimaryButton from '../../sharedComponents/Buttons/PrimaryButton';
 
 const RiversSchedule2024 = () => {
-    const [schedule, setSchedule] = useState<Game[]>([]);
-    const [error, setError] = useState<string | null>(null);
+    const { getMaxPrepSchedule } = useGetMaxPrepSchedule({ autoFetch: false });
 
-    useEffect(() => {
-        async function fetchSchedule() {
-            try {
-                const response = await axios.get<Game[]>(
-                    `http://localhost:3000/api/scrape/volleyball?email=${maxPrepLoginCredentials.email}&password=${maxPrepLoginCredentials.password}`
-                );
-                setSchedule(response.data);
-            } catch (error) {
-                setError('Failed to fetch schedule. Please try again later.');
-                console.error('Error fetching schedule:', error);
-            }
-        }
+    const handleFetchSchedule = () => {
+        const response = getMaxPrepSchedule();
+        console.log('response', response);
+    };
 
-        fetchSchedule();
-    }, []);
-
-    console.log('schedule', schedule);
     return (
         <div>
             <h1>Volleyball Schedule</h1>
+            <PrimaryButton onClick={handleFetchSchedule}>Fetch Schedule</PrimaryButton>
             {/* {error && <p>{error}</p>}
             <ul>
                 {schedule.map((game, index) => (
