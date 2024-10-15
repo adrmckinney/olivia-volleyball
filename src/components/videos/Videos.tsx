@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { themes } from '../../configs/themes';
 import { NavigationContext } from '../../context/NavigationProvider';
 import useGetWindowWidth from '../../hooks/useGetWindowWidth';
@@ -9,7 +8,7 @@ import SectionHeader from '../../sharedComponents/SectionHeader';
 
 export type VideoData = {
     title: string;
-    key: string;
+    key: VideoKeys;
     videoId: string;
 };
 
@@ -23,56 +22,11 @@ type VideoKeys =
 
 export type Direction = 'previous' | 'next';
 
-type Videos = {
-    title: string;
-    key: string;
-    videoId: string;
-};
-
-const RANGE = 'Site Videos!A1:C6';
-
 const Videos = () => {
     const { videosRef, hideNavBackground } = useContext(NavigationContext);
     const [playVideoIdx, setPlayVideoIdx] = useState<number | null>(null);
     const { currentTailwindBreakpoint } = useGetWindowWidth();
-    const [videos, setVideos] = useState<Videos[]>([]);
-    const url = import.meta.env.VITE_SITE_VIDEOS;
 
-    const csvToJson = (csv: string): VideoData[] => {
-        const lines = csv.trim().split('\n');
-        const headers = lines[0].split(',');
-
-        return lines.slice(1).map(line => {
-            const values = line.split(',').map(value => value.trim());
-            const obj: { [key: string]: string } = {};
-            headers.forEach((header, index) => {
-                obj[header.replace(/\r/g, '')] = values[index].replace(/\r/g, '');
-            });
-
-            return obj as VideoData;
-        });
-    };
-
-    const fetchVideos = async (url: string) => {
-        try {
-            const response = await axios.get(url);
-            const jsonData = csvToJson(response.data);
-            setVideos(jsonData);
-        } catch (error) {
-            console.error('Error fetching Google Sheets data:', error);
-            return {
-                success: false,
-                message: 'An error occurred while fetching Google Sheets data.',
-                error,
-            };
-        }
-    };
-
-    useEffect(() => {
-        fetchVideos(url);
-    }, []);
-
-    // Old data object. Now using Google Sheet
     const videoData: VideoData[] = [
         {
             title: 'Outside Sets',
@@ -133,7 +87,7 @@ const Videos = () => {
                 showCue={currentTailwindBreakpoint === 'sm'}
                 showScrollArrows={currentTailwindBreakpoint !== 'sm'}
             >
-                {videos.map((video, idx) => (
+                {videoData.map((video, idx) => (
                     <div key={`${video.key}-${idx}`} className="px-3 xl:px-4">
                         <ConditionalRender
                             condition={playVideoIdx === idx}
@@ -154,7 +108,6 @@ const Videos = () => {
                                 title={video.title}
                                 width="560"
                                 height="315"
-                                // src={`https://www.youtube-nocookie.com/embed/${video.videoId}?autoplay=0&mute=0`}
                                 src={`https://www.youtube.com/embed/${video.videoId}?autoplay=0&mute=0`}
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; web-share;"
                                 allowFullScreen
