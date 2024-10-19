@@ -3,6 +3,7 @@ import Footer from './components/Footer';
 import NavBar from './components/header/NavBar';
 import History from './components/history/History';
 import Landing from './components/landing/Landing';
+import CurrentSchedule from './components/schedules/CurrentSchedule';
 import SingleTestimonial from './components/testimonials/SingleTestimonial';
 import Videos from './components/videos/Videos';
 import { colors } from './configs/colors';
@@ -17,6 +18,8 @@ function App() {
                 {/* <Stats /> */}
 
                 <Videos />
+
+                <CurrentSchedule />
 
                 <History />
 

@@ -14,6 +14,7 @@ export type NavigationType = {
     statsRef: any | null;
     aboutRef: any | null;
     contactRef: any | null;
+    scheduleRef: any | null;
 };
 
 export type Current =
@@ -23,6 +24,7 @@ export type Current =
     | 'stats'
     | 'about'
     | 'contact'
+    | 'schedule'
     | (string & {});
 
 const defaultValue: NavigationType = {
@@ -36,6 +38,7 @@ const defaultValue: NavigationType = {
     statsRef: null,
     aboutRef: null,
     contactRef: null,
+    scheduleRef: null,
 };
 
 export const NavigationContext = createContext<NavigationType>(defaultValue);
@@ -79,6 +82,12 @@ const NavigationProvider = ({ children }: ProviderProps) => {
         threshold: isSmallerScreen ? 1.0 : 0.2,
     });
 
+    const [scheduleRef, scheduleIsVisible] = useOnScreen({
+        root: null,
+        rootMargin: '0px',
+        threshold: isSmallerScreen ? 1.0 : 0.2,
+    });
+
     // Because contact is such a small vertical space and is at the bottom
     // we have to use an onScroll listener to determine when it is in view
     // aka, at the bottom of the screen.
@@ -94,6 +103,9 @@ const NavigationProvider = ({ children }: ProviderProps) => {
                 landingRef.current?.scrollIntoView({ behavior: 'smooth' });
                 break;
             case 'videos':
+                videosRef.current?.scrollIntoView({ behavior: 'smooth' });
+                break;
+            case 'schedule':
                 videosRef.current?.scrollIntoView({ behavior: 'smooth' });
                 break;
             case 'history':
@@ -133,6 +145,11 @@ const NavigationProvider = ({ children }: ProviderProps) => {
         if (aboutIsVisible) {
             if (current === 'about') return;
             setCurrent('about');
+        }
+
+        if (scheduleIsVisible) {
+            if (current === 'schedule') return;
+            setCurrent('schedule');
         }
 
         // if (contactIsVisible) {
@@ -234,6 +251,7 @@ const NavigationProvider = ({ children }: ProviderProps) => {
                 statsRef,
                 aboutRef,
                 contactRef,
+                scheduleRef,
             }}
         >
             {children}
