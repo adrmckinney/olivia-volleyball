@@ -1,34 +1,73 @@
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-// export type CSVData<T = { [key: string]: string }> = T;
-export type CSVData<T> = T;
+export type DataObject<T> = T;
 
-const useFetchCSVData = <T,>() => {
-    const [csvData, setCsvData] = useState<CSVData<T>[]>([]);
-    // const [csvData, setCsvData] = useState<Record<string, unknown>[]>([]);
-    /* eslint-disable @typescript-eslint/no-unused-vars */
-    const [parsedData, setParsedData] = useState<CSVData<T>[]>();
+type Props<T> = {
+    autoFetch?: boolean;
+    url?: string;
+    parser?: (csvString: string) => DataObject<T>[] | DataObject<T>;
+};
+
+const useFetchCSVData = <T,>({ autoFetch = true, url = '', parser = () => [] }: Props<T>) => {
+    const [parsedData, setParsedData] = useState<DataObject<T>[] | DataObject<T>>();
+    const [, setError] = useState<Error | null>(null);
+    const [loading, setLoading] = useState(false);
 
     const fetchAndParseCsvData = async (
         csvUrl: string,
-        parser: (csvString: string) => CSVData<T>[]
-        // parser: (csvString: string) => Record<string, unknown>[]
-    ): Promise<T[] | Error> => {
+        parser: (csvString: string) => DataObject<T>[] | DataObject<T>
+    ) => {
+        if (!autoFetch) setLoading(true);
+
         try {
             const response = await axios.get(csvUrl);
-            setCsvData(response.data);
-            /* eslint-disable @typescript-eslint/no-unused-vars */
             const parsed = parser(response.data);
-            setParsedData(parsed);
-            return parsed;
+            if (!autoFetch) {
+                setParsedData(parsed);
+                setError(null);
+                setLoading(false);
+            } else {
+                return parsed;
+            }
         } catch (error) {
-            console.error('Error fetching CSV data:', JSON.stringify(error));
-            return error as Error;
+            if (!autoFetch) {
+                console.error('Error fetching CSV data:', JSON.stringify(error));
+                setError(error as Error);
+                setLoading(false);
+            } else {
+                throw error;
+            }
         }
     };
 
-    return { fetchAndParseCsvData, csvData, parsedData };
+    useEffect(() => {
+        if (autoFetch) {
+            let ignore = false;
+
+            fetchAndParseCsvData(url, parser)
+                .then(res => {
+                    if (!ignore) {
+                        setParsedData(res);
+                        setError(null);
+                        setLoading(false);
+                    }
+                })
+                .catch(error => {
+                    if (!ignore) {
+                        console.error('Error fetching CSV data:', JSON.stringify(error));
+                        setError(error as Error);
+                        setLoading(false);
+                    }
+                });
+
+            return () => {
+                ignore = true;
+            };
+        }
+    }, []);
+
+    return { fetchAndParseCsvData, parsedData, loading };
 };
 
 export default useFetchCSVData;

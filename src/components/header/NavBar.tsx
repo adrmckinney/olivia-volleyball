@@ -11,23 +11,28 @@ import { colors } from '../../configs/colors';
 import { fontFamilies } from '../../configs/fontFamilies';
 import { themes } from '../../configs/themes';
 import { Current, NavigationContext } from '../../context/NavigationProvider';
+import useGetFeatureFlags from '../../hooks/useGetFeatureFlags';
 import LinkButton from '../../sharedComponents/Buttons/LinkButton';
+import ConditionalRender from '../../sharedComponents/ConditionalRender';
 import { icon } from '../../utils/Icons';
 
 type Navigation = {
     name: string;
     key: Current;
     current: boolean;
+    show: boolean;
 };
 
 const NavBar = () => {
     const { current, handleNavClick, hideNavBackground } = useContext(NavigationContext);
+    const featureFlags = useGetFeatureFlags();
 
     const navigation: Navigation[] = [
         {
             name: 'Home',
             key: 'landing',
             current: current === 'landing',
+            show: true,
         },
         // {
         //     name: 'Stats',
@@ -38,16 +43,19 @@ const NavBar = () => {
             name: 'Videos',
             key: 'videos',
             current: current === 'videos',
+            show: true,
         },
         {
             name: 'Schedule',
             key: 'schedule',
             current: current === 'schedule',
+            show: featureFlags?.FEATURE_JAMMERS_2025_SCHEDULE || false,
         },
         {
             name: 'Athletic History',
             key: 'history',
             current: current === 'history',
+            show: true,
         },
         // {
         //     name: 'About',
@@ -58,6 +66,7 @@ const NavBar = () => {
             name: 'Contact',
             key: 'contact',
             current: current === 'contact',
+            show: true,
         },
     ];
 
@@ -79,21 +88,25 @@ const NavBar = () => {
                                     <div className="hidden lg:ml-0 lg:block lg:w-full">
                                         <div className="flex w-full justify-between">
                                             {navigation.map(item => (
-                                                <LinkButton
+                                                <ConditionalRender
                                                     key={item.key}
-                                                    title={item.name}
-                                                    classNames={[
-                                                        themes.navLinkButton({
-                                                            isActive: item.current,
-                                                        }),
-                                                        'px-6 py-1 rounded-[999px]',
-                                                        item.current
-                                                            ? 'text-white bg-purple-400/30'
-                                                            : '',
-                                                    ].join(' ')}
-                                                    showBackgroundColor={item.current}
-                                                    onClick={() => handleNavClick(item.key)}
-                                                />
+                                                    condition={item.show}
+                                                >
+                                                    <LinkButton
+                                                        title={item.name}
+                                                        classNames={[
+                                                            themes.navLinkButton({
+                                                                isActive: item.current,
+                                                            }),
+                                                            'px-6 py-1 rounded-[999px]',
+                                                            item.current
+                                                                ? 'text-white bg-purple-400/30'
+                                                                : '',
+                                                        ].join(' ')}
+                                                        showBackgroundColor={item.current}
+                                                        onClick={() => handleNavClick(item.key)}
+                                                    />
+                                                </ConditionalRender>
                                             ))}
                                         </div>
                                     </div>
