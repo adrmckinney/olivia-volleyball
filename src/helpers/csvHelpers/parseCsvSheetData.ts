@@ -173,7 +173,7 @@ const createArraysForGroups = (rows: string[], targetIndices: number[]): string[
         const startIdx = index;
         const endIdx = getEndIndex(rows, targetIndices, loopIdx);
 
-        let rowData: string[] = [];
+        const rowData: string[] = [];
         for (let i = startIdx; i <= endIdx; i++) {
             if (rows[i].split(',')[0].length) rowData.push(rows[i]);
         }
@@ -475,6 +475,7 @@ const parseDigsData = (matchArray: string[], objectCopy: Digs) => {
     return objectCopy;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const parseMatchesData = (matchArray: string[], objectCopy: any) => {
     matchArray.forEach(item => {
         const [key, value] = item.split(',');

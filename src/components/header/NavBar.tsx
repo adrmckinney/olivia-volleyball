@@ -40,6 +40,11 @@ const NavBar = () => {
             current: current === 'videos',
         },
         {
+            name: 'Schedule',
+            key: 'schedule',
+            current: current === 'schedule',
+        },
+        {
             name: 'Athletic History',
             key: 'history',
             current: current === 'history',
