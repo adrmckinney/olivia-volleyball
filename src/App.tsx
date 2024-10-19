@@ -7,8 +7,11 @@ import CurrentSchedule from './components/schedules/CurrentSchedule';
 import SingleTestimonial from './components/testimonials/SingleTestimonial';
 import Videos from './components/videos/Videos';
 import { colors } from './configs/colors';
+import useGetFeatureFlags from './hooks/useGetFeatureFlags';
+import ConditionalRender from './sharedComponents/ConditionalRender';
 
 function App() {
+    const featureFlags = useGetFeatureFlags();
     return (
         <div className={colors.bgMain}>
             <NavBar />
@@ -19,7 +22,12 @@ function App() {
 
                 <Videos />
 
-                <CurrentSchedule />
+                <ConditionalRender
+                    condition={featureFlags?.FEATURE_JAMMERS_2025_SCHEDULE || false}
+                    isNullRender
+                >
+                    <CurrentSchedule />
+                </ConditionalRender>
 
                 <History />
 
