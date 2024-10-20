@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import useFetchCSVData from '../../api/FetchCSVData';
 import portrait2024Cut from '../../assets/images/Portrait2024Cut.png';
 import { themes } from '../../configs/themes';
@@ -12,14 +12,9 @@ import SnapshotStats from './SnapshotStats';
 
 const Landing = () => {
     const { landingRef } = useContext(NavigationContext);
-    const { fetchAndParseCsvData } = useFetchCSVData();
-    const csvUrl: string = import.meta.env.VITE_JAMMERS_2024_URL || '';
+    const url: string = import.meta.env.VITE_JAMMERS_2024_URL || '';
+    useFetchCSVData({ url, parser: parseCsvSheetData });
     const { currentTailwindBreakpoint } = useGetWindowWidth();
-
-    useEffect(() => {
-        fetchAndParseCsvData(csvUrl, parseCsvSheetData);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     const renderImage = () => {
         return (
