@@ -36,10 +36,12 @@ const CurrentSchedule = () => {
             className={[
                 'mx-auto mt-8 px-6 sm:mt-16 lg:scroll-m-20 lg:px-8 justify-center items-center pb-20 md:pb-0',
                 'max-w-[1600px]',
-                //   'max-w-7xl'
             ].join(' ')}
         >
-            <SectionHeader title="Jammers 2025 Schedule" hideNavBackground={hideNavBackground} />
+            <SectionHeader
+                title="Jammer's Volleyball Club 2025 Schedule"
+                hideNavBackground={hideNavBackground}
+            />
             <TableWithGroupedRows columns={columns} data={scheduleData as TournamentGroup[]} />
         </div>
     );

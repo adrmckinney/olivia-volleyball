@@ -49,7 +49,7 @@ const NavBar = () => {
             name: 'Schedule',
             key: 'schedule',
             current: current === 'schedule',
-            show: featureFlags?.FEATURE_JAMMERS_2025_SCHEDULE || false,
+            show: featureFlags.FEATURE_JAMMERS_2025_SCHEDULE,
         },
         {
             name: 'Athletic History',

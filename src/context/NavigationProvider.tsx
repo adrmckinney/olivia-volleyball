@@ -106,7 +106,7 @@ const NavigationProvider = ({ children }: ProviderProps) => {
                 videosRef.current?.scrollIntoView({ behavior: 'smooth' });
                 break;
             case 'schedule':
-                videosRef.current?.scrollIntoView({ behavior: 'smooth' });
+                scheduleRef.current?.scrollIntoView({ behavior: 'smooth' });
                 break;
             case 'history':
                 historyRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -151,11 +151,6 @@ const NavigationProvider = ({ children }: ProviderProps) => {
             if (current === 'schedule') return;
             setCurrent('schedule');
         }
-
-        // if (contactIsVisible) {
-        //     if (current === 'contact') return;
-        //     setCurrent('contact');
-        // }
 
         if (isSmallerScreen) {
             if (contactIsVisible) {
@@ -236,6 +231,7 @@ const NavigationProvider = ({ children }: ProviderProps) => {
         statsIsVisible,
         aboutIsVisible,
         contactIsVisible,
+        scheduleIsVisible,
     ]);
 
     return (

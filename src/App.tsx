@@ -12,6 +12,7 @@ import ConditionalRender from './sharedComponents/ConditionalRender';
 
 function App() {
     const featureFlags = useGetFeatureFlags();
+
     return (
         <div className={colors.bgMain}>
             <NavBar />
@@ -23,7 +24,7 @@ function App() {
                 <Videos />
 
                 <ConditionalRender
-                    condition={featureFlags?.FEATURE_JAMMERS_2025_SCHEDULE || false}
+                    condition={featureFlags.FEATURE_JAMMERS_2025_SCHEDULE}
                     isNullRender
                 >
                     <CurrentSchedule />
