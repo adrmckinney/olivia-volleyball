@@ -1,24 +1,13 @@
 import { useContext, useState } from 'react';
+import useFetchCSVData from '../../api/FetchCSVData';
 import { themes } from '../../configs/themes';
 import { NavigationContext } from '../../context/NavigationProvider';
+import { parseVideosSheetData } from '../../helpers/csvHelpers/parseVideosSheetData';
 import useGetWindowWidth from '../../hooks/useGetWindowWidth';
 import Carousel from '../../sharedComponents/Carousel/Carousel';
 import ConditionalRender from '../../sharedComponents/ConditionalRender';
 import SectionHeader from '../../sharedComponents/SectionHeader';
-
-export type VideoData = {
-    title: string;
-    key: VideoKeys;
-    videoId: string;
-};
-
-type VideoKeys =
-    | 'setting_outside'
-    | 'setting_right_side'
-    | 'setting_middle'
-    | 'back_row'
-    | 'digs'
-    | 'dumps';
+import { sheetUrls } from '../../utils/googleSheetsConfigs';
 
 export type Direction = 'previous' | 'next';
 
@@ -26,34 +15,11 @@ const Videos = () => {
     const { videosRef, hideNavBackground } = useContext(NavigationContext);
     const [playVideoIdx, setPlayVideoIdx] = useState<number | null>(null);
     const { currentTailwindBreakpoint } = useGetWindowWidth();
+    const url: string = sheetUrls.main
+        .replace('{documentId}', import.meta.env.VITE_MAIN_GOOGLE_DOCUMENT_ID)
+        .replace('{sheetId}', import.meta.env.VITE_VIDEOS_SHEET_ID);
 
-    const videoData: VideoData[] = [
-        {
-            title: 'Outside Sets',
-            key: 'setting_outside',
-            videoId: 'IrV3fEH1MFk', // Outside Sets 2 2024
-        },
-        {
-            title: 'Right Side Sets',
-            key: 'setting_right_side',
-            videoId: 'e-iwvGnwrUk', // Right side sets 2 2024
-        },
-        {
-            title: 'Middle Sets',
-            key: 'setting_middle',
-            videoId: 'K51WHnjxF00', // Middle sets 2 2024
-        },
-        {
-            title: 'Back Row Sets',
-            key: 'back_row',
-            videoId: '9p_thUdDQQI', // Back row sets 1 2024
-        },
-        {
-            title: 'Digs',
-            key: 'digs',
-            videoId: 'K1dnTqBJc8I', // Digs 1 2024
-        },
-    ];
+    const { parsedData: videos } = useFetchCSVData({ url, parser: parseVideosSheetData });
 
     const handleVisibleVideos = () => {
         switch (currentTailwindBreakpoint) {
@@ -81,42 +47,44 @@ const Videos = () => {
             ].join(' ')}
         >
             <SectionHeader title="Videos" hideNavBackground={hideNavBackground} />
-            <Carousel
-                show={handleVisibleVideos()}
-                infiniteLoop={true}
-                showCue={currentTailwindBreakpoint === 'sm'}
-                showScrollArrows={currentTailwindBreakpoint !== 'sm'}
-            >
-                {videoData.map((video, idx) => (
-                    <div key={`${video.key}-${idx}`} className="px-3 xl:px-4">
-                        <ConditionalRender
-                            condition={playVideoIdx === idx}
-                            isNullRender
-                            falseRender={
-                                <div
-                                    className="flex justify-center items-center aspect-video bg-gray-300 rounded-md"
-                                    onClick={() => setPlayVideoIdx(idx)}
-                                >
-                                    <p className={[themes.videoThumbnailTitle].join(' ')}>
-                                        {video.title}
-                                    </p>
-                                </div>
-                            }
-                        >
-                            <iframe
-                                id={`ytplayer-${video.key}`}
-                                title={video.title}
-                                width="560"
-                                height="315"
-                                src={`https://www.youtube.com/embed/${video.videoId}?autoplay=0&mute=0`}
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; web-share;"
-                                allowFullScreen
-                                className="shadow-2xl rounded-md object-cover object-left border-none w-full h-full"
-                            />
-                        </ConditionalRender>
-                    </div>
-                ))}
-            </Carousel>
+            {Array.isArray(videos) ? (
+                <Carousel
+                    show={handleVisibleVideos()}
+                    infiniteLoop={true}
+                    showCue={currentTailwindBreakpoint === 'sm'}
+                    showScrollArrows={currentTailwindBreakpoint !== 'sm'}
+                >
+                    {videos?.map((video, idx) => (
+                        <div key={`${video.key}-${idx}`} className="px-3 xl:px-4">
+                            <ConditionalRender
+                                condition={playVideoIdx === idx}
+                                isNullRender
+                                falseRender={
+                                    <div
+                                        className="flex justify-center items-center aspect-video bg-gray-300 rounded-md"
+                                        onClick={() => setPlayVideoIdx(idx)}
+                                    >
+                                        <p className={[themes.videoThumbnailTitle].join(' ')}>
+                                            {video.title}
+                                        </p>
+                                    </div>
+                                }
+                            >
+                                <iframe
+                                    id={`ytplayer-${video.key}`}
+                                    title={video.title}
+                                    width="560"
+                                    height="315"
+                                    src={`https://www.youtube.com/embed/${video.videoId}?autoplay=0&mute=0`}
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; web-share;"
+                                    allowFullScreen
+                                    className="shadow-2xl rounded-md object-cover object-left border-none w-full h-full"
+                                />
+                            </ConditionalRender>
+                        </div>
+                    ))}
+                </Carousel>
+            ) : null}
         </div>
     );
 };
