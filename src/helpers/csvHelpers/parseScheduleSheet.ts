@@ -1,18 +1,20 @@
-interface Match {
+export type Match = {
     key: string;
     opponent: string;
     date: string;
     result: string;
-}
+};
+
+export type Group = {
+    tournament: string;
+    location: string;
+    startDate: string;
+    endDate: string;
+};
 
 export interface TournamentGroup {
     key: string;
-    group: {
-        tournament: string;
-        location: string;
-        startDate: string;
-        endDate: string;
-    };
+    group: Group;
     matches: Match[];
 }
 
