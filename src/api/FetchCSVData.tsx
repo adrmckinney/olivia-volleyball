@@ -12,7 +12,7 @@ type Props<T> = {
 const useFetchCSVData = <T,>({ autoFetch = true, url = '', parser = () => [] }: Props<T>) => {
     const [parsedData, setParsedData] = useState<DataObject<T>[] | DataObject<T>>();
     const [, setError] = useState<Error | null>(null);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(autoFetch);
 
     const fetchAndParseCsvData = async (
         csvUrl: string,

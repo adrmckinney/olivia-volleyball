@@ -1,9 +1,14 @@
 import { useContext } from 'react';
 import useFetchCSVData from '../../api/FetchCSVData';
 import { NavigationContext } from '../../context/NavigationProvider';
-import { parseScheduleSheet, TournamentGroup } from '../../helpers/csvHelpers/parseScheduleSheet';
+import { Group, parseScheduleSheet } from '../../helpers/csvHelpers/parseScheduleSheet';
+import { prepareGroupTableData } from '../../helpers/tableHelpers';
+import ConditionalRender from '../../sharedComponents/ConditionalRender';
 import SectionHeader from '../../sharedComponents/SectionHeader';
-import TableWithGroupedRows from '../../sharedComponents/Tables/TableWithGroupedRows';
+import SkeletonTable from '../../sharedComponents/Skeletons/SkeletonTable';
+import TableWithGroupedRows, {
+    TableColumn,
+} from '../../sharedComponents/Tables/TableWithGroupedRows';
 import { sheetUrls } from '../../utils/googleSheetsConfigs';
 
 const CurrentSchedule = () => {
@@ -12,9 +17,12 @@ const CurrentSchedule = () => {
     const url: string = sheetUrls.main
         .replace('{documentId}', import.meta.env.VITE_MAIN_GOOGLE_DOCUMENT_ID)
         .replace('{sheetId}', import.meta.env.VITE_JAMMERS2025_SCHEDULE_SHEET_ID);
-    const { parsedData: scheduleData } = useFetchCSVData({ url, parser: parseScheduleSheet });
+    const { parsedData: scheduleData, loading } = useFetchCSVData({
+        url,
+        parser: parseScheduleSheet,
+    });
 
-    const columns = [
+    const columns: TableColumn[] = [
         {
             key: 'opponent',
             name: 'Opponent',
@@ -29,6 +37,29 @@ const CurrentSchedule = () => {
         },
     ];
 
+    const groupRender = (group: Group) => (
+        <div className="flex divide-x-2 divide-gray-50">
+            <p className="pr-4">{group.tournament}</p>
+            <p className="px-4">{group.location}</p>
+            <ConditionalRender
+                condition={group.startDate === group.endDate}
+                falseRender={
+                    <p className="pl-4">
+                        {group.startDate} - {group.endDate}
+                    </p>
+                }
+            >
+                <p className="pl-4">{group.startDate}</p>
+            </ConditionalRender>
+        </div>
+    );
+
+    const preparedData = prepareGroupTableData({
+        data: scheduleData && Array.isArray(scheduleData) ? scheduleData : [],
+        groupRender,
+        rowLevelDataKey: 'matches',
+    });
+
     return (
         <div
             ref={scheduleRef}
@@ -42,7 +73,12 @@ const CurrentSchedule = () => {
                 title="Jammer's Volleyball Club 2025 Schedule"
                 hideNavBackground={hideNavBackground}
             />
-            <TableWithGroupedRows columns={columns} data={scheduleData as TournamentGroup[]} />
+
+            {loading ? (
+                <SkeletonTable numberOfRows={10} numberOfColumns={5} />
+            ) : (
+                <TableWithGroupedRows columns={columns} data={preparedData} />
+            )}
         </div>
     );
 };
