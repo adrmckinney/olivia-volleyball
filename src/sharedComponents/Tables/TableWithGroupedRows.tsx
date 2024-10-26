@@ -7,20 +7,6 @@ export type TableColumn = {
     name: string;
 };
 
-// type TableGroup = {
-//     tournament: string;
-//     location: string;
-//     startDate: string;
-//     endDate: string;
-// } & GroupExtensions;
-
-// type Matches = {
-//     key: string;
-//     opponent: string;
-//     date: string;
-//     result: string;
-// };
-
 export type TableGroup = {
     render?: () => ReactNode;
     data: {
@@ -41,11 +27,6 @@ export type GroupTableData = {
     group: TableGroup;
     rows: TableDataRow[];
 };
-// rows: Matches[];
-
-// type GroupExtensions = {
-//     render: () => ReactNode;
-// };
 
 type TableProps = {
     columns: TableColumn[];

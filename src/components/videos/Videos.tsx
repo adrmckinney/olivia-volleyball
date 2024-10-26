@@ -7,6 +7,7 @@ import useGetWindowWidth from '../../hooks/useGetWindowWidth';
 import Carousel from '../../sharedComponents/Carousel/Carousel';
 import ConditionalRender from '../../sharedComponents/ConditionalRender';
 import SectionHeader from '../../sharedComponents/SectionHeader';
+import SkeletonImage from '../../sharedComponents/Skeletons/SkeletonImage';
 import { sheetUrls } from '../../utils/googleSheetsConfigs';
 
 export type Direction = 'previous' | 'next';
@@ -19,7 +20,7 @@ const Videos = () => {
         .replace('{documentId}', import.meta.env.VITE_MAIN_GOOGLE_DOCUMENT_ID)
         .replace('{sheetId}', import.meta.env.VITE_VIDEOS_SHEET_ID);
 
-    const { parsedData: videos } = useFetchCSVData({ url, parser: parseVideosSheetData });
+    const { parsedData: videos, loading } = useFetchCSVData({ url, parser: parseVideosSheetData });
 
     const handleVisibleVideos = () => {
         switch (currentTailwindBreakpoint) {
@@ -47,7 +48,14 @@ const Videos = () => {
             ].join(' ')}
         >
             <SectionHeader title="Videos" hideNavBackground={hideNavBackground} />
-            {Array.isArray(videos) ? (
+
+            {loading ? (
+                <div className="flex w-full justify-around">
+                    {Array.from({ length: handleVisibleVideos() }).map((_, idx) => (
+                        <SkeletonImage key={idx} size="lg" />
+                    ))}
+                </div>
+            ) : Array.isArray(videos) ? (
                 <Carousel
                     show={handleVisibleVideos()}
                     infiniteLoop={true}

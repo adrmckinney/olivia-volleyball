@@ -5,6 +5,7 @@ import { Group, parseScheduleSheet } from '../../helpers/csvHelpers/parseSchedul
 import { prepareGroupTableData } from '../../helpers/tableHelpers';
 import ConditionalRender from '../../sharedComponents/ConditionalRender';
 import SectionHeader from '../../sharedComponents/SectionHeader';
+import SkeletonTable from '../../sharedComponents/Skeletons/SkeletonTable';
 import TableWithGroupedRows, {
     TableColumn,
 } from '../../sharedComponents/Tables/TableWithGroupedRows';
@@ -16,7 +17,10 @@ const CurrentSchedule = () => {
     const url: string = sheetUrls.main
         .replace('{documentId}', import.meta.env.VITE_MAIN_GOOGLE_DOCUMENT_ID)
         .replace('{sheetId}', import.meta.env.VITE_JAMMERS2025_SCHEDULE_SHEET_ID);
-    const { parsedData: scheduleData } = useFetchCSVData({ url, parser: parseScheduleSheet });
+    const { parsedData: scheduleData, loading } = useFetchCSVData({
+        url,
+        parser: parseScheduleSheet,
+    });
 
     const columns: TableColumn[] = [
         {
@@ -69,7 +73,12 @@ const CurrentSchedule = () => {
                 title="Jammer's Volleyball Club 2025 Schedule"
                 hideNavBackground={hideNavBackground}
             />
-            <TableWithGroupedRows columns={columns} data={preparedData} />
+
+            {loading ? (
+                <SkeletonTable numberOfRows={10} numberOfColumns={5} />
+            ) : (
+                <TableWithGroupedRows columns={columns} data={preparedData} />
+            )}
         </div>
     );
 };
