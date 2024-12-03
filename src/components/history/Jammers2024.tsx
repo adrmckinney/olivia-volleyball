@@ -13,7 +13,7 @@ const Jammers2024 = () => {
             &nbsp;
             <p>
                 Recognizing her exceptional performance and dedication, the club honored Olivia as
-                the Most Valuable Player for both her team.
+                the Most Valuable Player for her team.
             </p>
         </>
     );

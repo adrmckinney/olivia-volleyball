@@ -1,8 +1,21 @@
 import mostImprovedPlayer from '../../assets/images/mostImprovedPlayer.jpeg';
 import playerOfTheMatch2023 from '../../assets/images/playerOfTheMatch2023.jpeg';
-import HistoryImageWithCaption from './HistoryImageWithCaption';
+import HistoryImagesContainer from './HistoryImagesContainer';
 
 const Riverside2023 = () => {
+    const images = [
+        {
+            src: playerOfTheMatch2023,
+            caption: 'Player of the Match',
+            shadowColor: 'shadow-purple-300',
+        },
+        {
+            src: mostImprovedPlayer,
+            caption: 'Most Improved',
+            shadowColor: 'shadow-purple-300',
+        },
+    ];
+
     return (
         <div className="space-y-8 pb-4">
             <p>
@@ -10,17 +23,7 @@ const Riverside2023 = () => {
                 JV. Near the end of the season, Olivia was moved up to play varsity for a match.
             </p>
 
-            <HistoryImageWithCaption
-                src={playerOfTheMatch2023}
-                caption="Player of the Match"
-                shadowColor="shadow-purple-300"
-            />
-
-            <HistoryImageWithCaption
-                src={mostImprovedPlayer}
-                caption="Most Improved"
-                shadowColor="shadow-purple-300"
-            />
+            <HistoryImagesContainer imageData={images} />
         </div>
     );
 };

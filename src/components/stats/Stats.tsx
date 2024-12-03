@@ -1,6 +1,5 @@
 import { useContext } from 'react';
 import { NavigationContext } from '../../context/NavigationProvider';
-import useLogWindowBreakpoint from '../../hooks/useLogWindowBreakpoint';
 import SectionHeader from '../../sharedComponents/SectionHeader';
 
 const stats = [
@@ -22,7 +21,6 @@ const getMediumScreenNumberOfColumns = () => {
 
 const Stats = () => {
     const { statsRef, hideNavBackground } = useContext(NavigationContext);
-    useLogWindowBreakpoint();
 
     return (
         <div
