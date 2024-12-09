@@ -3,7 +3,7 @@ const Usmc2024 = () => {
         <>
             <p>
                 The USMC Sports Leadership Academy conducted a comprehensive six-hour volleyball
-                camp focused on honing fundamental volleyball skills and fostering leadership
+                camp focused on improving fundamental volleyball skills and fostering leadership
                 development.
             </p>
             &nbsp;
