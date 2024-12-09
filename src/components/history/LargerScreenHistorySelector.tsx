@@ -18,7 +18,12 @@ const LargerScreenHistorySelector = ({
     return (
         <>
             <li key={historyItem.id}>
-                <div className="relative pb-8 space-y-10 cursor-pointer">
+                <div
+                    className={[
+                        'relative pb-8 space-y-10 cursor-pointer',
+                        isLastItem ? 'mb-20' : 'mb-0',
+                    ].join(' ')}
+                >
                     <ConditionalRender condition={!isLastItem}>
                         <span
                             className="absolute left-8 top-8 -ml-px h-full w-0.5 bg-gray-200"
