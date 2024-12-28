@@ -39,10 +39,12 @@ export const prepareGroupTableData = <T extends HasKey, G>({
         // Mapping rows and wrapping them into the `TableDataRow` structure
         const rows: TableDataRow[] = (
             datum[rowLevelDataKey] as Array<Record<string, string | number>>
-        ).map(row => ({
-            key: row.key as string, // Assuming row has a `key` field
-            data: row, // Using the dynamic data in the `data` field
-        }));
+        ).map(row => {
+            return {
+                key: row.key as string, // Assuming row has a `key` field
+                data: row, // Using the dynamic data in the `data` field
+            };
+        });
 
         return {
             key: datum.key,
