@@ -12,14 +12,13 @@ const SecondaryPillButton = ({ isActive, ...props }: SecondaryButtonProps) => {
             className={[
                 ' focus:outline-none focus:ring-2 focus:ring-gray-700',
                 fontFamilies.navLinkButtons,
-                'text-5xl',
                 colors.textGeneric,
                 isActive
                     ? 'bg-purple-400/30 hover:bg-purple-400/30 pointer-events-none'
                     : 'bg-gray-800 hover:bg-gray-700',
                 'rounded-full',
-                'px-6 py-1 rounded-[999px]',
             ].join(' ')}
+            style={{ fontSize: '1.125rem', lineHeight: '1.75rem', padding: '.15rem 1.25rem' }}
             {...props}
         />
     );

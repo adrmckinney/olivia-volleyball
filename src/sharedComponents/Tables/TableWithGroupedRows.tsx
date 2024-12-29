@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { Fragment } from 'react/jsx-runtime';
+import { colors } from '../../configs/colors';
 import ConditionalRender from '../ConditionalRender';
 
 export type TableColumn = {
@@ -47,7 +48,12 @@ const TableWithGroupedRows = ({ columns, data, tableTitle = '' }: TableProps) =>
                 <ConditionalRender condition={tableTitle?.length > 0} isNullRender>
                     <div className="sm:flex sm:items-center">
                         <div className="sm:flex-auto">
-                            <h1 className="text-base font-semibold leading-6 text-gray-50">
+                            <h1
+                                className={[
+                                    'text-base font-semibold leading-6',
+                                    colors.groupTableTitleFont,
+                                ].join(' ')}
+                            >
                                 {tableTitle}
                             </h1>
                         </div>
@@ -56,10 +62,18 @@ const TableWithGroupedRows = ({ columns, data, tableTitle = '' }: TableProps) =>
                 <div className="mt-8 flow-root">
                     <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                         <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-                            <div className="overflow-y-auto max-h-[600px]">
-                                <table className="min-w-full">
+                            <div
+                                className={[
+                                    'overflow-y-auto max-h-[600px] border-4 rounded-lg',
+                                    colors.groupTableBorder,
+                                ].join(' ')}
+                            >
+                                <table className="min-w-full ">
                                     <thead
-                                        className={['bg-gray-800', ' sticky top-0 z-20'].join(' ')}
+                                        className={[
+                                            colors.groupTableHeaderBackground,
+                                            ' sticky top-0 z-20',
+                                        ].join(' ')}
                                     >
                                         <tr>
                                             {preparedCols.map(column => (
@@ -73,7 +87,7 @@ const TableWithGroupedRows = ({ columns, data, tableTitle = '' }: TableProps) =>
                                                         key={column.key}
                                                         scope="col"
                                                         className={[
-                                                            'text-gray-50',
+                                                            colors.groupTableHeaderFont,
                                                             'py-3.5 pl-4 pr-3 text-left text-sm lg:text-lg font-semibold  sm:pl-3',
                                                         ].join(' ')}
                                                     >
@@ -83,25 +97,24 @@ const TableWithGroupedRows = ({ columns, data, tableTitle = '' }: TableProps) =>
                                             ))}
                                         </tr>
                                     </thead>
-                                    <tbody className="bg-white">
+                                    <tbody className={[colors.groupTableBodyBackground].join(' ')}>
                                         {data &&
                                             data?.map(datum => (
                                                 <Fragment key={datum.key}>
                                                     <tr
                                                         className={[
                                                             'border-t ',
-                                                            'border-gray-950',
+                                                            colors.groupTableGroupRowBorder,
                                                         ].join(' ')}
                                                     >
                                                         <th
                                                             scope="colgroup"
                                                             colSpan={columns.length}
                                                             className={[
-                                                                'bg-gray-700',
-                                                                'text-gray-50',
+                                                                colors.groupTableGroupRowBackground,
+                                                                colors.groupTableGroupFont,
                                                                 'py-2 pl-4 pr-3 text-left text-sm lg:text-lg font-semibold sm:pl-3 h-20 ',
                                                                 'md:h-auto',
-                                                                // 'md:h-16',
                                                                 'sticky top-[44px] md:top-[54px] z-10',
                                                             ].join(' ')}
                                                         >
@@ -119,10 +132,10 @@ const TableWithGroupedRows = ({ columns, data, tableTitle = '' }: TableProps) =>
                                                             key={row.key}
                                                             className={[
                                                                 rowIndex === 0
-                                                                    ? 'border-gray-950'
-                                                                    : 'border-gray-900',
+                                                                    ? colors.groupTableFirstRowBorder
+                                                                    : colors.groupTableRowBorder,
                                                                 'border-t',
-                                                                'bg-gray-800',
+                                                                colors.groupTableRowBackground,
                                                             ].join(' ')}
                                                         >
                                                             {preparedCols.map(column => {
@@ -137,7 +150,7 @@ const TableWithGroupedRows = ({ columns, data, tableTitle = '' }: TableProps) =>
                                                                             key={column.key}
                                                                             className={[
                                                                                 'whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium sm:pl-3',
-                                                                                'text-gray-200',
+                                                                                colors.groupTableRowFont,
                                                                             ].join(' ')}
                                                                         >
                                                                             {
