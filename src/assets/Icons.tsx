@@ -1,4 +1,4 @@
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid';
+import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
 const sizeClasses = {
@@ -7,6 +7,7 @@ const sizeClasses = {
     lg: 'h-6 w-6',
     xl: 'h-8 w-8',
     '2xl': 'h-10 w-10',
+    '3xl': 'h-12 w-12',
 };
 
 interface IconProps extends React.SVGProps<SVGSVGElement> {
@@ -27,6 +28,7 @@ const createIconComponent = (IconComponent: React.FC<IconProps>) => {
 
 export const Icons = {
     ChevronRight: createIconComponent(ChevronRightIcon),
+    ChevronDown: createIconComponent(ChevronDownIcon),
     ChevronLeft: createIconComponent(ChevronLeftIcon),
     Bars: createIconComponent(Bars3Icon),
     XMark: createIconComponent(XMarkIcon),

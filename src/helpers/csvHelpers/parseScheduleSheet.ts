@@ -3,6 +3,9 @@ export type Match = {
     opponent: string;
     date: string;
     result: string;
+    score: string;
+    scoreDetails: string;
+    matchStatus: string;
 };
 
 export type Stat = {
@@ -37,6 +40,7 @@ export type Stat = {
     dig0: number;
     digsTotal: number;
     passingPercentage: string;
+    statsStatus: string;
 };
 
 export type Group = {
@@ -84,6 +88,8 @@ export const parseScheduleSheet = (csvText: string): TournamentGroup[] => {
             opponent,
             date,
             result,
+            score,
+            scoreDetails,
             serviceAce,
             serviceZero,
             serviceError,
@@ -113,6 +119,8 @@ export const parseScheduleSheet = (csvText: string): TournamentGroup[] => {
             dig0,
             digsTotal,
             passingPercentage,
+            matchStatus,
+            statsStatus,
         ]: string[] = parseCsvRow(row);
 
         // Ensure all required fields are present
@@ -157,6 +165,9 @@ export const parseScheduleSheet = (csvText: string): TournamentGroup[] => {
             opponent: opponent,
             date: date,
             result: result,
+            score: score,
+            scoreDetails: scoreDetails,
+            matchStatus: matchStatus.toLowerCase() || '',
         });
 
         currentGroup.stats?.push({
@@ -191,6 +202,7 @@ export const parseScheduleSheet = (csvText: string): TournamentGroup[] => {
             dig0: parseInt(dig0, 10) || 0,
             digsTotal: parseInt(digsTotal, 10) || 0,
             passingPercentage: passingPercentage || '',
+            statsStatus: statsStatus.toLowerCase() || '',
         });
     });
 

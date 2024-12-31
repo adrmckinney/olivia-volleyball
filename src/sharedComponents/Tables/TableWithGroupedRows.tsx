@@ -5,7 +5,7 @@ import ConditionalRender from '../ConditionalRender';
 
 export type TableColumn = {
     key: string;
-    name: string;
+    name: string | ReactNode;
     show?: boolean;
 };
 
@@ -16,12 +16,14 @@ export type TableGroup = {
     };
 };
 
+export type RowData = {
+    [key: string]: string | number;
+};
+
 export type TableDataRow = {
     key: string;
     render?: () => ReactNode;
-    data: {
-        [key: string]: string | number;
-    };
+    data: RowData;
 };
 
 export type GroupTableData = {
@@ -36,6 +38,11 @@ type TableProps = {
     tableTitle?: string;
 };
 
+export const groupTableDataStyles = [
+    'whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium sm:pl-3',
+    colors.groupTableRowFont,
+].join(' ');
+
 const TableWithGroupedRows = ({ columns, data, tableTitle = '' }: TableProps) => {
     const preparedCols = columns.map(col => ({
         ...col,
@@ -44,7 +51,7 @@ const TableWithGroupedRows = ({ columns, data, tableTitle = '' }: TableProps) =>
 
     return (
         <>
-            <div className="px-4 sm:px-6 lg:px-8">
+            <div className="px-4 sm:px-6 lg:px-0 w-full">
                 <ConditionalRender condition={tableTitle?.length > 0} isNullRender>
                     <div className="sm:flex sm:items-center">
                         <div className="sm:flex-auto">
@@ -127,43 +134,48 @@ const TableWithGroupedRows = ({ columns, data, tableTitle = '' }: TableProps) =>
                                                             )}
                                                         </th>
                                                     </tr>
-                                                    {datum.rows.map((row, rowIndex) => (
-                                                        <tr
-                                                            key={row.key}
-                                                            className={[
-                                                                rowIndex === 0
-                                                                    ? colors.groupTableFirstRowBorder
-                                                                    : colors.groupTableRowBorder,
-                                                                'border-t',
-                                                                colors.groupTableRowBackground,
-                                                            ].join(' ')}
-                                                        >
-                                                            {preparedCols.map(column => {
-                                                                return (
-                                                                    <ConditionalRender
-                                                                        key={column.key}
-                                                                        as={'td'}
-                                                                        isNullRender
-                                                                        condition={column.show}
-                                                                    >
-                                                                        <td
+                                                    {datum.rows.map((row, rowIndex) => {
+                                                        return row.render ? (
+                                                            <Fragment key={row.key}>
+                                                                {row.render()}
+                                                            </Fragment>
+                                                        ) : (
+                                                            <tr
+                                                                key={row.key}
+                                                                className={[
+                                                                    rowIndex === 0
+                                                                        ? colors.groupTableFirstRowBorder
+                                                                        : colors.groupTableRowBorder,
+                                                                    'border-t',
+                                                                    colors.groupTableRowBackground,
+                                                                ].join(' ')}
+                                                            >
+                                                                {preparedCols.map(column => {
+                                                                    return (
+                                                                        <ConditionalRender
                                                                             key={column.key}
-                                                                            className={[
-                                                                                'whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium sm:pl-3',
-                                                                                colors.groupTableRowFont,
-                                                                            ].join(' ')}
+                                                                            as={'td'}
+                                                                            isNullRender
+                                                                            condition={column.show}
                                                                         >
-                                                                            {
-                                                                                row.data[
-                                                                                    column.key as keyof typeof row
-                                                                                ]
-                                                                            }
-                                                                        </td>
-                                                                    </ConditionalRender>
-                                                                );
-                                                            })}
-                                                        </tr>
-                                                    ))}
+                                                                            <td
+                                                                                key={column.key}
+                                                                                className={
+                                                                                    groupTableDataStyles
+                                                                                }
+                                                                            >
+                                                                                {
+                                                                                    row.data[
+                                                                                        column.key as keyof typeof row
+                                                                                    ]
+                                                                                }
+                                                                            </td>
+                                                                        </ConditionalRender>
+                                                                    );
+                                                                })}
+                                                            </tr>
+                                                        );
+                                                    })}
                                                 </Fragment>
                                             ))}
                                     </tbody>

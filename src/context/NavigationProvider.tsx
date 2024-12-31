@@ -25,6 +25,7 @@ export type Current =
     | 'about'
     | 'contact'
     | 'schedule'
+    | 'past-schedules'
     | (string & {});
 
 const defaultValue: NavigationType = {
