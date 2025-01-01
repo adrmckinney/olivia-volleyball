@@ -597,7 +597,13 @@ const ScheduleStatsTableWrapper = ({ tableTitle, data, loading, subFiltersToShow
                     />
                 }
             >
-                <div className="flex mt-0 space-x-14">
+                <div
+                    className={[
+                        'flex mt-0 space-x-14 w-full h-fit',
+                        'sticky top-44 z-30 py-0 lg:static lg:top-auto lg:z-auto',
+                        colors.bgMain,
+                    ].join(' ')}
+                >
                     {mainFilters.map(filter => (
                         <LinkButton
                             key={filter.key}
@@ -619,7 +625,11 @@ const ScheduleStatsTableWrapper = ({ tableTitle, data, loading, subFiltersToShow
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.2 }}
-                        className="flex justify-start w-full mt-8 space-x-6 pl-0 md:pl-44 lg:pl-52"
+                        className={[
+                            'flex justify-start w-full mt-8 lg:mt-8 space-x-6 pl-0 md:pl-44 lg:pl-52',
+                            'sticky top-52 z-20 py-6 md:py-3 lg:py-0 lg:static lg:top-auto lg:z-auto',
+                            colors.bgMain,
+                        ].join(' ')}
                     >
                         {subFilters.map(filter => (
                             <SecondaryPillButton
