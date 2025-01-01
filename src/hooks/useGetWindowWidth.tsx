@@ -1,5 +1,14 @@
 import { useEffect, useState } from 'react';
 
+const breakpointValues: Record<TailwindBreakpoints, number> = {
+    sm: 1,
+    md: 2,
+    lg: 3,
+    xl: 4,
+    '2xl': 5,
+    '3xl': 6,
+};
+
 export const breakpoints = {
     sm: 640,
     md: 768,
@@ -8,6 +17,8 @@ export const breakpoints = {
     '2xl': 1536,
     '3xl': 1600,
 };
+
+const getBreakpointValue = (breakpoint: TailwindBreakpoints) => breakpointValues[breakpoint] || 0;
 
 export const getCurrentBreakpoint = (width: number): TailwindBreakpoints => {
     if (width < breakpoints.md) return 'sm';
@@ -19,11 +30,13 @@ export const getCurrentBreakpoint = (width: number): TailwindBreakpoints => {
     return 'md'; // in case of undefined which should never happen
 };
 
-export type TailwindBreakpoints = 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | (string & {});
+export type TailwindBreakpoints = 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
 
 type Response = {
     currentTailwindBreakpoint: TailwindBreakpoints;
     currentWindowWidth: number;
+    isBreakpointGreaterThan: (breakpoint: TailwindBreakpoints) => boolean;
+    isBreakpointLessThan: (breakpoint: TailwindBreakpoints) => boolean;
 };
 
 /**
@@ -48,7 +61,20 @@ const useGetWindowWidth = (): Response => {
         };
     }, []);
 
-    return { currentTailwindBreakpoint, currentWindowWidth };
+    const isBreakpointGreaterThan = (breakpoint: TailwindBreakpoints) => {
+        return getBreakpointValue(currentTailwindBreakpoint) > getBreakpointValue(breakpoint);
+    };
+
+    const isBreakpointLessThan = (breakpoint: TailwindBreakpoints) => {
+        return getBreakpointValue(currentTailwindBreakpoint) < getBreakpointValue(breakpoint);
+    };
+
+    return {
+        currentTailwindBreakpoint,
+        currentWindowWidth,
+        isBreakpointGreaterThan,
+        isBreakpointLessThan,
+    };
 };
 
 export default useGetWindowWidth;

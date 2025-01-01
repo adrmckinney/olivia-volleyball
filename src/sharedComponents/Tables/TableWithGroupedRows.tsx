@@ -39,7 +39,8 @@ type TableProps = {
 };
 
 export const groupTableDataStyles = [
-    'whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium sm:pl-3',
+    'whitespace-nowrap py-4 pl-4 pr-3 font-medium sm:pl-3',
+    'text-xs md:text-sm',
     colors.groupTableRowFont,
 ].join(' ');
 

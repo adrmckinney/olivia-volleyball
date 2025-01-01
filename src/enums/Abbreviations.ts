@@ -35,6 +35,18 @@ export const Abbreviations = {
         label: 'S%',
         type: 'serve',
     },
+    serviceAcesPerSet: {
+        key: 'serviceAcesPerSet',
+        name: 'Aces Per Set',
+        label: 'A/S',
+        type: 'serve',
+    },
+    servicePoints: {
+        key: 'servicePoints',
+        name: 'Service Points',
+        label: 'PTS',
+        type: 'serve',
+    },
     attackKill: {
         key: 'attackKill',
         name: 'Attack Kill',
@@ -69,6 +81,12 @@ export const Abbreviations = {
         key: 'attackPercentage',
         name: 'Hitting %',
         label: 'ATT%',
+        type: 'attack',
+    },
+    attackKillsPerSet: {
+        key: 'attackKillsPerSet',
+        name: 'Kills Per Set',
+        label: 'K/S',
         type: 'attack',
     },
     blockZeroAttack: {
@@ -107,6 +125,12 @@ export const Abbreviations = {
         label: 'B%',
         type: 'block',
     },
+    blocksPerSet: {
+        key: 'blocksPerSet',
+        name: 'Blocks Per Set',
+        label: 'B/S',
+        type: 'block',
+    },
     settingAssist: {
         key: 'settingAssist',
         name: 'Setting Assist',
@@ -141,6 +165,12 @@ export const Abbreviations = {
         key: 'settingPercentage',
         name: 'Setting %',
         label: 'S%',
+        type: 'set',
+    },
+    settingAssistPerSet: {
+        key: 'assistsPerSet',
+        name: 'Assists Per Set',
+        label: 'A/S',
         type: 'set',
     },
     dig3: {
@@ -178,5 +208,29 @@ export const Abbreviations = {
         name: 'Passing %',
         label: 'P%',
         type: 'dig',
+    },
+    digsPerSet: {
+        key: 'digsPerSet',
+        name: 'Digs Per Set',
+        label: 'D/S',
+        type: 'dig',
+    },
+    receptions: {
+        key: 'serveReceived',
+        name: 'Receptions',
+        label: 'R',
+        type: 'serveReceive',
+    },
+    receptionError: {
+        key: 'receptionError',
+        name: 'Reception Error',
+        label: 'RE',
+        type: 'serveReceive',
+    },
+    receptionsPerSet: {
+        key: 'receptionsPerSet',
+        name: 'Receptions Per Set',
+        label: 'R/S',
+        type: 'serveReceive',
     },
 };

@@ -32,7 +32,7 @@ export const colors = {
     // Table header
     groupTableHeaderFont: 'text-gray-50',
     groupTableHeaderBackground: 'bg-gray-800',
-    groupTableHeaderBorder: 'border-gray-900', // I think 950
+    groupTableHeaderBorder: 'border-gray-900',
 
     // Table body
     groupTableBodyBackground: 'bg-gray-700',
