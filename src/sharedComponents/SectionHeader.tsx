@@ -11,7 +11,7 @@ const SectionHeader = ({ title, hideNavBackground, isContactHeader = false }: Pr
         <>
             <h2
                 className={[
-                    'sticky top-0 z-30 py-6 lg:static lg:top-auto lg:z-auto',
+                    'sticky top-0 z-50 py-6 lg:static lg:top-auto lg:z-auto',
                     hideNavBackground ? 'bg-transparent' : 'bg-gray-950 lg:bg-transparent',
                     themes.headerTwo,
                     'text-center',

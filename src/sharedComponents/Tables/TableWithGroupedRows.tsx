@@ -80,7 +80,7 @@ const TableWithGroupedRows = ({ columns, data, tableTitle = '' }: TableProps) =>
                                     <thead
                                         className={[
                                             colors.groupTableHeaderBackground,
-                                            ' sticky top-0 z-20',
+                                            ' sticky top-0 z-10',
                                         ].join(' ')}
                                     >
                                         <tr>

@@ -9,7 +9,6 @@ const SubSectionHeader = ({ title }: Props) => {
         <>
             <h3
                 className={[
-                    'sticky top-0 z-30 py-6 lg:static lg:top-auto lg:z-auto',
                     'bg-gray-950 lg:bg-transparent',
                     themes.headerThree,
                     'text-start',
