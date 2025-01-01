@@ -1,21 +1,45 @@
+import useGetWindowWidth from '../../hooks/useGetWindowWidth';
+import { ButtonSize } from '../Buttons/BaseButton';
+
 interface SkeletonTableProps {
     numberOfRows?: number;
     numberOfColumns?: number;
     loadingMessage?: string;
+    autoCols?: boolean;
 }
 
 const SkeletonTable: React.FC<SkeletonTableProps> = ({
     numberOfRows = 5,
     numberOfColumns = 4,
     loadingMessage = 'Loading data...',
+    autoCols = false,
 }) => {
+    const { currentTailwindBreakpoint } = useGetWindowWidth();
+
+    const autoColNum: Record<ButtonSize, number> = {
+        xs: 3,
+        sm: 3,
+        md: 3,
+        lg: 5,
+        xl: 5,
+        '2xl': 7,
+        '3xl': 7,
+        '4xl': 7,
+        '5xl': 7,
+    };
+
+    const cols = autoCols ? autoColNum[currentTailwindBreakpoint] : numberOfColumns;
+
     const rows = Array.from({ length: numberOfRows }, (_, index) => index);
-    const headers = Array.from({ length: numberOfColumns }, (_, index) => index);
+    const headers = Array.from({ length: cols }, (_, index) => index);
 
     const tableStyles = 'flex justify-between mb-4';
 
     return (
-        <div role="status" className="space-y-2.5 animate-pulse max-w-4xl mx-auto">
+        <div
+            role="status"
+            className={['space-y-2.5 animate-pulse mx-auto', 'w-4/5 pt-6'].join(' ')}
+        >
             {/* Table Header */}
             <div className={[tableStyles].join(' ')}>
                 {headers.map((_, index) => (

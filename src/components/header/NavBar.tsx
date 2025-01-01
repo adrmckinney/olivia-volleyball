@@ -46,10 +46,10 @@ const NavBar = () => {
             show: true,
         },
         {
-            name: 'Schedule',
+            name: 'Schedule/Stats',
             key: 'schedule',
             current: current === 'schedule',
-            show: featureFlags.FEATURE_JAMMERS_2025_SCHEDULE,
+            show: featureFlags.SCHEDULES_AND_STATS,
         },
         {
             name: 'Athletic History',

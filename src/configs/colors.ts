@@ -23,4 +23,28 @@ export const colors = {
     mobileNavButtonInactive: ['bg-gray-500', primaryText].join(' '),
     subText: 'text-gray-500',
     bgMobileNavMenuPopover: 'bg-gray-700',
+
+    // Group Table colors
+    groupTableBorder: 'border-gray-700',
+    // Table title
+    groupTableTitleFont: 'text-gray-50',
+
+    // Table header
+    groupTableHeaderFont: 'text-gray-50',
+    groupTableHeaderBackground: 'bg-gray-800',
+    groupTableHeaderBorder: 'border-gray-900',
+
+    // Table body
+    groupTableBodyBackground: 'bg-gray-700',
+
+    // Group Rows
+    groupTableGroupFont: 'text-gray-50',
+    groupTableGroupRowBackground: 'bg-gray-700',
+    groupTableGroupRowBorder: 'border-gray-700', // Just border top
+
+    // Table Rows
+    groupTableRowFont: 'text-gray-200',
+    groupTableRowBackground: 'bg-gray-800',
+    groupTableRowBorder: 'border-gray-900',
+    groupTableFirstRowBorder: 'border-gray-950',
 };
