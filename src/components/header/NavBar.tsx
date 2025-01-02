@@ -113,7 +113,7 @@ const NavBar = () => {
                                 </div>
                             </div>
 
-                            <div className="absolute z-[99999999999] right-0 flex-shrink-0 mr-2 mt-2 lg:hidden">
+                            <div className="absolute right-0 flex-shrink-0 mr-2 mt-2 lg:hidden">
                                 {/* Mobile menu button */}
                                 <PopoverButton
                                     className={[
