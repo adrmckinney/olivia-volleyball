@@ -38,7 +38,7 @@ const DrawerWithHeader = ({
                     >
                         <DialogPanel
                             transition
-                            className="pointer-events-auto w-screen max-w-full transform transition duration-500 ease-in-out data-[closed]:translate-x-full md:duration-700"
+                            className="pointer-events-auto w-screen max-w-full transform transition duration-100 ease-in-out data-[closed]:translate-x-full md:duration-200"
                         >
                             <div
                                 className={[
@@ -85,8 +85,8 @@ const DrawerWithHeader = ({
                                 </div>
                                 <div
                                     className={[
-                                        'relative flex-1 px-4 sm:px-6',
-                                        //   'py-6',
+                                        'relative flex-1 px-4 md:px-1 lg:px-6',
+                                        'overflow-y-hidden h-full',
                                         'py-0',
                                     ].join(' ')}
                                 >

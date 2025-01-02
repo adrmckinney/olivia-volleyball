@@ -49,7 +49,7 @@ const ToolTip = ({ message, position = 'above', children }: Props) => {
             {visible && (
                 <div
                     ref={tooltipRef}
-                    className={`absolute z-10 p-2 text-sm text-white bg-black rounded-md ${
+                    className={`absolute z-[99999] lg:w-max p-2 text-sm text-white bg-black rounded-md ${
                         tooltipPosition === 'above'
                             ? 'bottom-full mb-2'
                             : tooltipPosition === 'below'

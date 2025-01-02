@@ -4,9 +4,10 @@ type Props = {
     show: boolean;
     children: React.ReactNode;
     triggerComponent: React.ReactNode;
+    initialY?: string;
 };
 
-const Collapsible = ({ show, children, triggerComponent }: Props) => {
+const Collapsible = ({ show, children, triggerComponent, initialY = '-100px' }: Props) => {
     return (
         <>
             <AnimatePresence>
@@ -14,9 +15,9 @@ const Collapsible = ({ show, children, triggerComponent }: Props) => {
                 {show ? (
                     <motion.div
                         key="table"
-                        initial={{ y: '-150px', opacity: 0 }}
+                        initial={{ y: initialY, opacity: 0 }}
                         animate={{ y: '0px', opacity: 1 }}
-                        exit={{ y: '-150px', opacity: 0 }}
+                        exit={{ y: initialY, opacity: 0 }}
                         transition={{ duration: 0.2 }}
                         className={['flex flex-col justify-center items-start w-full'].join(' ')}
                     >

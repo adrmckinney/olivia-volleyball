@@ -40,7 +40,9 @@ const Landing = () => {
             <BackgroundAccentColor />
             <div className="mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-40 lg:flex lg:px-8 lg:pt-40">
                 <div className="mx-auto max-w-2xl flex-shrink-0 lg:mx-0 lg:max-w-xl lg:pt-8 space-y-10">
-                    <h1 className={['mt-10', themes.headerOne].join(' ')}>Olivia McKinney</h1>
+                    <h1 className={['mt-10 lg:mb-28', themes.headerOne].join(' ')}>
+                        Olivia McKinney
+                    </h1>
 
                     <ConditionalRender condition={currentTailwindBreakpoint === 'sm'}>
                         {renderImage()}

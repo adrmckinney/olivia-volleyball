@@ -22,7 +22,7 @@ const SubHeaderWithExpandChevron = ({
             <div
                 key="header"
                 className={[
-                    'sticky top-16 z-40 py-6 lg:static lg:top-auto lg:z-auto',
+                    'sticky top-16 z-40 py-6 lg:py-0 lg:static lg:top-auto lg:z-auto',
                     'flex items-center space-x-2',
                     colors.bgMain,
                     titleIsClickable ? ' cursor-pointer' : '',
