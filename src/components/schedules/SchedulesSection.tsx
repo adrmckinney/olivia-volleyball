@@ -20,14 +20,15 @@ const SchedulesSection = () => {
                 ].join(' ')}
             >
                 <SectionHeader title="Schedules and Stats" hideNavBackground={hideNavBackground} />
+                <div className="space-y-0">
+                    <ConditionalRender condition={featureFlags.FEATURE_JAMMERS_2025_SCHEDULE}>
+                        <Jammers2025ScheduleStats />
+                    </ConditionalRender>
 
-                <ConditionalRender condition={featureFlags.FEATURE_JAMMERS_2025_SCHEDULE}>
-                    <Jammers2025ScheduleStats />
-                </ConditionalRender>
-
-                <ConditionalRender condition={featureFlags.FEATURE_JAMMERS_2024_SCHEDULE}>
-                    <Jammers2024ScheduleStats />
-                </ConditionalRender>
+                    <ConditionalRender condition={featureFlags.FEATURE_JAMMERS_2024_SCHEDULE}>
+                        <Jammers2024ScheduleStats />
+                    </ConditionalRender>
+                </div>
             </div>
         </>
     );

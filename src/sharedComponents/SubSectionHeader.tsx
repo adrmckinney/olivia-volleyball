@@ -12,7 +12,7 @@ const SubSectionHeader = ({ title }: Props) => {
                     'bg-gray-950 lg:bg-transparent',
                     themes.headerThree,
                     'text-start',
-                    'lg:py-20',
+                    'lg:py-12',
                 ].join(' ')}
             >
                 {title}
