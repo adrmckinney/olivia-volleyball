@@ -11,7 +11,13 @@ const ToggleSwitch = ({ enabled, onChange, leftLabel = '', rightLabel = '' }: Pr
     return (
         <Field className="flex items-center">
             {leftLabel && (
-                <Label as="span" className="mr-3 text-sm font-medium text-gray-900">
+                <Label
+                    as="span"
+                    className={[
+                        'mr-3 text-sm font-medium',
+                        enabled ? 'text-gray-200' : 'text-purple-300',
+                    ].join(' ')}
+                >
                     {leftLabel}
                 </Label>
             )}
@@ -19,18 +25,24 @@ const ToggleSwitch = ({ enabled, onChange, leftLabel = '', rightLabel = '' }: Pr
                 checked={enabled}
                 onChange={onChange}
                 className={`${
-                    enabled ? 'bg-gray-700' : 'bg-gray-200'
-                } relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-700 focus:ring-offset-2`}
+                    enabled ? 'bg-gray-200' : 'bg-gray-200'
+                } relative inline-flex h-5 w-10 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out`}
             >
                 <span
                     aria-hidden="true"
                     className={`${
-                        enabled ? 'translate-x-5' : 'translate-x-1'
-                    } pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out`}
+                        enabled ? 'translate-x-5' : 'translate-x-0.5'
+                    } pointer-events-none inline-block h-4 w-4 transform rounded-full bg-purple-400 shadow ring-0 transition duration-200 ease-in-out`}
                 />
             </Switch>
             {rightLabel && (
-                <Label as="span" className="ml-3 text-sm font-medium text-gray-900">
+                <Label
+                    as="span"
+                    className={[
+                        'ml-3 text-sm font-medium',
+                        enabled ? 'text-purple-300' : 'text-gray-200',
+                    ].join(' ')}
+                >
                     {rightLabel}
                 </Label>
             )}

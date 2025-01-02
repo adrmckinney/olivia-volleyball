@@ -75,7 +75,7 @@ const NavBar = () => {
             as="header"
             className={[
                 colors.bgNavBar({ hide: hideNavBackground }),
-                'fixed top-0 w-full z-50',
+                'fixed top-0 w-full z-[99]',
             ].join(' ')}
             style={{ borderRadius: '0 0 100px 100px/50%' }}
         >
@@ -113,7 +113,7 @@ const NavBar = () => {
                                 </div>
                             </div>
 
-                            <div className="absolute right-0 flex-shrink-0 mr-2 mt-2 lg:hidden">
+                            <div className="absolute z-[99999999999] right-0 flex-shrink-0 mr-2 mt-2 lg:hidden">
                                 {/* Mobile menu button */}
                                 <PopoverButton
                                     className={[

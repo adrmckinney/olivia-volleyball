@@ -47,4 +47,10 @@ export const colors = {
     groupTableRowBackground: 'bg-gray-800',
     groupTableRowBorder: 'border-gray-900',
     groupTableFirstRowBorder: 'border-gray-950',
+
+    // Select Dropdown
+    selectBg: 'bg-gray-200',
+    selectText: 'text-gray-900',
+    selectFocusRing: 'focus:outline-purple-400',
+    selectIconColor: 'text-purple-400',
 };

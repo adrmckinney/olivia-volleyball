@@ -10,11 +10,17 @@ import { ButtonSize } from '../../sharedComponents/Buttons/BaseButton';
 import LinkButton from '../../sharedComponents/Buttons/LinkButton';
 import SecondaryPillButton from '../../sharedComponents/Buttons/SecondaryPillButton';
 import Collapsible from '../../sharedComponents/Collapsible';
+import ConditionalRender from '../../sharedComponents/ConditionalRender';
+import DrawerWithHeader from '../../sharedComponents/Drawers/DrawerWithHeader';
+import BasicSelectDropdown, {
+    SelectOption,
+} from '../../sharedComponents/DropDowns/BasicSelectDropdown';
 import SkeletonTable from '../../sharedComponents/Skeletons/SkeletonTable';
 import SubHeaderWithExpandChevron from '../../sharedComponents/SubHeaderWithExpandChevron';
 import TableWithGroupedRows, {
     TableColumn,
 } from '../../sharedComponents/Tables/TableWithGroupedRows';
+import ToggleSwitch from '../../sharedComponents/Toggles/ToggleSwitch';
 import ToolTip from '../../sharedComponents/ToolTip/ToolTip';
 import { TableDataOptions } from '../../types/ScheduleStatsDataOptions';
 import { StatFilterOptions } from '../../types/StatFilterOptions';
@@ -22,6 +28,7 @@ import useScheduleStatsTableHelpers from './useScheduleStatsTableHelpers';
 
 type FilterButtons = {
     key: string;
+    name: string;
     label: string;
     isActive: boolean;
     fn: () => void;
@@ -88,12 +95,25 @@ type Props = {
     subFiltersToShow: Partial<SubFiltersToShow>;
 };
 
+const defaultStatFilter = {
+    key: 'set',
+    name: 'Set',
+    label: 'Set',
+    fn: () => {},
+    isActive: true,
+    show: true,
+};
+
 const ScheduleStatsTableWrapper = ({ tableTitle, data, loading, subFiltersToShow }: Props) => {
-    const { currentTailwindBreakpoint } = useGetWindowWidth();
+    const { currentTailwindBreakpoint, isBreakpointGreaterThan } = useGetWindowWidth();
     const { prepareGroupTableData } = useScheduleStatsTableHelpers();
     const [tableDataType, setTableDataType] = useState<TableDataOptions>('schedule');
-    const [statFilter, setStatFilter] = useState<StatFilterOptions>('set');
+    const [statFilter, setStatFilter] = useState<StatFilterOptions>(
+        defaultStatFilter.key as StatFilterOptions
+    );
     const [showTable, setShowTable] = useState(false);
+    const [showDrawer, setShowDrawer] = useState(false);
+    const [dropDownSelection, setDropDownSelection] = useState<FilterButtons>(defaultStatFilter);
 
     const isStatSet = tableDataType === 'stats' && statFilter === 'set';
     const isStatServe = tableDataType === 'stats' && statFilter === 'serve';
@@ -511,12 +531,14 @@ const ScheduleStatsTableWrapper = ({ tableTitle, data, loading, subFiltersToShow
     const mainFilters: FilterButtons[] = [
         {
             key: 'schedule',
+            name: 'Schedule',
             label: 'Schedule',
             fn: () => setTableDataType('schedule'),
             isActive: tableDataType === 'schedule',
         },
         {
             key: 'stats',
+            name: 'Stats',
             label: 'Stats',
             fn: () => setTableDataType('stats'),
             isActive: tableDataType === 'stats',
@@ -526,6 +548,7 @@ const ScheduleStatsTableWrapper = ({ tableTitle, data, loading, subFiltersToShow
     const subFilters: FilterButtons[] = [
         {
             key: 'set',
+            name: 'Set',
             label: 'Set',
             fn: () => setStatFilter('set'),
             isActive: statFilter === 'set',
@@ -533,6 +556,7 @@ const ScheduleStatsTableWrapper = ({ tableTitle, data, loading, subFiltersToShow
         },
         {
             key: 'attack',
+            name: 'Attack',
             label: 'Attack',
             fn: () => setStatFilter('attack'),
             isActive: statFilter === 'attack',
@@ -542,6 +566,7 @@ const ScheduleStatsTableWrapper = ({ tableTitle, data, loading, subFiltersToShow
         },
         {
             key: 'serve',
+            name: 'Serve',
             label: 'Serve',
             fn: () => setStatFilter('serve'),
             isActive: statFilter === 'serve',
@@ -551,6 +576,7 @@ const ScheduleStatsTableWrapper = ({ tableTitle, data, loading, subFiltersToShow
         },
         {
             key: 'block',
+            name: 'Block',
             label: 'Block',
             fn: () => setStatFilter('block'),
             isActive: statFilter === 'block',
@@ -560,6 +586,7 @@ const ScheduleStatsTableWrapper = ({ tableTitle, data, loading, subFiltersToShow
         },
         {
             key: 'dig',
+            name: 'Dig',
             label: 'Dig',
             fn: () => setStatFilter('dig'),
             isActive: statFilter === 'dig',
@@ -567,6 +594,7 @@ const ScheduleStatsTableWrapper = ({ tableTitle, data, loading, subFiltersToShow
         },
         {
             key: 'serveReceive',
+            name: 'Serve Receive',
             label: 'Serve Receive',
             fn: () => setStatFilter('serveReceive'),
             isActive: statFilter === 'serveReceive',
@@ -583,17 +611,74 @@ const ScheduleStatsTableWrapper = ({ tableTitle, data, loading, subFiltersToShow
         statFilter,
         columns,
     });
+    const highestBreakpointToShowDrawer = 'md';
+    const handleShowTable = () => {
+        if (isBreakpointGreaterThan(highestBreakpointToShowDrawer)) {
+            setShowTable(!showTable);
+        } else {
+            setShowDrawer(true);
+        }
+    };
+
+    const drawerTitle = tableTitle.replace('Schedule and Stats', '');
+
+    const handleDropDownSelection = (option: SelectOption) => {
+        setDropDownSelection(option as FilterButtons);
+        setStatFilter(option.key as StatFilterOptions);
+    };
 
     return (
-        <>
-            <Collapsible
-                show={showTable}
-                triggerComponent={
-                    <SubHeaderWithExpandChevron
-                        title={tableTitle}
-                        show={showTable}
-                        handleClick={() => setShowTable(!showTable)}
-                        titleIsClickable
+        <Collapsible
+            show={showTable || showDrawer}
+            triggerComponent={
+                <SubHeaderWithExpandChevron
+                    title={tableTitle}
+                    show={showTable}
+                    handleClick={handleShowTable}
+                    titleIsClickable
+                />
+            }
+        >
+            <ConditionalRender
+                condition={isBreakpointGreaterThan(highestBreakpointToShowDrawer)}
+                isNullRender
+                falseRender={
+                    <DrawerWithHeader
+                        open={showDrawer}
+                        onClose={() => setShowDrawer(false)}
+                        drawerTitle={drawerTitle}
+                        fullScreen
+                        mainContent={<TableWithGroupedRows columns={columns} data={preparedData} />}
+                        subTitleContent={
+                            <div
+                                className={[
+                                    'flex w-full justify-between items-center space-x-4 pt-2',
+                                ].join(' ')}
+                            >
+                                <ToggleSwitch
+                                    enabled={tableDataType === 'stats'}
+                                    leftLabel="Schedule"
+                                    rightLabel="Stats"
+                                    onChange={() =>
+                                        setTableDataType(
+                                            tableDataType === 'schedule' ? 'stats' : 'schedule'
+                                        )
+                                    }
+                                />
+                                <ConditionalRender
+                                    condition={tableDataType === 'stats'}
+                                    isNullRender
+                                >
+                                    <BasicSelectDropdown
+                                        options={subFilters.filter(
+                                            option => option.key !== dropDownSelection.key
+                                        )}
+                                        handleChange={handleDropDownSelection}
+                                        selected={dropDownSelection}
+                                    />
+                                </ConditionalRender>
+                            </div>
+                        }
                     />
                 }
             >
@@ -649,8 +734,8 @@ const ScheduleStatsTableWrapper = ({ tableTitle, data, loading, subFiltersToShow
                 ) : (
                     <TableWithGroupedRows columns={columns} data={preparedData} />
                 )}
-            </Collapsible>
-        </>
+            </ConditionalRender>
+        </Collapsible>
     );
 };
 
