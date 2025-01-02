@@ -52,7 +52,7 @@ const TableWithGroupedRows = ({ columns, data, tableTitle = '' }: TableProps) =>
 
     return (
         <>
-            <div className="px-4 sm:px-6 lg:px-0 w-full">
+            <div className="px-1 sm:px-6 lg:px-0 w-full h-full md:h-auto">
                 <ConditionalRender condition={tableTitle?.length > 0} isNullRender>
                     <div className="sm:flex sm:items-center">
                         <div className="sm:flex-auto">
@@ -67,12 +67,12 @@ const TableWithGroupedRows = ({ columns, data, tableTitle = '' }: TableProps) =>
                         </div>
                     </div>
                 </ConditionalRender>
-                <div className="mt-8 flow-root">
-                    <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                        <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+                <div className="mt-1 md:mt-8 flow-root h-full md:h-auto">
+                    <div className="-mx-4 md:-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8 h-full md:h-auto">
+                        <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8 h-full md:h-auto">
                             <div
                                 className={[
-                                    'overflow-y-auto max-h-[600px] border-4 rounded-lg',
+                                    'overflow-y-auto max-h-screen md:max-h-[600px] border-4 rounded-lg',
                                     colors.groupTableBorder,
                                 ].join(' ')}
                             >

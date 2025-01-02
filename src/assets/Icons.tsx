@@ -1,4 +1,10 @@
-import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid';
+import {
+    CheckIcon,
+    ChevronDownIcon,
+    ChevronLeftIcon,
+    ChevronRightIcon,
+    ChevronUpDownIcon,
+} from '@heroicons/react/20/solid';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
 const sizeClasses = {
@@ -30,6 +36,8 @@ export const Icons = {
     ChevronRight: createIconComponent(ChevronRightIcon),
     ChevronDown: createIconComponent(ChevronDownIcon),
     ChevronLeft: createIconComponent(ChevronLeftIcon),
+    ChevronUpDown: createIconComponent(ChevronUpDownIcon),
     Bars: createIconComponent(Bars3Icon),
     XMark: createIconComponent(XMarkIcon),
+    Check: createIconComponent(CheckIcon),
 };

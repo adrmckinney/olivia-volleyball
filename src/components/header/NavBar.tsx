@@ -75,7 +75,7 @@ const NavBar = () => {
             as="header"
             className={[
                 colors.bgNavBar({ hide: hideNavBackground }),
-                'fixed top-0 w-full z-50',
+                'fixed top-0 w-full z-[99]',
             ].join(' ')}
             style={{ borderRadius: '0 0 100px 100px/50%' }}
         >
