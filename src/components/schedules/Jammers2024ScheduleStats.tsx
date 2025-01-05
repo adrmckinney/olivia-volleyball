@@ -63,16 +63,16 @@ const Jammers2024ScheduleStats = () => {
             blocksPerSet: false,
         },
         dig: {
-            setsPlayed: false,
+            setsPlayed: true,
             dig3: false,
             dig2: false,
             dig1: false,
             dig0: false,
             digs: false,
-            digErrors: false,
-            digsTotal: false,
-            passingPercentage: false,
-            digsPerSet: false,
+            digErrors: true,
+            digsTotal: true,
+            passingPercentage: true,
+            digsPerSet: true,
         },
     };
 
