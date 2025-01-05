@@ -1,1 +1,1 @@
-export type ScheduleStatuses = 'INCOMPLETE' | 'COMPLETE';
+export type ScheduleStatuses = 'INCOMPLETE' | 'COMPLETE' | 'FORFEIT';

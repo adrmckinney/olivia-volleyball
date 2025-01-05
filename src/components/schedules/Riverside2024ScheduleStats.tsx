@@ -1,24 +1,26 @@
 import useFetchCSVData from '../../api/FetchCSVData';
-import { parseScheduleSheet } from '../../helpers/csvHelpers/parseScheduleSheet';
+import { parseRiversideScheduleSheet } from '../../helpers/csvHelpers/parseRiversideScheduleSheet';
 import { sheetUrls } from '../../utils/googleSheetsConfigs';
 import ScheduleStatsTableWrapper, { SubFiltersToShow } from './ScheduleStatsTableWrapper';
 
-const Jammers2024ScheduleStats = () => {
+const Riverside2024ScheduleStats = () => {
     const url: string = sheetUrls.main
         .replace('{documentId}', import.meta.env.VITE_MAIN_GOOGLE_DOCUMENT_ID)
-        .replace('{sheetId}', import.meta.env.VITE_JAMMERS2024_SCHEDULE_SHEET_ID);
+        .replace('{sheetId}', import.meta.env.VITE_RIVERSIDE2024_SCHEDULE_SHEET_ID);
     const { parsedData: scheduleData, loading } = useFetchCSVData({
         url,
-        parser: parseScheduleSheet,
+        parser: parseRiversideScheduleSheet,
     });
 
     const scheduleColumnsToShow = {
-        opponent: true,
         date: true,
-        time: false,
+        opponent: true,
+        opponentImage: false,
+        homeAway: true,
+        gameStatus: true,
         result: true,
+        time: false,
         score: true,
-        scoreDetails: false,
     };
 
     const subFiltersToShow: Partial<SubFiltersToShow> = {
@@ -30,17 +32,17 @@ const Jammers2024ScheduleStats = () => {
             settingTotal: true,
             settingAssistPercentage: true,
             settingPercentage: true,
-            settingAssistsPerSet: true,
+            settingAssistsPerSet: false,
         },
         attack: {
-            setsPlayed: true,
-            attackKill: true,
-            attackError: true,
-            attackTotal: true,
+            setsPlayed: false,
+            attackKill: false,
+            attackError: false,
+            attackTotal: false,
             attackZero: false,
-            attackKillPercentage: true,
-            attackPercentage: true,
-            attackKillsPerSet: true,
+            attackKillPercentage: false,
+            attackPercentage: false,
+            attackKillsPerSet: false,
         },
         serve: {
             setsPlayed: true,
@@ -50,7 +52,7 @@ const Jammers2024ScheduleStats = () => {
             serviceAttempts: true,
             serviceAcePercentage: true,
             servicePercentage: true,
-            serviceAcesPerSet: true,
+            serviceAcesPerSet: false,
             servicePoints: false,
         },
         block: {
@@ -78,13 +80,14 @@ const Jammers2024ScheduleStats = () => {
 
     return (
         <ScheduleStatsTableWrapper
-            tableTitle="Jammers Volleyball Club 2024 Schedule and Stats"
-            data={scheduleData}
+            tableTitle="Riverside High School 2024 Schedule and Stats"
+            data={scheduleData && Array.isArray(scheduleData) ? scheduleData : []}
             loading={loading}
             subFiltersToShow={subFiltersToShow}
             scheduleColumnsToShow={scheduleColumnsToShow}
+            isTournament={false}
         />
     );
 };
 
-export default Jammers2024ScheduleStats;
+export default Riverside2024ScheduleStats;

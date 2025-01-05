@@ -6,6 +6,8 @@ type StatusMeta = {
 export type ScheduleStatuses = {
     incomplete: StatusMeta;
     complete: StatusMeta;
+    complete_no_details: StatusMeta;
+    forfeit: StatusMeta;
 };
 
 export const ScheduleStatuses: ScheduleStatuses = {
@@ -16,5 +18,13 @@ export const ScheduleStatuses: ScheduleStatuses = {
     complete: {
         type: 'COMPLETE',
         message: 'This schedule is current',
+    },
+    complete_no_details: {
+        type: 'COMPLETE_NO_DETAILS',
+        message: 'There are no available details for the match',
+    },
+    forfeit: {
+        type: 'FORFEIT',
+        message: 'The match was forfeited',
     },
 };

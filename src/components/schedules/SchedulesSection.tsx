@@ -5,6 +5,7 @@ import ConditionalRender from '../../sharedComponents/ConditionalRender';
 import SectionHeader from '../../sharedComponents/SectionHeader';
 import Jammers2024ScheduleStats from './Jammers2024ScheduleStats';
 import Jammers2025ScheduleStats from './Jammers2025ScheduleStats';
+import Riverside2024ScheduleStats from './Riverside2024ScheduleStats';
 
 const SchedulesSection = () => {
     const { scheduleRef, hideNavBackground } = useContext(NavigationContext);
@@ -23,6 +24,10 @@ const SchedulesSection = () => {
                 <div className="space-y-0">
                     <ConditionalRender condition={featureFlags.FEATURE_JAMMERS_2025_SCHEDULE}>
                         <Jammers2025ScheduleStats />
+                    </ConditionalRender>
+
+                    <ConditionalRender condition={featureFlags.FEATURE_RIVERSIDE_2024_SCHEDULE}>
+                        <Riverside2024ScheduleStats />
                     </ConditionalRender>
 
                     <ConditionalRender condition={featureFlags.FEATURE_JAMMERS_2024_SCHEDULE}>

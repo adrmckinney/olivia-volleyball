@@ -19,6 +19,15 @@ type HasKey = {
     key: string; // Each Datum must have a key
 };
 
+type PrepareGroupTableProps<T> = {
+    data: T[];
+    groupKey?: keyof T;
+    rowLevelDataKey: keyof T;
+    dataType: TableDataOptions;
+    statFilter?: StatFilterOptions;
+    columns: TableColumn[];
+};
+
 type PrepareTableProps<T> = {
     data: T[];
     groupKey?: keyof T;
@@ -27,6 +36,7 @@ type PrepareTableProps<T> = {
     statFilter?: StatFilterOptions;
     columns: TableColumn[];
 };
+
 const useScheduleStatsTableHelpers = () => {
     const groupRender = (group: Group) => <GroupDataTableRender group={group} />;
 
@@ -42,7 +52,7 @@ const useScheduleStatsTableHelpers = () => {
         dataType,
         statFilter,
         columns,
-    }: PrepareTableProps<T>): GroupTableData[] => {
+    }: PrepareGroupTableProps<T>): GroupTableData[] => {
         const sortedData = data.sort((a, b) => {
             const dateA = dayjs((b[groupKey] as { startDate: string }).startDate).valueOf();
             const dateB = dayjs((a[groupKey] as { startDate: string }).startDate).valueOf();
@@ -58,15 +68,58 @@ const useScheduleStatsTableHelpers = () => {
                 },
             };
 
-            const statKeys = statFilter
-                ? Object.keys(Abbreviations).filter(key => {
-                      return Abbreviations[key as keyof typeof Abbreviations].type === statFilter;
-                  })
-                : [];
+            const rows = prepareRowData(
+                datum,
+                columns,
+                rowLevelDataKey,
+                dataType,
+                statFilter as StatFilterOptions
+            );
 
-            const rows: TableDataRow[] = (
-                datum[rowLevelDataKey] as Array<Record<string, string | number>>
-            ).map((row, rowIndex) => {
+            return {
+                key: datum.key,
+                group: newGroup,
+                rows,
+            };
+        });
+    };
+
+    const prepareTableData = <T extends HasKey>({
+        data,
+        rowLevelDataKey,
+        dataType,
+        statFilter,
+        columns,
+    }: PrepareTableProps<T>) => {
+        const allRows: TableDataRow[] = [];
+        data?.forEach(datum => {
+            const [row] = prepareRowData(
+                datum,
+                columns,
+                rowLevelDataKey,
+                dataType,
+                statFilter as StatFilterOptions
+            );
+
+            allRows.push(row);
+        });
+        return allRows;
+    };
+
+    const prepareRowData = <T,>(
+        datum: T,
+        columns: TableColumn[],
+        rowLevelDataKey: keyof T,
+        dataType: TableDataOptions,
+        statFilter: StatFilterOptions
+    ): TableDataRow[] => {
+        const statKeys = statFilter
+            ? Object.keys(Abbreviations).filter(key => {
+                  return Abbreviations[key as keyof typeof Abbreviations].type === statFilter;
+              })
+            : [];
+        return (datum[rowLevelDataKey] as Array<Record<string, string | number>>).map(
+            (row, rowIndex) => {
                 const isScheduleAndNotComplete =
                     'matchStatus' in row &&
                     row.matchStatus !== ScheduleStatuses.complete.type.toLowerCase();
@@ -84,8 +137,9 @@ const useScheduleStatsTableHelpers = () => {
                         ? Object.keys(row)
                               .filter(
                                   key =>
-                                      ['opponent', 'statsStatus', 'key'].includes(key) ||
-                                      statKeys.includes(key)
+                                      ['opponent', 'statsStatus', 'key', 'setsPlayed'].includes(
+                                          key
+                                      ) || statKeys.includes(key)
                               )
                               .reduce(
                                   (acc, key) => {
@@ -103,17 +157,11 @@ const useScheduleStatsTableHelpers = () => {
                         ? { render: () => dataRender(row as RowData, rowIndex, columns) }
                         : {}),
                 };
-            });
-
-            return {
-                key: datum.key,
-                group: newGroup,
-                rows,
-            };
-        });
+            }
+        );
     };
 
-    return { prepareGroupTableData };
+    return { prepareTableData, prepareGroupTableData };
 };
 
 export default useScheduleStatsTableHelpers;

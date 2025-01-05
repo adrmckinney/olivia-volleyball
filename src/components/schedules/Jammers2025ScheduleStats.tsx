@@ -12,17 +12,28 @@ const Jammers2025ScheduleStats = () => {
         parser: parseScheduleSheet,
     });
 
+    const scheduleColumnsToShow = {
+        opponent: true,
+        date: true,
+        time: false,
+        result: true,
+        score: true,
+        scoreDetails: false,
+    };
+
     const subFiltersToShow: Partial<SubFiltersToShow> = {
         set: {
+            setsPlayed: false,
             settingAssist: true,
             settingError: true,
             settingZero: false,
             settingTotal: true,
             settingAssistPercentage: true,
             settingPercentage: true,
-            settingAssistPerSet: false,
+            settingAssistsPerSet: false,
         },
         attack: {
+            setsPlayed: false,
             attackKill: true,
             attackError: true,
             attackTotal: true,
@@ -32,6 +43,7 @@ const Jammers2025ScheduleStats = () => {
             attackKillsPerSet: false,
         },
         serve: {
+            setsPlayed: false,
             serviceAce: true,
             serviceError: true,
             serviceZero: false,
@@ -42,6 +54,7 @@ const Jammers2025ScheduleStats = () => {
             servicePoints: false,
         },
         block: {
+            setsPlayed: false,
             blockSolo: true,
             blockAssist: true,
             blockError: true,
@@ -50,10 +63,13 @@ const Jammers2025ScheduleStats = () => {
             blocksPerSet: false,
         },
         dig: {
+            setsPlayed: false,
             dig3: false,
             dig2: false,
             dig1: false,
             dig0: false,
+            digs: false,
+            digErrors: false,
             digsTotal: false,
             passingPercentage: false,
             digsPerSet: false,
@@ -66,6 +82,7 @@ const Jammers2025ScheduleStats = () => {
             data={scheduleData}
             loading={loading}
             subFiltersToShow={subFiltersToShow}
+            scheduleColumnsToShow={scheduleColumnsToShow}
         />
     );
 };
