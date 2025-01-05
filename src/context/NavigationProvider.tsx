@@ -40,7 +40,7 @@ const NavigationProvider = ({ children }: ProviderProps) => {
     const [hideNavBackground, setHideNavBackground] = useState(true);
     const [opacity, setOpacity] = useState('lg:opacity-0');
     const { currentTailwindBreakpoint } = useGetWindowWidth();
-    console.log('current', current);
+
     const isSmallerScreen =
         currentTailwindBreakpoint === 'sm' || currentTailwindBreakpoint === 'md';
 
@@ -80,10 +80,6 @@ const NavigationProvider = ({ children }: ProviderProps) => {
         threshold: isSmallerScreen ? 1.0 : 0.9,
     });
 
-    console.log('landingIsVisible', landingIsVisible);
-    console.log('videoIsVisible', videoIsVisible);
-    console.log('scheduleIsVisible', scheduleIsVisible);
-
     // Because contact is such a small vertical space and is at the bottom
     // we have to use an onScroll listener to determine when it is in view
     // aka, at the bottom of the screen.
@@ -92,7 +88,6 @@ const NavigationProvider = ({ children }: ProviderProps) => {
         rootMargin: '0px',
         threshold: isSmallerScreen ? 1.0 : 0.2,
     });
-    console.log('contactIsVisible', contactIsVisible);
 
     const handleNavClick = (targetNav: Current) => {
         switch (targetNav) {
