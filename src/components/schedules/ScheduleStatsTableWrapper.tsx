@@ -4,6 +4,7 @@ import { colors } from '../../configs/colors';
 import { fontFamilies } from '../../configs/fontFamilies';
 import { fonts } from '../../configs/fonts';
 import { Abbreviations } from '../../enums/Abbreviations';
+import { EventData } from '../../helpers/csvHelpers/parseRiversideScheduleSheet';
 import { TournamentGroup } from '../../helpers/csvHelpers/parseScheduleSheet';
 import useGetWindowWidth from '../../hooks/useGetWindowWidth';
 import { ButtonSize } from '../../sharedComponents/Buttons/BaseButton';
@@ -17,8 +18,11 @@ import BasicSelectDropdown, {
 } from '../../sharedComponents/DropDowns/BasicSelectDropdown';
 import SkeletonTable from '../../sharedComponents/Skeletons/SkeletonTable';
 import SubHeaderWithExpandChevron from '../../sharedComponents/SubHeaderWithExpandChevron';
+import Table from '../../sharedComponents/Tables/Table';
 import TableWithGroupedRows, {
+    GroupTableData,
     TableColumn,
+    TableDataRow,
 } from '../../sharedComponents/Tables/TableWithGroupedRows';
 import ToggleSwitch from '../../sharedComponents/Toggles/ToggleSwitch';
 import ToolTip from '../../sharedComponents/ToolTip/ToolTip';
@@ -35,17 +39,32 @@ type FilterButtons = {
     show?: boolean;
 };
 
+export type ScheduleColumnsToShow = {
+    opponent: boolean;
+    date: boolean;
+    time: boolean;
+    result: boolean;
+    score: boolean;
+    scoreDetails: boolean;
+    // For high school games specifically
+    homeAway: boolean;
+    gameStatus: boolean;
+    opponentImage: boolean;
+};
+
 export type SubFiltersToShow = {
     set: {
+        setsPlayed: boolean;
         settingAssist: boolean;
         settingError: boolean;
         settingZero: boolean;
         settingTotal: boolean;
         settingAssistPercentage: boolean;
         settingPercentage: boolean;
-        settingAssistPerSet: boolean;
+        settingAssistsPerSet: boolean;
     };
     attack: {
+        setsPlayed: boolean;
         attackKill: boolean;
         attackError: boolean;
         attackZero: boolean;
@@ -55,6 +74,7 @@ export type SubFiltersToShow = {
         attackKillsPerSet: boolean;
     };
     serve: {
+        setsPlayed: boolean;
         serviceAce: boolean;
         serviceError: boolean;
         serviceZero: boolean;
@@ -65,6 +85,7 @@ export type SubFiltersToShow = {
         servicePoints: boolean;
     };
     block: {
+        setsPlayed: boolean;
         blockSolo: boolean;
         blockAssist: boolean;
         blockError: boolean;
@@ -73,15 +94,19 @@ export type SubFiltersToShow = {
         blocksPerSet: boolean;
     };
     dig: {
+        setsPlayed: boolean;
         dig3: boolean;
         dig2: boolean;
         dig1: boolean;
         dig0: boolean;
+        digs: boolean;
+        digErrors: boolean;
         digsTotal: boolean;
         passingPercentage: boolean;
         digsPerSet: boolean;
     };
     serveReceive: {
+        setsPlayed: boolean;
         receptions: boolean;
         receptionError: boolean;
         receptionsPerSet: boolean;
@@ -90,23 +115,32 @@ export type SubFiltersToShow = {
 
 type Props = {
     tableTitle: string;
-    data: TournamentGroup[] | TournamentGroup | undefined;
+    data: TournamentGroup[] | TournamentGroup | EventData[] | undefined;
     loading: boolean;
     subFiltersToShow: Partial<SubFiltersToShow>;
+    scheduleColumnsToShow: Partial<ScheduleColumnsToShow>;
+    isTournament?: boolean;
 };
 
 const defaultStatFilter = {
     key: 'set',
-    name: 'Set',
-    label: 'Set',
+    name: 'Setting',
+    label: 'Setting',
     fn: () => {},
     isActive: true,
     show: true,
 };
 
-const ScheduleStatsTableWrapper = ({ tableTitle, data, loading, subFiltersToShow }: Props) => {
+const ScheduleStatsTableWrapper = ({
+    tableTitle,
+    data,
+    loading,
+    subFiltersToShow,
+    scheduleColumnsToShow,
+    isTournament = true,
+}: Props) => {
     const { currentTailwindBreakpoint, isBreakpointGreaterThan } = useGetWindowWidth();
-    const { prepareGroupTableData } = useScheduleStatsTableHelpers();
+    const { prepareTableData, prepareGroupTableData } = useScheduleStatsTableHelpers();
     const [tableDataType, setTableDataType] = useState<TableDataOptions>('schedule');
     const [statFilter, setStatFilter] = useState<StatFilterOptions>(
         defaultStatFilter.key as StatFilterOptions
@@ -130,35 +164,65 @@ const ScheduleStatsTableWrapper = ({ tableTitle, data, loading, subFiltersToShow
         md: 'sm',
         lg: 'lg',
         xl: '2xl',
-        '2xl': '3xl',
-        '3xl': '3xl',
-        '4xl': '3xl',
-        '5xl': '3xl',
+        '2xl': '2xl',
+        '3xl': '2xl',
+        '4xl': '2xl',
+        '5xl': '2xl',
     };
 
     const scheduleColumns = [
         {
             key: 'opponent',
             name: 'Opponent',
+            show: true,
         },
         {
             key: 'date',
             name: 'Date',
-            show: tableDataType === 'schedule',
+            show: tableDataType === 'schedule' && scheduleColumnsToShow?.date,
+        },
+        {
+            key: 'time',
+            name: 'Time',
+            show: tableDataType === 'schedule' && scheduleColumnsToShow?.time,
+        },
+        {
+            key: 'homeAway',
+            name: 'Location',
+            show: tableDataType === 'schedule' && scheduleColumnsToShow?.homeAway,
+        },
+        {
+            key: 'gameStatus',
+            name: 'Status',
+            show: tableDataType === 'schedule' && scheduleColumnsToShow?.gameStatus,
         },
         {
             key: 'result',
             name: 'Result',
-            show: tableDataType === 'schedule',
+            show: tableDataType === 'schedule' && scheduleColumnsToShow?.result,
         },
         {
             key: 'score',
             name: 'Score',
-            show: tableDataType === 'schedule',
+            show: tableDataType === 'schedule' && scheduleColumnsToShow?.score,
+        },
+        {
+            key: 'scoreDetails',
+            name: 'Score Details',
+            show: tableDataType === 'schedule' && scheduleColumnsToShow?.scoreDetails,
         },
     ];
 
     const settingColumns = [
+        {
+            key: Abbreviations.setsPlayed.key,
+            name: (
+                <ToolTip message={Abbreviations.setsPlayed.name} position="below">
+                    {Abbreviations.setsPlayed.label}
+                </ToolTip>
+            ),
+            show: isStatSet && subFiltersToShow?.set?.setsPlayed,
+        },
         {
             key: Abbreviations.settingAssist.key,
             name: (
@@ -214,17 +278,26 @@ const ScheduleStatsTableWrapper = ({ tableTitle, data, loading, subFiltersToShow
             show: isStatSet && subFiltersToShow?.set?.settingPercentage,
         },
         {
-            key: Abbreviations.settingAssistPerSet.key,
+            key: Abbreviations.settingAssistsPerSet.key,
             name: (
-                <ToolTip message={Abbreviations.settingAssistPerSet.name} position="below">
-                    {Abbreviations.settingAssistPerSet.label}
+                <ToolTip message={Abbreviations.settingAssistsPerSet.name} position="below">
+                    {Abbreviations.settingAssistsPerSet.label}
                 </ToolTip>
             ),
-            show: isStatSet && subFiltersToShow?.set?.settingAssistPerSet,
+            show: isStatSet && subFiltersToShow?.set?.settingAssistsPerSet,
         },
     ];
 
     const serviceColumns = [
+        {
+            key: Abbreviations.setsPlayed.key,
+            name: (
+                <ToolTip message={Abbreviations.setsPlayed.name} position="below">
+                    {Abbreviations.setsPlayed.label}
+                </ToolTip>
+            ),
+            show: isStatServe && subFiltersToShow.serve?.setsPlayed,
+        },
         {
             key: Abbreviations.serviceAce.key,
             name: (
@@ -301,6 +374,15 @@ const ScheduleStatsTableWrapper = ({ tableTitle, data, loading, subFiltersToShow
 
     const attackColumns = [
         {
+            key: Abbreviations.setsPlayed.key,
+            name: (
+                <ToolTip message={Abbreviations.setsPlayed.name} position="below">
+                    {Abbreviations.setsPlayed.label}
+                </ToolTip>
+            ),
+            show: isStatAttach && subFiltersToShow.attack?.setsPlayed,
+        },
+        {
             key: Abbreviations.attackKill.key,
             name: (
                 <ToolTip message={Abbreviations.attackKill.name} position="below">
@@ -367,6 +449,15 @@ const ScheduleStatsTableWrapper = ({ tableTitle, data, loading, subFiltersToShow
 
     const blockColumns = [
         {
+            key: Abbreviations.setsPlayed.key,
+            name: (
+                <ToolTip message={Abbreviations.setsPlayed.name} position="below">
+                    {Abbreviations.setsPlayed.label}
+                </ToolTip>
+            ),
+            show: isStatBlock && subFiltersToShow?.block?.setsPlayed,
+        },
+        {
             key: Abbreviations.blockSolo.key,
             name: (
                 <ToolTip message={Abbreviations.blockSolo.name} position="below">
@@ -423,6 +514,15 @@ const ScheduleStatsTableWrapper = ({ tableTitle, data, loading, subFiltersToShow
     ];
 
     const digsColumns = [
+        {
+            key: Abbreviations.setsPlayed.key,
+            name: (
+                <ToolTip message={Abbreviations.setsPlayed.name} position="below">
+                    {Abbreviations.setsPlayed.label}
+                </ToolTip>
+            ),
+            show: isStatDigs && subFiltersToShow.dig?.setsPlayed,
+        },
         {
             key: Abbreviations.dig3.key,
             name: (
@@ -490,6 +590,15 @@ const ScheduleStatsTableWrapper = ({ tableTitle, data, loading, subFiltersToShow
 
     const serveReceiveColumns = [
         {
+            key: Abbreviations.setsPlayed.key,
+            name: (
+                <ToolTip message={Abbreviations.setsPlayed.name} position="below">
+                    {Abbreviations.setsPlayed.label}
+                </ToolTip>
+            ),
+            show: isStatServeReceive && subFiltersToShow.serveReceive?.setsPlayed,
+        },
+        {
             key: Abbreviations.receptions.key,
             name: (
                 <ToolTip message={Abbreviations.receptions.name} position="below">
@@ -519,7 +628,7 @@ const ScheduleStatsTableWrapper = ({ tableTitle, data, loading, subFiltersToShow
     ];
 
     const columns: TableColumn[] = [
-        ...scheduleColumns,
+        ...scheduleColumns.filter(col => col.show),
         ...settingColumns.filter(col => col.show),
         ...serviceColumns.filter(col => col.show),
         ...attackColumns.filter(col => col.show),
@@ -548,16 +657,16 @@ const ScheduleStatsTableWrapper = ({ tableTitle, data, loading, subFiltersToShow
     const subFilters: FilterButtons[] = [
         {
             key: 'set',
-            name: 'Set',
-            label: 'Set',
+            name: 'Setting',
+            label: 'Setting',
             fn: () => setStatFilter('set'),
             isActive: statFilter === 'set',
             show: subFiltersToShow.set ? Object.values(subFiltersToShow.set).some(Boolean) : false,
         },
         {
             key: 'attack',
-            name: 'Attack',
-            label: 'Attack',
+            name: 'Attacking',
+            label: 'Attacking',
             fn: () => setStatFilter('attack'),
             isActive: statFilter === 'attack',
             show: subFiltersToShow.attack
@@ -566,8 +675,8 @@ const ScheduleStatsTableWrapper = ({ tableTitle, data, loading, subFiltersToShow
         },
         {
             key: 'serve',
-            name: 'Serve',
-            label: 'Serve',
+            name: 'Serving',
+            label: 'Serving',
             fn: () => setStatFilter('serve'),
             isActive: statFilter === 'serve',
             show: subFiltersToShow.serve
@@ -576,8 +685,8 @@ const ScheduleStatsTableWrapper = ({ tableTitle, data, loading, subFiltersToShow
         },
         {
             key: 'block',
-            name: 'Block',
-            label: 'Block',
+            name: 'Blocking',
+            label: 'Blocking',
             fn: () => setStatFilter('block'),
             isActive: statFilter === 'block',
             show: subFiltersToShow.block
@@ -586,8 +695,8 @@ const ScheduleStatsTableWrapper = ({ tableTitle, data, loading, subFiltersToShow
         },
         {
             key: 'dig',
-            name: 'Dig',
-            label: 'Dig',
+            name: 'Digging',
+            label: 'Digging',
             fn: () => setStatFilter('dig'),
             isActive: statFilter === 'dig',
             show: subFiltersToShow.dig ? Object.values(subFiltersToShow.dig).some(Boolean) : false,
@@ -604,13 +713,25 @@ const ScheduleStatsTableWrapper = ({ tableTitle, data, loading, subFiltersToShow
         },
     ].filter(filter => filter.show);
 
-    const preparedData = prepareGroupTableData({
-        data: data && Array.isArray(data) ? data : [],
-        rowLevelDataKey,
-        dataType: tableDataType,
-        statFilter,
-        columns,
-    });
+    if (!data || !Array.isArray(data)) return;
+
+    const preparedData =
+        data && isTournament
+            ? prepareGroupTableData({
+                  data: data as TournamentGroup[],
+                  rowLevelDataKey,
+                  dataType: tableDataType,
+                  statFilter,
+                  columns,
+              })
+            : prepareTableData({
+                  data: data as EventData[],
+                  rowLevelDataKey,
+                  dataType: tableDataType,
+                  statFilter,
+                  columns,
+              });
+
     const highestBreakpointToShowDrawer = 'md';
     const handleShowTable = () => {
         if (isBreakpointGreaterThan(highestBreakpointToShowDrawer)) {
@@ -648,7 +769,23 @@ const ScheduleStatsTableWrapper = ({ tableTitle, data, loading, subFiltersToShow
                         onClose={() => setShowDrawer(false)}
                         drawerTitle={drawerTitle}
                         fullScreen
-                        mainContent={<TableWithGroupedRows columns={columns} data={preparedData} />}
+                        mainContent={
+                            <ConditionalRender
+                                condition={isTournament}
+                                isNullRender
+                                falseRender={
+                                    <Table
+                                        columns={columns}
+                                        data={preparedData as TableDataRow[]}
+                                    />
+                                }
+                            >
+                                <TableWithGroupedRows
+                                    columns={columns}
+                                    data={preparedData as GroupTableData[]}
+                                />
+                            </ConditionalRender>
+                        }
                         subTitleContent={
                             <div
                                 className={[
@@ -732,7 +869,18 @@ const ScheduleStatsTableWrapper = ({ tableTitle, data, loading, subFiltersToShow
                 {loading ? (
                     <SkeletonTable numberOfRows={10} autoCols />
                 ) : (
-                    <TableWithGroupedRows columns={columns} data={preparedData} />
+                    <ConditionalRender
+                        condition={isTournament}
+                        isNullRender
+                        falseRender={
+                            <Table columns={columns} data={preparedData as TableDataRow[]} />
+                        }
+                    >
+                        <TableWithGroupedRows
+                            columns={columns}
+                            data={preparedData as GroupTableData[]}
+                        />
+                    </ConditionalRender>
                 )}
             </ConditionalRender>
         </Collapsible>

@@ -12,11 +12,13 @@ type Props = {
     row: RowData;
     rowIndex: number;
     columns: TableColumn[];
+    rowClassName?: string;
 };
 
-const IncompleteDataTableRender = ({ row, rowIndex, columns }: Props) => {
+const IncompleteDataTableRender = ({ row, rowIndex, columns, rowClassName = '' }: Props) => {
     const isStats = 'statsStatus' in row;
-    const statsAndOpponent = isStats && row.opponent !== 'TBD';
+    const hasOpponentName =
+        row.opponent !== 'TBD' && typeof row.opponent === 'string' && row.opponent.length > 0;
 
     return (
         <tr
@@ -24,16 +26,16 @@ const IncompleteDataTableRender = ({ row, rowIndex, columns }: Props) => {
             className={[
                 rowIndex === 0 ? colors.groupTableFirstRowBorder : colors.groupTableRowBorder,
                 'border-t',
-                colors.groupTableRowBackground,
+                !rowClassName.length ? colors.groupTableRowBackground : rowClassName,
             ].join(' ')}
         >
             <td colSpan={columns.length} className={groupTableDataStyles}>
                 <span className={['flex w-full'].join(' ')}>
-                    <ConditionalRender condition={statsAndOpponent} isNullRender>
+                    <ConditionalRender condition={hasOpponentName} isNullRender>
                         <p className="text-start flex-1">{row.opponent}</p>
                     </ConditionalRender>
                     <p
-                        className={['flex-1', statsAndOpponent ? 'text-start' : 'text-center'].join(
+                        className={['flex-1', hasOpponentName ? 'text-start' : 'text-center'].join(
                             ' '
                         )}
                     >

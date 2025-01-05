@@ -1,4 +1,10 @@
 export const Abbreviations = {
+    setsPlayed: {
+        key: 'setsPlayed',
+        name: 'Sets Played',
+        label: 'SP',
+        type: 'general',
+    },
     serviceAce: {
         key: 'serviceAce',
         name: 'Service Ace',
@@ -167,8 +173,8 @@ export const Abbreviations = {
         label: 'S%',
         type: 'set',
     },
-    settingAssistPerSet: {
-        key: 'assistsPerSet',
+    settingAssistsPerSet: {
+        key: 'settingAssistsPerSet',
         name: 'Assists Per Set',
         label: 'A/S',
         type: 'set',
