@@ -3,7 +3,7 @@ import Footer from './components/Footer';
 import NavBar from './components/header/NavBar';
 import History from './components/history/History';
 import Landing from './components/landing/Landing';
-import CurrentSchedule from './components/schedules/CurrentSchedule';
+import SchedulesSection from './components/schedules/SchedulesSection';
 import SingleTestimonial from './components/testimonials/SingleTestimonial';
 import Videos from './components/videos/Videos';
 import { colors } from './configs/colors';
@@ -23,11 +23,8 @@ function App() {
 
                 <Videos />
 
-                <ConditionalRender
-                    condition={featureFlags.FEATURE_JAMMERS_2025_SCHEDULE}
-                    isNullRender
-                >
-                    <CurrentSchedule />
+                <ConditionalRender condition={featureFlags.SCHEDULES_AND_STATS} isNullRender>
+                    <SchedulesSection />
                 </ConditionalRender>
 
                 <History />

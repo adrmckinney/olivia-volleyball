@@ -17,15 +17,7 @@ export type NavigationType = {
     scheduleRef: any | null;
 };
 
-export type Current =
-    | 'landing'
-    | 'videos'
-    | 'history'
-    | 'stats'
-    | 'about'
-    | 'contact'
-    | 'schedule'
-    | (string & {});
+export type Current = 'landing' | 'videos' | 'history' | 'stats' | 'about' | 'contact' | 'schedule';
 
 const defaultValue: NavigationType = {
     current: 'landing',
@@ -85,7 +77,7 @@ const NavigationProvider = ({ children }: ProviderProps) => {
     const [scheduleRef, scheduleIsVisible] = useOnScreen({
         root: null,
         rootMargin: '0px',
-        threshold: isSmallerScreen ? 1.0 : 0.2,
+        threshold: isSmallerScreen ? 1.0 : 0.9,
     });
 
     // Because contact is such a small vertical space and is at the bottom
@@ -127,12 +119,12 @@ const NavigationProvider = ({ children }: ProviderProps) => {
         if (landingIsVisible) {
             setCurrent('landing');
         }
-        if (videoIsVisible) {
+        if (videoIsVisible && !landingIsVisible) {
             if (current === 'videos') return;
             setCurrent('videos');
         }
 
-        if (historyIsVisible) {
+        if (historyIsVisible && !scheduleIsVisible && !contactIsVisible) {
             if (current === 'history') return;
             setCurrent('history');
         }
@@ -147,7 +139,7 @@ const NavigationProvider = ({ children }: ProviderProps) => {
             setCurrent('about');
         }
 
-        if (scheduleIsVisible) {
+        if (scheduleIsVisible && !videoIsVisible) {
             if (current === 'schedule') return;
             setCurrent('schedule');
         }
@@ -159,7 +151,7 @@ const NavigationProvider = ({ children }: ProviderProps) => {
             }
         } else {
             window.onscroll = function (ev) {
-                if (window.innerHeight + window.scrollY >= document.body.scrollHeight) {
+                if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 1) {
                     // you're at the bottom of the page
                     setCurrent('contact');
                 } else if (

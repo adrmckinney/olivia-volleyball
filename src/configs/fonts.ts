@@ -1,7 +1,7 @@
 export const fonts = {
     headerOne: 'text-5xl font-bold tracking-wide sm:text-6xl',
     headerTwo: 'text-4xl lg:text-6xl font-semibold leading-tight',
-    headerThree: 'text-4xl font-semibold leading-8',
+    headerThree: 'text-2xl md:text-3xl lg:text-4xl font-semibold leading-8',
     descriptionTitle: 'text-base leading-7',
     descriptionData: 'text-3xl lg:text-5xl font-semibold tracking-tight',
     historyTitle: 'text-4xl leading-7',
@@ -13,4 +13,5 @@ export const fonts = {
     captionMd: 'text-base font-normal tracking-tight',
     mobileHistoryBody: 'text-sm font-normal tracking-normal',
     videoThumbnailTitle: 'text-3xl md:text-4xl leading-7',
+    groupTableMainFilterText: 'text-2xl md:text-3xl lg:text-4xl font-semibold leading-8',
 };

@@ -46,10 +46,10 @@ const NavBar = () => {
             show: true,
         },
         {
-            name: 'Schedule',
+            name: 'Schedule/Stats',
             key: 'schedule',
             current: current === 'schedule',
-            show: featureFlags.FEATURE_JAMMERS_2025_SCHEDULE,
+            show: featureFlags.SCHEDULES_AND_STATS,
         },
         {
             name: 'Athletic History',
@@ -75,7 +75,7 @@ const NavBar = () => {
             as="header"
             className={[
                 colors.bgNavBar({ hide: hideNavBackground }),
-                'fixed top-0 w-full z-50',
+                'fixed top-0 w-full z-[99]',
             ].join(' ')}
             style={{ borderRadius: '0 0 100px 100px/50%' }}
         >
@@ -141,7 +141,7 @@ const NavBar = () => {
                             <TransitionChild>
                                 <PopoverPanel
                                     focus
-                                    className="absolute inset-x-0 top-0 z-30 mx-auto w-full max-w-3xl origin-top transform p-2 transition duration-150 data-[closed]:scale-95 data-[closed]:opacity-0 data-[enter]:ease-out data-[leave]:ease-in lg:hidden"
+                                    className="absolute inset-x-0 top-0 z-50 mx-auto w-full max-w-3xl origin-top transform p-2 transition duration-150 data-[closed]:scale-95 data-[closed]:opacity-0 data-[enter]:ease-out data-[leave]:ease-in lg:hidden"
                                 >
                                     <div
                                         className={[
