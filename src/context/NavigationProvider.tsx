@@ -17,16 +17,7 @@ export type NavigationType = {
     scheduleRef: any | null;
 };
 
-export type Current =
-    | 'landing'
-    | 'videos'
-    | 'history'
-    | 'stats'
-    | 'about'
-    | 'contact'
-    | 'schedule'
-    | 'past-schedules'
-    | (string & {});
+export type Current = 'landing' | 'videos' | 'history' | 'stats' | 'about' | 'contact' | 'schedule';
 
 const defaultValue: NavigationType = {
     current: 'landing',
@@ -49,7 +40,7 @@ const NavigationProvider = ({ children }: ProviderProps) => {
     const [hideNavBackground, setHideNavBackground] = useState(true);
     const [opacity, setOpacity] = useState('lg:opacity-0');
     const { currentTailwindBreakpoint } = useGetWindowWidth();
-
+    console.log('current', current);
     const isSmallerScreen =
         currentTailwindBreakpoint === 'sm' || currentTailwindBreakpoint === 'md';
 
@@ -86,8 +77,12 @@ const NavigationProvider = ({ children }: ProviderProps) => {
     const [scheduleRef, scheduleIsVisible] = useOnScreen({
         root: null,
         rootMargin: '0px',
-        threshold: isSmallerScreen ? 1.0 : 0.2,
+        threshold: isSmallerScreen ? 1.0 : 0.9,
     });
+
+    console.log('landingIsVisible', landingIsVisible);
+    console.log('videoIsVisible', videoIsVisible);
+    console.log('scheduleIsVisible', scheduleIsVisible);
 
     // Because contact is such a small vertical space and is at the bottom
     // we have to use an onScroll listener to determine when it is in view
@@ -97,6 +92,7 @@ const NavigationProvider = ({ children }: ProviderProps) => {
         rootMargin: '0px',
         threshold: isSmallerScreen ? 1.0 : 0.2,
     });
+    console.log('contactIsVisible', contactIsVisible);
 
     const handleNavClick = (targetNav: Current) => {
         switch (targetNav) {
@@ -128,12 +124,12 @@ const NavigationProvider = ({ children }: ProviderProps) => {
         if (landingIsVisible) {
             setCurrent('landing');
         }
-        if (videoIsVisible) {
+        if (videoIsVisible && !landingIsVisible) {
             if (current === 'videos') return;
             setCurrent('videos');
         }
 
-        if (historyIsVisible) {
+        if (historyIsVisible && !scheduleIsVisible && !contactIsVisible) {
             if (current === 'history') return;
             setCurrent('history');
         }
@@ -148,7 +144,7 @@ const NavigationProvider = ({ children }: ProviderProps) => {
             setCurrent('about');
         }
 
-        if (scheduleIsVisible) {
+        if (scheduleIsVisible && !videoIsVisible) {
             if (current === 'schedule') return;
             setCurrent('schedule');
         }
@@ -160,7 +156,7 @@ const NavigationProvider = ({ children }: ProviderProps) => {
             }
         } else {
             window.onscroll = function (ev) {
-                if (window.innerHeight + window.scrollY >= document.body.scrollHeight) {
+                if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 1) {
                     // you're at the bottom of the page
                     setCurrent('contact');
                 } else if (
