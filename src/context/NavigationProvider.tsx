@@ -119,7 +119,7 @@ const NavigationProvider = ({ children }: ProviderProps) => {
         if (landingIsVisible) {
             setCurrent('landing');
         }
-        if (videoIsVisible && !landingIsVisible) {
+        if (videoIsVisible && !landingIsVisible && !aboutIsVisible) {
             if (current === 'videos') return;
             setCurrent('videos');
         }

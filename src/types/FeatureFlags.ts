@@ -3,6 +3,7 @@ export const defaultFeatureFlags = {
     FEATURE_JAMMERS_2024_SCHEDULE: false,
     FEATURE_JAMMERS_2025_SCHEDULE: false,
     FEATURE_RIVERSIDE_2024_SCHEDULE: false,
+    FEATURE_ABOUT_SECTION: false,
 } as const;
 
 export const featureFlags: Record<keyof typeof defaultFeatureFlags, boolean> = {
@@ -18,6 +19,9 @@ export const featureFlags: Record<keyof typeof defaultFeatureFlags, boolean> = {
     FEATURE_JAMMERS_2025_SCHEDULE:
         import.meta.env.VITE_FEATURE_JAMMERS_2025_SCHEDULE === 'true' ||
         defaultFeatureFlags.FEATURE_JAMMERS_2025_SCHEDULE,
+    FEATURE_ABOUT_SECTION:
+        import.meta.env.VITE_FEATURE_ABOUT_SECTION === 'true' ||
+        defaultFeatureFlags.FEATURE_ABOUT_SECTION,
 };
 
 export type FeatureFlagKeys = keyof typeof featureFlags;
