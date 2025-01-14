@@ -34,11 +34,12 @@ const NavBar = () => {
             current: current === 'landing',
             show: true,
         },
-        // {
-        //     name: 'Stats',
-        //     key: 'stats',
-        //     current: current === 'stats',
-        // },
+        {
+            name: 'About',
+            key: 'about',
+            current: current === 'about',
+            show: featureFlags.FEATURE_ABOUT_SECTION,
+        },
         {
             name: 'Videos',
             key: 'videos',
@@ -57,11 +58,6 @@ const NavBar = () => {
             current: current === 'history',
             show: true,
         },
-        // {
-        //     name: 'About',
-        //     key: 'about',
-        //     current: current === 'about',
-        // },
         {
             name: 'Contact',
             key: 'contact',
@@ -170,30 +166,32 @@ const NavBar = () => {
                                                 <icon.x className="h-6 w-6" aria-hidden="false" />
                                             </PopoverButton>
                                         </div>
-                                        {navigation.map((item, idx, array) => (
-                                            <div key={item.name} className="py-2 pr-4">
-                                                <PopoverButton
-                                                    className={[
-                                                        'block',
-                                                        'text-base font-medium',
-                                                        themes.mobileNavMenuButton,
-                                                        themes.navLinkButton({
-                                                            isActive: item.current,
-                                                        }),
-                                                    ].join(' ')}
-                                                    onClick={() => handleNavClick(item.key)}
-                                                >
-                                                    {item.name}
-                                                </PopoverButton>
-                                                <div
-                                                    className={[
-                                                        idx === array.length - 1
-                                                            ? ''
-                                                            : 'border-[1px] border-gray-600 w-full',
-                                                    ].join(' ')}
-                                                />
-                                            </div>
-                                        ))}
+                                        {navigation.map((item, idx, array) =>
+                                            item.show ? (
+                                                <div key={item.name} className="py-2 pr-4">
+                                                    <PopoverButton
+                                                        className={[
+                                                            'block',
+                                                            'text-base font-medium',
+                                                            themes.mobileNavMenuButton,
+                                                            themes.navLinkButton({
+                                                                isActive: item.current,
+                                                            }),
+                                                        ].join(' ')}
+                                                        onClick={() => handleNavClick(item.key)}
+                                                    >
+                                                        {item.name}
+                                                    </PopoverButton>
+                                                    <div
+                                                        className={[
+                                                            idx === array.length - 1
+                                                                ? ''
+                                                                : 'border-[1px] border-gray-600 w-full',
+                                                        ].join(' ')}
+                                                    />
+                                                </div>
+                                            ) : null
+                                        )}
                                     </div>
                                 </PopoverPanel>
                             </TransitionChild>

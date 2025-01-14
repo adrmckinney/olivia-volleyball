@@ -15,7 +15,7 @@ const Jammers2025ScheduleStats = () => {
     const scheduleColumnsToShow = {
         opponent: true,
         date: true,
-        time: false,
+        time: true,
         result: true,
         score: true,
         scoreDetails: false,
