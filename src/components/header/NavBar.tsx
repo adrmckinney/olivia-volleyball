@@ -34,11 +34,12 @@ const NavBar = () => {
             current: current === 'landing',
             show: true,
         },
-        // {
-        //     name: 'Stats',
-        //     key: 'stats',
-        //     current: current === 'stats',
-        // },
+        {
+            name: 'About',
+            key: 'about',
+            current: current === 'about',
+            show: featureFlags.FEATURE_ABOUT_SECTION,
+        },
         {
             name: 'Videos',
             key: 'videos',
@@ -57,11 +58,6 @@ const NavBar = () => {
             current: current === 'history',
             show: true,
         },
-        // {
-        //     name: 'About',
-        //     key: 'about',
-        //     current: current === 'about',
-        // },
         {
             name: 'Contact',
             key: 'contact',

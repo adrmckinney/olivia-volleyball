@@ -1,88 +1,31 @@
 import { useContext } from 'react';
 import { NavigationContext } from '../../context/NavigationProvider';
-import { icon } from '../../utils/Icons';
-
-const secondaryFeatures = [
-    {
-        name: 'Push to deploy.',
-        description: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit aute id magna.',
-        icon: icon.cloudArrowUp,
-    },
-    {
-        name: 'SSL certificates.',
-        description:
-            'Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo.',
-        icon: icon.lockClosed,
-    },
-    {
-        name: 'Simple queues.',
-        description: 'Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus.',
-        icon: icon.arrowPath,
-    },
-    {
-        name: 'Advanced security.',
-        description: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit aute id magna.',
-        icon: icon.fingerPrint,
-    },
-    {
-        name: 'Powerful API.',
-        description:
-            'Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo.',
-        icon: icon.cog,
-    },
-    {
-        name: 'Database backups.',
-        description: 'Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. ',
-        icon: icon.server,
-    },
-];
+import WhiteWithPurpleHue from '../../sharedComponents/Containers/WhiteWithPurpleHue';
 
 const About = () => {
     const { aboutRef } = useContext(NavigationContext);
+
+    const paragraphs = [
+        'Olivia’s journey in volleyball began as a freshman when she decided to try out for her high school team, despite having no prior experience in the sport. Although she did not initially make the team, she took the initiative to reach out to the coaches, asking for feedback on what she could improve for the following year. The coaches responded with constructive advice and, to her surprise, offered her a spot on the team.',
+        'Since then, Olivia has developed into a dedicated team player, a natural leader, and a rising star on the court. She is known for being coachable and committed, always striving to better herself for the benefit of her team. She attends all available clinics and stays competitive by starting her mornings in the weight room three times a week and returns to the gym to focus on volleyball skills whenever she has the chance after school.',
+        'Olivia has been nominated as most improved player and MVP twice. Despite a challenging 2024 high school volleyball season—the team navigated a Title IX investigation—she ended the season third in the conference for assists.',
+        'In addition to her athletic pursuits, Olivia demonstrates exceptional time management and work ethic. She juggles her training with babysitting, a part-time job, and her involvement in the school choir. Olivia’s drive, versatility, and commitment to both personal and team growth make her a standout student-athlete.',
+    ];
+
     return (
-        <div ref={aboutRef} id="about" className="mt-32 sm:mt-56">
-            <div className="mx-auto max-w-7xl px-6 lg:px-8">
-                <div className="mx-auto max-w-2xl sm:text-center">
-                    <h2 className="text-base font-semibold leading-7 text-indigo-400">ABOUT</h2>
-                    <p className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">
-                        No server? No problem.
-                    </p>
-                    <p className="mt-6 text-lg leading-8 text-gray-300">
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores impedit
-                        perferendis suscipit eaque, iste dolor cupiditate blanditiis.
-                    </p>
-                </div>
-            </div>
-            <div className="relative overflow-hidden pt-16">
-                <div className="mx-auto max-w-7xl px-6 lg:px-8">
-                    <img
-                        src="https://tailwindui.com/img/component-images/dark-project-app-screenshot.png"
-                        alt="App screenshot"
-                        className="mb-[-12%] rounded-xl shadow-2xl ring-1 ring-white/10"
-                        width={2432}
-                        height={1442}
-                    />
-                    <div className="relative" aria-hidden="true">
-                        <div className="absolute -inset-x-20 bottom-0 bg-gradient-to-t from-gray-900 pt-[7%]" />
-                    </div>
-                </div>
-            </div>
-            <div className="mx-auto mt-16 max-w-7xl px-6 sm:mt-20 md:mt-24 lg:px-8">
-                <dl className="mx-auto grid max-w-2xl grid-cols-1 gap-x-6 gap-y-10 text-base leading-7 text-gray-300 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3 lg:gap-x-8 lg:gap-y-16">
-                    {secondaryFeatures.map(feature => (
-                        <div key={feature.name} className="relative pl-9">
-                            <dt className="inline font-semibold text-white">
-                                <feature.icon
-                                    className="absolute left-1 top-1 h-5 w-5 text-indigo-500"
-                                    aria-hidden="true"
-                                />
-                                {feature.name}
-                            </dt>{' '}
-                            <dd className="inline">{feature.description}</dd>
-                        </div>
+        <div ref={aboutRef}>
+            <WhiteWithPurpleHue maxWidth="lg:max-w-screen-3xl">
+                <figure className="mt-10 space-y-10">
+                    {paragraphs.map((paragraph, idx) => (
+                        <blockquote
+                            key={idx}
+                            className="text-start text-xl font-semibold leading-8 text-gray-900 sm:text-2xl sm:leading-9"
+                        >
+                            <p>{paragraph}</p>
+                        </blockquote>
                     ))}
-                </dl>
-            </div>
+                </figure>
+            </WhiteWithPurpleHue>
         </div>
     );
 };
