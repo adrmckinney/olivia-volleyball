@@ -143,7 +143,6 @@ export const parseScheduleSheet = (csvText: string): TournamentGroup[] => {
             matchStatus,
             statsStatus,
         ]: string[] = parseCsvRow(row);
-
         // Combine city and state into a single string
         const location = `${city}, ${state}`;
 
@@ -197,7 +196,7 @@ export const parseScheduleSheet = (csvText: string): TournamentGroup[] => {
             blockSolo: parseInt(blockSolo, 10) || 0,
             blockAssist: parseInt(blockAssist, 10) || 0,
             blockError: parseInt(blockError, 10) || 0,
-            blockTotal: parseInt(blockTotal, 10) || 0,
+            blockTotal: parseFloat(blockTotal) || 0,
             blockPercentage: blockPercentage || '',
             blockPerSet: parseInt(blockPerSet, 10) || 0,
             settingAssist: parseInt(settingAssist, 10) || 0,
