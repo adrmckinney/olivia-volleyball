@@ -203,6 +203,12 @@ export const Abbreviations = {
         label: '0',
         type: 'dig',
     },
+    digErrors: {
+        key: 'digErrors',
+        name: 'Dig Errors',
+        label: 'DE',
+        type: 'dig',
+    },
     digsTotal: {
         key: 'digsTotal',
         name: 'Dig Attempts',

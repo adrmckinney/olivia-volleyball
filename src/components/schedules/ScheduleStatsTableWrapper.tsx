@@ -269,15 +269,6 @@ const ScheduleStatsTableWrapper = ({
             show: isStatSet && subFiltersToShow?.set?.settingAssistPercentage,
         },
         {
-            key: Abbreviations.settingPercentage.key,
-            name: (
-                <ToolTip message={Abbreviations.settingPercentage.name} position="below">
-                    {Abbreviations.settingPercentage.label}
-                </ToolTip>
-            ),
-            show: isStatSet && subFiltersToShow?.set?.settingPercentage,
-        },
-        {
             key: Abbreviations.settingAssistsPerSet.key,
             name: (
                 <ToolTip message={Abbreviations.settingAssistsPerSet.name} position="below">
@@ -285,6 +276,15 @@ const ScheduleStatsTableWrapper = ({
                 </ToolTip>
             ),
             show: isStatSet && subFiltersToShow?.set?.settingAssistsPerSet,
+        },
+        {
+            key: Abbreviations.settingPercentage.key,
+            name: (
+                <ToolTip message={Abbreviations.settingPercentage.name} position="below">
+                    {Abbreviations.settingPercentage.label}
+                </ToolTip>
+            ),
+            show: isStatSet && subFiltersToShow?.set?.settingPercentage,
         },
     ];
 
@@ -344,15 +344,6 @@ const ScheduleStatsTableWrapper = ({
             show: isStatServe && subFiltersToShow.serve?.serviceAcePercentage,
         },
         {
-            key: Abbreviations.servicePercentage.key,
-            name: (
-                <ToolTip message={Abbreviations.servicePercentage.name} position="below">
-                    {Abbreviations.servicePercentage.label}
-                </ToolTip>
-            ),
-            show: isStatServe && subFiltersToShow.serve?.servicePercentage,
-        },
-        {
             key: Abbreviations.serviceAcesPerSet.key,
             name: (
                 <ToolTip message={Abbreviations.serviceAcesPerSet.name} position="below">
@@ -360,6 +351,15 @@ const ScheduleStatsTableWrapper = ({
                 </ToolTip>
             ),
             show: isStatServe && subFiltersToShow.serve?.serviceAcesPerSet,
+        },
+        {
+            key: Abbreviations.servicePercentage.key,
+            name: (
+                <ToolTip message={Abbreviations.servicePercentage.name} position="below">
+                    {Abbreviations.servicePercentage.label}
+                </ToolTip>
+            ),
+            show: isStatServe && subFiltersToShow.serve?.servicePercentage,
         },
         {
             key: Abbreviations.servicePoints.key,
@@ -428,15 +428,6 @@ const ScheduleStatsTableWrapper = ({
             show: isStatAttach && subFiltersToShow.attack?.attackKillPercentage,
         },
         {
-            key: Abbreviations.attackPercentage.key,
-            name: (
-                <ToolTip message={Abbreviations.attackPercentage.name} position="below">
-                    {Abbreviations.attackPercentage.label}
-                </ToolTip>
-            ),
-            show: isStatAttach && subFiltersToShow.attack?.attackPercentage,
-        },
-        {
             key: Abbreviations.attackKillsPerSet.key,
             name: (
                 <ToolTip message={Abbreviations.attackKillsPerSet.name} position="below">
@@ -444,6 +435,15 @@ const ScheduleStatsTableWrapper = ({
                 </ToolTip>
             ),
             show: isStatAttach && subFiltersToShow.attack?.attackKillsPerSet,
+        },
+        {
+            key: Abbreviations.attackPercentage.key,
+            name: (
+                <ToolTip message={Abbreviations.attackPercentage.name} position="below">
+                    {Abbreviations.attackPercentage.label}
+                </ToolTip>
+            ),
+            show: isStatAttach && subFiltersToShow.attack?.attackPercentage,
         },
     ];
 
@@ -494,15 +494,6 @@ const ScheduleStatsTableWrapper = ({
             show: isStatBlock && subFiltersToShow.block?.blockTotal,
         },
         {
-            key: Abbreviations.blockPercentage.key,
-            name: (
-                <ToolTip message={Abbreviations.blockPercentage.name} position="below">
-                    {Abbreviations.blockPercentage.label}
-                </ToolTip>
-            ),
-            show: isStatBlock && subFiltersToShow.block?.blockPercentage,
-        },
-        {
             key: Abbreviations.blocksPerSet.key,
             name: (
                 <ToolTip message={Abbreviations.blocksPerSet.name} position="below">
@@ -510,6 +501,15 @@ const ScheduleStatsTableWrapper = ({
                 </ToolTip>
             ),
             show: isStatBlock && subFiltersToShow.block?.blocksPerSet,
+        },
+        {
+            key: Abbreviations.blockPercentage.key,
+            name: (
+                <ToolTip message={Abbreviations.blockPercentage.name} position="below">
+                    {Abbreviations.blockPercentage.label}
+                </ToolTip>
+            ),
+            show: isStatBlock && subFiltersToShow.block?.blockPercentage,
         },
     ];
 
@@ -569,13 +569,13 @@ const ScheduleStatsTableWrapper = ({
             show: isStatDigs && subFiltersToShow.dig?.digsTotal,
         },
         {
-            key: Abbreviations.passingPercentage.key,
+            key: Abbreviations.digErrors.key,
             name: (
-                <ToolTip message={Abbreviations.passingPercentage.name} position="below">
-                    {Abbreviations.passingPercentage.label}
+                <ToolTip message={Abbreviations.digErrors.name} position="below">
+                    {Abbreviations.digErrors.label}
                 </ToolTip>
             ),
-            show: isStatDigs && subFiltersToShow.dig?.passingPercentage,
+            show: isStatDigs && subFiltersToShow.dig?.digErrors,
         },
         {
             key: Abbreviations.digsPerSet.key,
@@ -585,6 +585,15 @@ const ScheduleStatsTableWrapper = ({
                 </ToolTip>
             ),
             show: isStatDigs && subFiltersToShow.dig?.digsPerSet,
+        },
+        {
+            key: Abbreviations.passingPercentage.key,
+            name: (
+                <ToolTip message={Abbreviations.passingPercentage.name} position="below">
+                    {Abbreviations.passingPercentage.label}
+                </ToolTip>
+            ),
+            show: isStatDigs && subFiltersToShow.dig?.passingPercentage,
         },
     ];
 
