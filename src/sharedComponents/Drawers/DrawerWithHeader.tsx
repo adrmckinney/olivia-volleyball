@@ -15,6 +15,31 @@ type Props = {
     mainContent: React.ReactNode;
 };
 
+const transitionStyles = {
+    entering: {
+        transform: 'translateX(0)',
+        opacity: 1,
+    },
+    entered: {
+        transform: 'translateX(0)',
+        opacity: 1,
+    },
+    exiting: {
+        transform: 'translateX(100%)',
+        opacity: 0,
+    },
+    exited: {
+        transform: 'translateX(100%)',
+        opacity: 0,
+    },
+};
+
+const defaultStyle = {
+    transition: 'all 500ms ease-in-out',
+    transform: 'translateX(100%)',
+    opacity: 0,
+};
+
 const DrawerWithHeader = ({
     open,
     onClose,
@@ -37,8 +62,16 @@ const DrawerWithHeader = ({
                         ].join(' ')}
                     >
                         <DialogPanel
+                            style={{
+                                ...defaultStyle,
+                                ...transitionStyles[state], // state would come from a transition component
+                            }}
                             transition
-                            className="pointer-events-auto w-screen max-w-full transform transition duration-100 ease-in-out data-[closed]:translate-x-full md:duration-200"
+                            className={[
+                                'pointer-events-auto w-screen',
+                                'transform transition duration-500 ease-in-out data-[closed]:translate-x-full sm:duration-700',
+                                fullScreen ? 'max-w-full' : 'max-w-md',
+                            ].join(' ')}
                         >
                             <div
                                 className={[
