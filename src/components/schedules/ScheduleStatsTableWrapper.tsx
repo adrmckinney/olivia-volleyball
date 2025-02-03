@@ -758,126 +758,13 @@ const ScheduleStatsTableWrapper = ({
     };
 
     return (
-        <Collapsible
-            show={showTable || showDrawer}
-            triggerComponent={
-                <SubHeaderWithExpandChevron
-                    title={tableTitle}
-                    show={showTable}
-                    handleClick={handleShowTable}
-                    titleIsClickable
-                />
-            }
-        >
-            <ConditionalRender
-                condition={isBreakpointGreaterThan(highestBreakpointToShowDrawer)}
-                isNullRender
-                falseRender={
-                    <DrawerWithHeader
-                        open={showDrawer}
-                        onClose={() => setShowDrawer(false)}
-                        drawerTitle={drawerTitle}
-                        fullScreen
-                        mainContent={
-                            <ConditionalRender
-                                condition={isTournament}
-                                isNullRender
-                                falseRender={
-                                    <Table
-                                        columns={columns}
-                                        data={preparedData as TableDataRow[]}
-                                    />
-                                }
-                            >
-                                <TableWithGroupedRows
-                                    columns={columns}
-                                    data={preparedData as GroupTableData[]}
-                                />
-                            </ConditionalRender>
-                        }
-                        subTitleContent={
-                            <div
-                                className={[
-                                    'flex w-full justify-between items-center space-x-4 pt-2',
-                                ].join(' ')}
-                            >
-                                <ToggleSwitch
-                                    enabled={tableDataType === 'stats'}
-                                    leftLabel="Schedule"
-                                    rightLabel="Stats"
-                                    onChange={() =>
-                                        setTableDataType(
-                                            tableDataType === 'schedule' ? 'stats' : 'schedule'
-                                        )
-                                    }
-                                />
-                                <ConditionalRender
-                                    condition={tableDataType === 'stats'}
-                                    isNullRender
-                                >
-                                    <BasicSelectDropdown
-                                        options={subFilters.filter(
-                                            option => option.key !== dropDownSelection.key
-                                        )}
-                                        handleChange={handleDropDownSelection}
-                                        selected={dropDownSelection}
-                                    />
-                                </ConditionalRender>
-                            </div>
-                        }
-                    />
-                }
-            >
-                <div
-                    className={[
-                        'flex mt-0 space-x-14 w-full h-fit',
-                        'sticky top-44 z-30 py-0 lg:static lg:top-auto lg:z-auto',
-                        colors.bgMain,
-                    ].join(' ')}
-                >
-                    {mainFilters.map(filter => (
-                        <LinkButton
-                            key={filter.key}
-                            title={filter.label}
-                            classNames={[
-                                fonts.groupTableMainFilterText,
-                                fontFamilies.headerThree,
-                                filter.isActive ? colors.textNavActive : colors.textGeneric,
-                            ].join(' ')}
-                            onClick={filter.fn}
-                        />
-                    ))}
-                </div>
-
-                {tableDataType === 'stats' && (
-                    <motion.div
-                        key="stats"
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.2 }}
-                        className={[
-                            'flex justify-start w-full mt-8 lg:mt-8 space-x-6 pl-0 md:pl-44 lg:pl-52',
-                            'sticky top-52 z-20 py-6 md:py-3 lg:py-0 lg:static lg:top-auto lg:z-auto',
-                            colors.bgMain,
-                        ].join(' ')}
-                    >
-                        {subFilters.map(filter => (
-                            <SecondaryPillButton
-                                key={filter.key}
-                                isActive={filter.isActive}
-                                size={pillButtonSize[currentTailwindBreakpoint]}
-                                onClick={filter.fn}
-                            >
-                                {filter.label}
-                            </SecondaryPillButton>
-                        ))}
-                    </motion.div>
-                )}
-
-                {loading ? (
-                    <SkeletonTable numberOfRows={10} autoCols />
-                ) : (
+        <>
+            <DrawerWithHeader
+                open={showDrawer && !isBreakpointGreaterThan(highestBreakpointToShowDrawer)}
+                onClose={() => setShowDrawer(false)}
+                drawerTitle={drawerTitle}
+                fullScreen
+                mainContent={
                     <ConditionalRender
                         condition={isTournament}
                         isNullRender
@@ -890,9 +777,115 @@ const ScheduleStatsTableWrapper = ({
                             data={preparedData as GroupTableData[]}
                         />
                     </ConditionalRender>
-                )}
-            </ConditionalRender>
-        </Collapsible>
+                }
+                subTitleContent={
+                    <div
+                        className={['flex w-full justify-between items-center space-x-4 pt-2'].join(
+                            ' '
+                        )}
+                    >
+                        <ToggleSwitch
+                            enabled={tableDataType === 'stats'}
+                            leftLabel="Schedule"
+                            rightLabel="Stats"
+                            onChange={() =>
+                                setTableDataType(
+                                    tableDataType === 'schedule' ? 'stats' : 'schedule'
+                                )
+                            }
+                        />
+                        <ConditionalRender condition={tableDataType === 'stats'} isNullRender>
+                            <BasicSelectDropdown
+                                options={subFilters.filter(
+                                    option => option.key !== dropDownSelection.key
+                                )}
+                                handleChange={handleDropDownSelection}
+                                selected={dropDownSelection}
+                            />
+                        </ConditionalRender>
+                    </div>
+                }
+            />
+            <Collapsible
+                show={showTable || showDrawer}
+                triggerComponent={
+                    <SubHeaderWithExpandChevron
+                        title={tableTitle}
+                        show={showTable}
+                        handleClick={handleShowTable}
+                        titleIsClickable
+                    />
+                }
+            >
+                <ConditionalRender
+                    condition={isBreakpointGreaterThan(highestBreakpointToShowDrawer)}
+                >
+                    <div
+                        className={[
+                            'flex mt-0 space-x-14 w-full h-fit',
+                            'sticky top-44 z-30 py-0 lg:static lg:top-auto lg:z-auto',
+                            colors.bgMain,
+                        ].join(' ')}
+                    >
+                        {mainFilters.map(filter => (
+                            <LinkButton
+                                key={filter.key}
+                                title={filter.label}
+                                classNames={[
+                                    fonts.groupTableMainFilterText,
+                                    fontFamilies.headerThree,
+                                    filter.isActive ? colors.textNavActive : colors.textGeneric,
+                                ].join(' ')}
+                                onClick={filter.fn}
+                            />
+                        ))}
+                    </div>
+
+                    {tableDataType === 'stats' && (
+                        <motion.div
+                            key="stats"
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.2 }}
+                            className={[
+                                'flex justify-start w-full mt-8 lg:mt-8 space-x-6 pl-0 md:pl-44 lg:pl-52',
+                                'sticky top-52 z-20 py-6 md:py-3 lg:py-0 lg:static lg:top-auto lg:z-auto',
+                                colors.bgMain,
+                            ].join(' ')}
+                        >
+                            {subFilters.map(filter => (
+                                <SecondaryPillButton
+                                    key={filter.key}
+                                    isActive={filter.isActive}
+                                    size={pillButtonSize[currentTailwindBreakpoint]}
+                                    onClick={filter.fn}
+                                >
+                                    {filter.label}
+                                </SecondaryPillButton>
+                            ))}
+                        </motion.div>
+                    )}
+
+                    {loading ? (
+                        <SkeletonTable numberOfRows={10} autoCols />
+                    ) : (
+                        <ConditionalRender
+                            condition={isTournament}
+                            isNullRender
+                            falseRender={
+                                <Table columns={columns} data={preparedData as TableDataRow[]} />
+                            }
+                        >
+                            <TableWithGroupedRows
+                                columns={columns}
+                                data={preparedData as GroupTableData[]}
+                            />
+                        </ConditionalRender>
+                    )}
+                </ConditionalRender>
+            </Collapsible>
+        </>
     );
 };
 
