@@ -25,7 +25,7 @@ const DrawerWithHeader = ({
     mainContent,
 }: Props) => {
     return (
-        <Dialog open={open} onClose={onClose} className="relative z-[999]">
+        <Dialog transition open={open} onClose={onClose} className="relative z-[999]">
             <div className="fixed inset-0" />
 
             <div className="fixed inset-0 overflow-hidden">
@@ -38,7 +38,11 @@ const DrawerWithHeader = ({
                     >
                         <DialogPanel
                             transition
-                            className="pointer-events-auto w-screen max-w-full transform transition duration-100 ease-in-out data-[closed]:translate-x-full md:duration-200"
+                            className={[
+                                'pointer-events-auto top-0 right-0 w-screen max-w-full transform transition duration-500 ease-in-out',
+                                'fixed',
+                                'data-[closed]:translate-x-full',
+                            ].join(' ')}
                         >
                             <div
                                 className={[
