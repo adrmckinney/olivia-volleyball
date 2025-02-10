@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { colors } from '../../configs/colors';
 import { fontFamilies } from '../../configs/fontFamilies';
 import { fonts } from '../../configs/fonts';
+import useAnimationListeners from '../../context/useAnimationListeners';
 import { Abbreviations } from '../../enums/Abbreviations';
 import { EventData } from '../../helpers/csvHelpers/parseRiversideScheduleSheet';
 import { TournamentGroup } from '../../helpers/csvHelpers/parseScheduleSheet';
@@ -140,6 +141,7 @@ const ScheduleStatsTableWrapper = ({
     isTournament = true,
 }: Props) => {
     const { currentTailwindBreakpoint, isBreakpointGreaterThan } = useGetWindowWidth();
+    const { animationRef, isAnimating, setIsAnimating } = useAnimationListeners();
     const { prepareTableData, prepareGroupTableData } = useScheduleStatsTableHelpers();
     const [tableDataType, setTableDataType] = useState<TableDataOptions>('schedule');
     const [statFilter, setStatFilter] = useState<StatFilterOptions>(
@@ -737,7 +739,8 @@ const ScheduleStatsTableWrapper = ({
         if (isBreakpointGreaterThan(highestBreakpointToShowDrawer)) {
             setShowTable(!showTable);
         } else {
-            setShowDrawer(true);
+            setShowDrawer(!showDrawer);
+            setIsAnimating(true);
         }
     };
 
@@ -747,6 +750,7 @@ const ScheduleStatsTableWrapper = ({
         setDropDownSelection(option as FilterButtons);
         setStatFilter(option.key as StatFilterOptions);
     };
+    console.log('isAnimating', isAnimating);
 
     return (
         <Collapsible
@@ -765,10 +769,11 @@ const ScheduleStatsTableWrapper = ({
                 isNullRender
                 falseRender={
                     <DrawerWithHeader
-                        open={showDrawer}
-                        onClose={() => setShowDrawer(false)}
+                        open={showDrawer || isAnimating}
+                        onClose={handleShowTable}
                         drawerTitle={drawerTitle}
                         fullScreen
+                        animationRef={animationRef}
                         mainContent={
                             <ConditionalRender
                                 condition={isTournament}

@@ -13,6 +13,7 @@ type Props = {
     subTitleContent?: React.ReactNode;
     fullScreen?: boolean;
     mainContent: React.ReactNode;
+    animationRef: React.RefObject<HTMLElement>;
 };
 
 const DrawerWithHeader = ({
@@ -23,6 +24,7 @@ const DrawerWithHeader = ({
     subTitleContent = null,
     fullScreen = false,
     mainContent,
+    animationRef,
 }: Props) => {
     return (
         <Dialog open={open} onClose={onClose} className="relative z-[999]">
@@ -38,7 +40,12 @@ const DrawerWithHeader = ({
                     >
                         <DialogPanel
                             transition
-                            className="pointer-events-auto w-screen max-w-full transform transition duration-100 ease-in-out data-[closed]:translate-x-full md:duration-200"
+                            ref={animationRef}
+                            className={[
+                                'pointer-events-auto w-screen max-w-full',
+                                //   'transform transition duration-100 ease-in-out data-[closed]:translate-x-full md:duration-200',
+                                open ? 'animate-drawer-slide-in' : 'animate-drawer-slide-out',
+                            ].join(' ')}
                         >
                             <div
                                 className={[
