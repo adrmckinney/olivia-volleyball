@@ -113,6 +113,7 @@ const useScheduleStatsTableHelpers = () => {
         dataType: TableDataOptions,
         statFilter: StatFilterOptions
     ): TableDataRow[] => {
+        console.log('columns in prepare', columns);
         const statKeys = statFilter
             ? Object.keys(Abbreviations).filter(key => {
                   return Abbreviations[key as keyof typeof Abbreviations].type === statFilter;

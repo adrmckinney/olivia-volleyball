@@ -28,6 +28,7 @@ import ToggleSwitch from '../../sharedComponents/Toggles/ToggleSwitch';
 import ToolTip from '../../sharedComponents/ToolTip/ToolTip';
 import { TableDataOptions } from '../../types/ScheduleStatsDataOptions';
 import { StatFilterOptions } from '../../types/StatFilterOptions';
+import useGenerateScheduleAndStatTableColumns from './useGenerateScheduleAndStatTableColumns';
 import useScheduleStatsTableHelpers from './useScheduleStatsTableHelpers';
 
 type FilterButtons = {
@@ -37,6 +38,18 @@ type FilterButtons = {
     isActive: boolean;
     fn: () => void;
     show?: boolean;
+};
+
+export const ScheduleColNames: Record<keyof ScheduleColumnsToShow, string> = {
+    opponent: 'Opponent',
+    date: 'Date',
+    time: 'Time',
+    result: 'Result',
+    score: 'Score',
+    scoreDetails: 'Score Details',
+    homeAway: 'Location',
+    gameStatus: 'Status',
+    opponentImage: 'Image',
 };
 
 export type ScheduleColumnsToShow = {
@@ -155,10 +168,12 @@ const ScheduleStatsTableWrapper = ({
     const isStatBlock = tableDataType === 'stats' && statFilter === 'block';
     const isStatDigs = tableDataType === 'stats' && statFilter === 'dig';
     const isStatServeReceive = tableDataType === 'stats' && statFilter === 'serveReceive';
-    // const { generateStatCols } = useGenerateStatTableColumns();
+    const { generateStatCols, generateScheduleCols } = useGenerateScheduleAndStatTableColumns();
 
-    // const cols = generateStatCols('set');
-    // console.log('cols', cols);
+    const scheduleCols = generateScheduleCols(scheduleColumnsToShow, tableDataType);
+    const statCols = generateStatCols(subFiltersToShow, statFilter, tableDataType);
+    console.log('scheduleCols', scheduleCols);
+    console.log('statCols', statCols);
 
     const rowLevelDataKey = tableDataType === 'schedule' ? 'matches' : 'stats';
 
@@ -641,13 +656,15 @@ const ScheduleStatsTableWrapper = ({
     ];
 
     const columns: TableColumn[] = [
-        ...scheduleColumns.filter(col => col.show),
-        ...settingColumns.filter(col => col.show),
-        ...serviceColumns.filter(col => col.show),
-        ...attackColumns.filter(col => col.show),
-        ...blockColumns.filter(col => col.show),
-        ...digsColumns.filter(col => col.show),
-        ...serveReceiveColumns.filter(col => col.show),
+        // ...scheduleColumns.filter(col => col.show),
+        // ...settingColumns.filter(col => col.show),
+        // ...serviceColumns.filter(col => col.show),
+        // ...attackColumns.filter(col => col.show),
+        // ...blockColumns.filter(col => col.show),
+        // ...digsColumns.filter(col => col.show),
+        // ...serveReceiveColumns.filter(col => col.show),
+        ...scheduleCols,
+        ...statCols,
     ];
 
     const mainFilters: FilterButtons[] = [
@@ -744,7 +761,7 @@ const ScheduleStatsTableWrapper = ({
                   statFilter,
                   columns,
               });
-
+    // console.log('preparedData', preparedData);
     const highestBreakpointToShowDrawer = 'md';
     const handleShowTable = () => {
         setShowTable(!showTable);
