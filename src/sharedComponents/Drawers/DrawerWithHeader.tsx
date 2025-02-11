@@ -40,7 +40,7 @@ const DrawerWithHeader = ({
                             transition
                             className={[
                                 'pointer-events-auto top-0 right-0 w-screen max-w-full transform transition duration-500 ease-in-out',
-                                'fixed',
+                                'fixed h-screen',
                                 'data-[closed]:translate-x-full',
                             ].join(' ')}
                         >
