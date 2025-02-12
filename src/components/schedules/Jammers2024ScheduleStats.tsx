@@ -1,7 +1,8 @@
 import useFetchCSVData from '../../api/FetchCSVData';
 import { parseScheduleSheet } from '../../helpers/csvHelpers/parseScheduleSheet';
+import { SubFiltersToShow } from '../../types/ScheduleStatTableTypes';
 import { sheetUrls } from '../../utils/googleSheetsConfigs';
-import ScheduleStatsTableWrapper, { SubFiltersToShow } from './ScheduleStatsTableWrapper';
+import ScheduleStatsTableWrapper from './ScheduleStatsTableWrapper';
 
 const Jammers2024ScheduleStats = () => {
     const url: string = sheetUrls.main
@@ -21,7 +22,7 @@ const Jammers2024ScheduleStats = () => {
         scoreDetails: false,
     };
 
-    const subFiltersToShow: Partial<SubFiltersToShow> = {
+    const subFiltersToShow: SubFiltersToShow = {
         set: {
             setsPlayed: true,
             settingAssist: true,
@@ -73,6 +74,12 @@ const Jammers2024ScheduleStats = () => {
             digsTotal: true,
             passingPercentage: true,
             digsPerSet: true,
+        },
+        serveReceive: {
+            setsPlayed: false,
+            receptions: false,
+            receptionError: false,
+            receptionsPerSet: false,
         },
     };
 
