@@ -2,12 +2,14 @@ import { AbbreviationKeys, Abbreviations } from '../../enums/Abbreviations';
 import { TableColumn } from '../../sharedComponents/Tables/TableWithGroupedRows';
 import ToolTip from '../../sharedComponents/ToolTip/ToolTip';
 import { TableDataOptions } from '../../types/ScheduleStatsDataOptions';
-import { StatFilterOptions } from '../../types/StatFilterOptions';
 import {
-    ScheduleColNames,
+    FilterButtons,
+    ScheduleColKeyNameMap,
     ScheduleColumnsToShow,
+    StatFiltersKeyNameMap,
     SubFiltersToShow,
-} from './ScheduleStatsTableWrapper';
+} from '../../types/ScheduleStatTableTypes';
+import { StatFilterOptions } from '../../types/StatFilterOptions';
 
 const useGenerateScheduleAndStatTableColumns = () => {
     const generateStatCols = (
@@ -17,7 +19,7 @@ const useGenerateScheduleAndStatTableColumns = () => {
     ): TableColumn[] => {
         const columns: TableColumn[] = [
             {
-                key: 'opponent',
+                key: `opponent`,
                 name: 'Opponent',
                 show: true,
             },
@@ -25,8 +27,10 @@ const useGenerateScheduleAndStatTableColumns = () => {
 
         Object.entries(subFiltersToShow).forEach(entry => {
             const [key, values] = entry as [StatFilterOptions, Record<AbbreviationKeys, boolean>];
+            console.log('key', key);
             Object.entries(values).forEach(e => {
                 const [abbreviationKey, show] = e as [AbbreviationKeys, boolean];
+                console.log('abbreviationKey show', abbreviationKey, show);
                 const shouldShow = statFilter === key && tableDataType === 'stats' && show;
 
                 if (!shouldShow) return;
@@ -54,7 +58,6 @@ const useGenerateScheduleAndStatTableColumns = () => {
 
         Object.entries(scheduleColumnsToShow).forEach(entry => {
             const [key, show] = entry as [Partial<keyof ScheduleColumnsToShow>, boolean];
-            console.log('key', key);
 
             const shouldShow = tableDataType === 'schedule' && show;
 
@@ -62,16 +65,45 @@ const useGenerateScheduleAndStatTableColumns = () => {
 
             columns.push({
                 key,
-                name: ScheduleColNames[key],
+                name: ScheduleColKeyNameMap[key],
                 show: shouldShow,
             });
         });
         return columns;
     };
 
+    const generateStatFilters = (
+        subFiltersToShow: SubFiltersToShow,
+        filterFn: (string: keyof SubFiltersToShow) => void,
+        statFilterState: StatFilterOptions
+    ): FilterButtons[] => {
+        const filters: FilterButtons[] = [];
+
+        Object.keys(subFiltersToShow).forEach(key => {
+            const typedKey = key as keyof SubFiltersToShow;
+            const shouldShow = subFiltersToShow[typedKey]
+                ? Object.values(subFiltersToShow[typedKey]).some(Boolean)
+                : false;
+
+            if (!shouldShow) return;
+
+            filters.push({
+                key: typedKey,
+                name: StatFiltersKeyNameMap[typedKey],
+                label: StatFiltersKeyNameMap[typedKey],
+                fn: () => filterFn(typedKey),
+                isActive: statFilterState === typedKey,
+                show: shouldShow,
+            });
+        });
+
+        return filters;
+    };
+
     return {
         generateStatCols,
         generateScheduleCols,
+        generateStatFilters,
     };
 };
 

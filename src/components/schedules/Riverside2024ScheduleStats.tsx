@@ -1,7 +1,8 @@
 import useFetchCSVData from '../../api/FetchCSVData';
 import { parseRiversideScheduleSheet } from '../../helpers/csvHelpers/parseRiversideScheduleSheet';
+import { SubFiltersToShow } from '../../types/ScheduleStatTableTypes';
 import { sheetUrls } from '../../utils/googleSheetsConfigs';
-import ScheduleStatsTableWrapper, { SubFiltersToShow } from './ScheduleStatsTableWrapper';
+import ScheduleStatsTableWrapper from './ScheduleStatsTableWrapper';
 
 const Riverside2024ScheduleStats = () => {
     const url: string = sheetUrls.main
@@ -23,7 +24,7 @@ const Riverside2024ScheduleStats = () => {
         score: true,
     };
 
-    const subFiltersToShow: Partial<SubFiltersToShow> = {
+    const subFiltersToShow: SubFiltersToShow = {
         set: {
             setsPlayed: true,
             settingAssist: true,
@@ -75,6 +76,12 @@ const Riverside2024ScheduleStats = () => {
             digsTotal: false,
             passingPercentage: false,
             digsPerSet: false,
+        },
+        serveReceive: {
+            setsPlayed: false,
+            receptions: false,
+            receptionError: false,
+            receptionsPerSet: false,
         },
     };
 
