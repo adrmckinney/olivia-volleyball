@@ -203,6 +203,12 @@ export const Abbreviations = {
         label: '0',
         type: 'dig',
     },
+    digs: {
+        key: 'digs',
+        name: 'Digs',
+        label: 'D',
+        type: 'dig',
+    },
     digErrors: {
         key: 'digErrors',
         name: 'Dig Errors',
@@ -246,3 +252,5 @@ export const Abbreviations = {
         type: 'serveReceive',
     },
 };
+
+export type AbbreviationKeys = keyof typeof Abbreviations;
