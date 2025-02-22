@@ -17,20 +17,14 @@ const useGenerateScheduleAndStatTableColumns = () => {
         statFilter: StatFilterOptions,
         tableDataType: TableDataOptions
     ): TableColumn[] => {
-        const columns: TableColumn[] = [
-            {
-                key: `opponent`,
-                name: 'Opponent',
-                show: true,
-            },
-        ];
+        const columns: TableColumn[] = [{ key: `opponent`, name: 'Opponent', show: true }];
 
         Object.entries(subFiltersToShow).forEach(entry => {
             const [key, values] = entry as [StatFilterOptions, Record<AbbreviationKeys, boolean>];
-            console.log('key', key);
+
             Object.entries(values).forEach(e => {
                 const [abbreviationKey, show] = e as [AbbreviationKeys, boolean];
-                console.log('abbreviationKey show', abbreviationKey, show);
+
                 const shouldShow = statFilter === key && tableDataType === 'stats' && show;
 
                 if (!shouldShow) return;
@@ -63,11 +57,7 @@ const useGenerateScheduleAndStatTableColumns = () => {
 
             if (!shouldShow) return;
 
-            columns.push({
-                key,
-                name: ScheduleColKeyNameMap[key],
-                show: shouldShow,
-            });
+            columns.push({ key, name: ScheduleColKeyNameMap[key], show: shouldShow });
         });
         return columns;
     };
@@ -100,11 +90,7 @@ const useGenerateScheduleAndStatTableColumns = () => {
         return filters;
     };
 
-    return {
-        generateStatCols,
-        generateScheduleCols,
-        generateStatFilters,
-    };
+    return { generateStatCols, generateScheduleCols, generateStatFilters };
 };
 
 export default useGenerateScheduleAndStatTableColumns;
