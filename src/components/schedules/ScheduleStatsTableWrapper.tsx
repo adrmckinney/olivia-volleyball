@@ -85,7 +85,7 @@ const ScheduleStatsTableWrapper = ({
         }
         return [];
     }, [tableDataType, statFilter]);
-    console.log('statCols', tableTitle, statCols);
+
     const rowLevelDataKey = tableDataType === 'schedule' ? 'matches' : 'stats';
 
     const pillButtonSize: Record<ButtonSize, ButtonSize> = {
