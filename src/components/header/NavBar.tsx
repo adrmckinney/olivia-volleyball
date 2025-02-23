@@ -16,54 +16,29 @@ import LinkButton from '../../sharedComponents/Buttons/LinkButton';
 import ConditionalRender from '../../sharedComponents/ConditionalRender';
 import { icon } from '../../utils/Icons';
 
-type Navigation = {
-    name: string;
-    key: Current;
-    current: boolean;
-    show: boolean;
-};
+type Navigation = { name: string; key: Current; current: boolean; show: boolean };
 
 const NavBar = () => {
     const { current, handleNavClick, hideNavBackground } = useContext(NavigationContext);
     const featureFlags = useGetFeatureFlags();
 
     const navigation: Navigation[] = [
-        {
-            name: 'Home',
-            key: 'landing',
-            current: current === 'landing',
-            show: true,
-        },
+        { name: 'Home', key: 'landing', current: current === 'landing', show: true },
         {
             name: 'About',
             key: 'about',
             current: current === 'about',
             show: featureFlags.FEATURE_ABOUT_SECTION,
         },
-        {
-            name: 'Videos',
-            key: 'videos',
-            current: current === 'videos',
-            show: true,
-        },
+        { name: 'Videos', key: 'videos', current: current === 'videos', show: true },
         {
             name: 'Schedule/Stats',
             key: 'schedule',
             current: current === 'schedule',
             show: featureFlags.SCHEDULES_AND_STATS,
         },
-        {
-            name: 'Athletic History',
-            key: 'history',
-            current: current === 'history',
-            show: true,
-        },
-        {
-            name: 'Contact',
-            key: 'contact',
-            current: current === 'contact',
-            show: true,
-        },
+        { name: 'Athletic History', key: 'history', current: current === 'history', show: true },
+        { name: 'Contact', key: 'contact', current: current === 'contact', show: true },
     ];
 
     return (
@@ -87,6 +62,7 @@ const NavBar = () => {
                                                 <ConditionalRender
                                                     key={item.key}
                                                     condition={item.show}
+                                                    isNullRender
                                                 >
                                                     <LinkButton
                                                         title={item.name}
