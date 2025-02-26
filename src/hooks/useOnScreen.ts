@@ -2,16 +2,12 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-type Options = {
-    root: null;
-    rootMargin: string;
-    threshold: number | number[];
-};
+type Options = { root: null; rootMargin: string; threshold: number | number[] };
 
-type IntersectionReturn = [React.RefObject<HTMLDivElement>, boolean];
+type IntersectionReturn = [React.RefObject<HTMLDivElement | null>, boolean];
 
 const useOnScreen = (observerOptions: Options): IntersectionReturn => {
-    const ref = useRef<HTMLDivElement>(null);
+    const ref = useRef<HTMLDivElement | null>(null);
     const [isVisible, setIsVisible] = useState(false);
 
     const callbackFunction = (entries: IntersectionObserverEntry[]) => {
