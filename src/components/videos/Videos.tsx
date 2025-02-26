@@ -1,5 +1,6 @@
 import { useContext, useState } from 'react';
 import useFetchCSVData from '../../api/FetchCSVData';
+import { configs } from '../../configs';
 import { themes } from '../../configs/themes';
 import { NavigationContext } from '../../context/NavigationProvider';
 import { parseVideosSheetData } from '../../helpers/csvHelpers/parseVideosSheetData';
@@ -17,8 +18,8 @@ const Videos = () => {
     const [playVideoIdx, setPlayVideoIdx] = useState<number | null>(null);
     const { currentTailwindBreakpoint } = useGetWindowWidth();
     const url: string = sheetUrls.main
-        .replace('{documentId}', import.meta.env.VITE_MAIN_GOOGLE_DOCUMENT_ID)
-        .replace('{sheetId}', import.meta.env.VITE_VIDEOS_SHEET_ID);
+        .replace('{documentId}', configs.sheets.videos.documentId)
+        .replace('{sheetId}', configs.sheets.videos.sheetId);
 
     const { parsedData: videos, loading } = useFetchCSVData({ url, parser: parseVideosSheetData });
 

@@ -1,4 +1,5 @@
 import useFetchCSVData from '../../api/FetchCSVData';
+import { configs } from '../../configs';
 import { themes } from '../../configs/themes';
 import { parsePersonalStats } from '../../helpers/csvHelpers/parsePersonalStats';
 import SkeletonText from '../../sharedComponents/Skeletons/SkeletonText';
@@ -6,8 +7,8 @@ import { sheetUrls } from '../../utils/googleSheetsConfigs';
 
 const SnapshotStats = () => {
     const url: string = sheetUrls.main
-        .replace('{documentId}', import.meta.env.VITE_MAIN_GOOGLE_DOCUMENT_ID)
-        .replace('{sheetId}', import.meta.env.VITE_PERSONAL_STATS_SHEET_ID);
+        .replace('{documentId}', configs.sheets.personalStats.documentId)
+        .replace('{sheetId}', configs.sheets.personalStats.sheetId);
     const { parsedData: stats, loading } = useFetchCSVData({ url, parser: parsePersonalStats });
 
     return (

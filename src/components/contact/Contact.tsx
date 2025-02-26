@@ -1,6 +1,7 @@
 import emailjs from '@emailjs/browser';
 import { ChangeEvent, FormEvent, useContext, useState } from 'react';
 import portrait2024BallToss from '../../assets/images/portrait2024BallToss.jpeg';
+import { configs } from '../../configs';
 import { colors } from '../../configs/colors';
 import { emailJsConfigs } from '../../configs/emailJs';
 import { fontFamilies } from '../../configs/fontFamilies';
@@ -13,34 +14,15 @@ import TextField from '../../sharedComponents/Inputs/TextField';
 import SectionHeader from '../../sharedComponents/SectionHeader';
 
 type FieldName = 'firstName' | 'lastName' | 'email' | 'message';
-type FormField = {
-    name: FieldName;
-    label: string;
-};
+type FormField = { name: FieldName; label: string };
 
-export type MessageInput = {
-    firstName: string;
-    lastName: string;
-    email: string;
-    message: string;
-};
+export type MessageInput = { firstName: string; lastName: string; email: string; message: string };
 
-const initialValues: MessageInput = {
-    firstName: '',
-    lastName: '',
-    email: '',
-    message: '',
-};
+const initialValues: MessageInput = { firstName: '', lastName: '', email: '', message: '' };
 
-const initialMessageStatusValues: ContactMessageStatus = {
-    status: '',
-    message: '',
-};
+const initialMessageStatusValues: ContactMessageStatus = { status: '', message: '' };
 
-type ContactMessageStatus = {
-    status: 'ok' | 'error' | '';
-    message: string;
-};
+type ContactMessageStatus = { status: 'ok' | 'error' | ''; message: string };
 
 const Contact = () => {
     const { contactRef, hideNavBackground } = useContext(NavigationContext);
@@ -60,22 +42,10 @@ const Contact = () => {
     );
 
     const formFields: FormField[] = [
-        {
-            name: 'firstName',
-            label: 'First name',
-        },
-        {
-            name: 'lastName',
-            label: 'Last name',
-        },
-        {
-            name: 'email',
-            label: 'Email',
-        },
-        {
-            name: 'message',
-            label: 'Message',
-        },
+        { name: 'firstName', label: 'First name' },
+        { name: 'lastName', label: 'Last name' },
+        { name: 'email', label: 'Email' },
+        { name: 'message', label: 'Message' },
     ];
 
     const handleFormChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -96,7 +66,7 @@ const Contact = () => {
                 emailJsConfigs.services.vb,
                 emailJsConfigs.templates.contactPlayer,
                 input as unknown as Record<string, unknown>,
-                import.meta.env.VITE_EMAIL_JS_PUBLIC_KEY
+                configs.email.publicKey
             )
             .then(
                 () => {

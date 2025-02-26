@@ -1,3 +1,5 @@
+import { configs } from '../configs';
+
 export const defaultFeatureFlags = {
     SCHEDULES_AND_STATS: false,
     FEATURE_JAMMERS_2024_SCHEDULE: false,
@@ -8,20 +10,18 @@ export const defaultFeatureFlags = {
 
 export const featureFlags: Record<keyof typeof defaultFeatureFlags, boolean> = {
     SCHEDULES_AND_STATS:
-        import.meta.env.VITE_SCHEDULES_AND_STATS === 'true' ||
-        defaultFeatureFlags.SCHEDULES_AND_STATS,
+        configs.featureFlags.schedulesAndStats || defaultFeatureFlags.SCHEDULES_AND_STATS,
     FEATURE_JAMMERS_2024_SCHEDULE:
-        import.meta.env.VITE_FEATURE_JAMMERS_2024_SCHEDULE === 'true' ||
+        configs.featureFlags.jammers2024Schedule ||
         defaultFeatureFlags.FEATURE_JAMMERS_2024_SCHEDULE,
     FEATURE_RIVERSIDE_2024_SCHEDULE:
-        import.meta.env.VITE_RIVERSIDE_2024_SCHEDULE_SHEET_ID === 'true' ||
+        configs.featureFlags.riverside2024Schedule ||
         defaultFeatureFlags.FEATURE_RIVERSIDE_2024_SCHEDULE,
     FEATURE_JAMMERS_2025_SCHEDULE:
-        import.meta.env.VITE_FEATURE_JAMMERS_2025_SCHEDULE === 'true' ||
+        configs.featureFlags.jammers2025Schedule ||
         defaultFeatureFlags.FEATURE_JAMMERS_2025_SCHEDULE,
     FEATURE_ABOUT_SECTION:
-        import.meta.env.VITE_FEATURE_ABOUT_SECTION === 'true' ||
-        defaultFeatureFlags.FEATURE_ABOUT_SECTION,
+        configs.featureFlags.aboutSection || defaultFeatureFlags.FEATURE_ABOUT_SECTION,
 };
 
 export type FeatureFlagKeys = keyof typeof featureFlags;

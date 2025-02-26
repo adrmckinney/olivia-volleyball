@@ -1,4 +1,5 @@
 import useFetchCSVData from '../../api/FetchCSVData';
+import { configs } from '../../configs';
 import { parseScheduleSheet } from '../../helpers/csvHelpers/parseScheduleSheet';
 import { SubFiltersToShow } from '../../types/ScheduleStatTableTypes';
 import { sheetUrls } from '../../utils/googleSheetsConfigs';
@@ -6,8 +7,8 @@ import ScheduleStatsTableWrapper from './ScheduleStatsTableWrapper';
 
 const Jammers2024ScheduleStats = () => {
     const url: string = sheetUrls.main
-        .replace('{documentId}', import.meta.env.VITE_MAIN_GOOGLE_DOCUMENT_ID)
-        .replace('{sheetId}', import.meta.env.VITE_JAMMERS2024_SCHEDULE_SHEET_ID);
+        .replace('{documentId}', configs.sheets.jammers2024Schedule.documentId)
+        .replace('{sheetId}', configs.sheets.jammers2024Schedule.sheetId);
     const { parsedData: scheduleData, loading } = useFetchCSVData({
         url,
         parser: parseScheduleSheet,

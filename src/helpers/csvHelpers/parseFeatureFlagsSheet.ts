@@ -1,8 +1,9 @@
+import { configs } from '../../configs';
 import { defaultFeatureFlags, featureFlags, FeatureFlags } from '../../types/FeatureFlags';
 
 export const parseFeatureFlagsSheet = (csvText: string): FeatureFlags => {
     // If in dev env, overwrite with local .env variables
-    if (import.meta.env.DEV) {
+    if (configs.env === 'development') {
         return featureFlags;
     }
 
@@ -15,7 +16,7 @@ export const parseFeatureFlagsSheet = (csvText: string): FeatureFlags => {
     const map = new Map();
 
     // Get current environment (e.g., 'prod', 'staging')
-    const currentEnv = import.meta.env.VITE_APP_ENV || 'staging';
+    const currentEnv = configs.env;
 
     // Assuming first row contains headers: "Feature Flag, Enabled, Environment"
     rows.slice(1).forEach(row => {
