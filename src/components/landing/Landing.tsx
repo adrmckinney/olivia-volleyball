@@ -1,9 +1,7 @@
 import { useContext } from 'react';
-import useFetchCSVData from '../../api/FetchCSVData';
 import portrait2024Cut from '../../assets/images/Portrait2024Cut.png';
 import { themes } from '../../configs/themes';
 import { NavigationContext } from '../../context/NavigationProvider';
-import { parseCsvSheetData } from '../../helpers/csvHelpers/parseCsvSheetData';
 import useGetWindowWidth from '../../hooks/useGetWindowWidth';
 import ConditionalRender from '../../sharedComponents/ConditionalRender';
 import BackgroundAccentColor from './BackgroundAccentColor';
@@ -12,8 +10,6 @@ import SnapshotStats from './SnapshotStats';
 
 const Landing = () => {
     const { landingRef } = useContext(NavigationContext);
-    const url: string = import.meta.env.VITE_JAMMERS_2024_URL || '';
-    useFetchCSVData({ url, parser: parseCsvSheetData });
     const { currentTailwindBreakpoint } = useGetWindowWidth();
 
     const renderImage = () => {

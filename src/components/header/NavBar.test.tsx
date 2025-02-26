@@ -1,8 +1,8 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { createRef } from 'react';
-import { NavigationContext, NavigationType } from '../../context/NavigationProvider';
+import { NavigationContext } from '../../context/NavigationProvider';
 import { testFlags } from '../../hooks/__mocks__/useGetFeatureFlags';
 import useGetFeatureFlags from '../../hooks/useGetFeatureFlags';
+import { createMockNavigationContext } from '../../testUtils';
 import NavBar from './NavBar';
 
 jest.mock('../../hooks/useGetFeatureFlags');
@@ -61,28 +61,8 @@ describe('nav bar buttons render', () => {
 });
 
 describe('nav bar buttons click', () => {
-    const mockLandingRef = createRef();
-    const mockVideosRef = createRef();
-    const mockHistoryRef = createRef();
-    const mockStatsRef = createRef();
-    const mockAboutRef = createRef();
-    const mockContactRef = createRef();
-    const mockScheduleRef = createRef();
-
-    const mockHandleNavClick = jest.fn();
-    const mockContextValue: NavigationType = {
-        current: 'landing',
-        handleNavClick: mockHandleNavClick,
-        hideNavBackground: false,
-        opacity: '1',
-        landingRef: mockLandingRef,
-        videosRef: mockVideosRef,
-        historyRef: mockHistoryRef,
-        statsRef: mockStatsRef,
-        aboutRef: mockAboutRef,
-        contactRef: mockContactRef,
-        scheduleRef: mockScheduleRef,
-    };
+    const mockContextValue = createMockNavigationContext();
+    const { handleNavClick: mockHandleNavClick } = mockContextValue;
     test('home nav button clickable', () => {
         render(
             <NavigationContext.Provider value={mockContextValue}>
